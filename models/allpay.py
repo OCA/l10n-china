@@ -25,6 +25,7 @@ from openerp import SUPERUSER_ID
 _logger = logging.getLogger(__name__)
 
 import sys
+
 reload(sys)
 sys.setdefaultencoding('utf8')
 
@@ -148,7 +149,7 @@ class AcquirerallPay(osv.Model):
     def allpay_form_generate_values(self, cr, uid, id, partner_values, tx_values, context=None):
         base_url = self.pool['ir.config_parameter'].get_param(cr, SUPERUSER_ID, 'web.base.url')
         acquirer = self.browse(cr, uid, id, context=context)
-        date_create = datetime.datetime.now().strftime('%Y/%m/%d %H:%M:%S')  #time format yyyy/MM/dd HH:mm:ss
+        date_create = datetime.datetime.now().strftime('%Y/%m/%d %H:%M:%S')  # time format yyyy/MM/dd HH:mm:ss
         amount = int(round(tx_values['amount']))
         if amount <= 0:
             amount = 1
@@ -164,6 +165,7 @@ class AcquirerallPay(osv.Model):
             'ItemName': '%s: %s' % (acquirer.company_id.name, tx_values['reference']),
             'ChoosePayment': 'ALL',
             'ReturnURL': '%s' % urlparse.urljoin(base_url, allPayController._return_url),
+            'ClientBackURL': '%s' % urlparse.urljoin(base_url, '/shop/cart'),
         })
 
         to_sign = {}
@@ -177,6 +179,7 @@ class AcquirerallPay(osv.Model):
             'ItemName': '%s: %s' % (acquirer.company_id.name, tx_values['reference']),
             'ChoosePayment': 'ALL',
             'ReturnURL': '%s' % urlparse.urljoin(base_url, allPayController._return_url),
+            'ClientBackURL': '%s' % urlparse.urljoin(base_url, '/shop/cart'),
         })
 
         sorted_to_sign = sorted(to_sign.iteritems())
