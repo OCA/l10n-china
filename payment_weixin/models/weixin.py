@@ -60,21 +60,41 @@ class AcquirerWeixin(osv.Model):
         noncestr = 'kskakkaj1999999999'
 
         weixin_tx_values = dict(tx_values)
-        weixin_tx_values.update({
-            'appid': acquirer.weixin_appid,
-            'mch_id': acquirer.weixin_mch_id,
-            'noncestr': noncestr,
-            'body': tx_values['reference'],
-            'out_trade_no': tx_values['reference'],
-            'total_fee': amount,
-            'spbill_create_ip': acquirer._get_ipaddress(),
-            'notify_url': '%s' % urlparse.urljoin(base_url, WexinController._notify_url),
-            'trade_type': 'NATIVE',
-            'product_id': tx_values['reference'],
+        weixin_tx_values.update(
+            {
+                'appid': acquirer.weixin_appid,
+                'mch_id': acquirer.weixin_mch_id,
+                'noncestr': noncestr,
+                'body': tx_values['reference'],
+                'out_trade_no': tx_values['reference'],
+                'total_fee': amount,
+                'spbill_create_ip': acquirer._get_ipaddress(),
+                'notify_url': '%s' % urlparse.urljoin(base_url, WexinController._notify_url),
+                'trade_type': 'NATIVE',
+                'product_id': tx_values['reference'],
 
-        })
+            }
+        )
 
-        _, prestr = util.params_filter(weixin_tx_values)
+        to_sign = {}
+        to_sign.update(
+            {
+                'appid': acquirer.weixin_appid,
+                'mch_id': acquirer.weixin_mch_id,
+                'noncestr': noncestr,
+                'body': tx_values['reference'],
+                'out_trade_no': tx_values['reference'],
+                'total_fee': amount,
+                'spbill_create_ip': acquirer._get_ipaddress(),
+                'notify_url': '%s' % urlparse.urljoin(base_url, WexinController._notify_url),
+                'trade_type': 'NATIVE',
+                'product_id': tx_values['reference'],
+
+            }
+
+        )
+
+        _, prestr = util.params_filter(to_sign)
         weixin_tx_values['sign'] = util.build_mysign(prestr, acquirer.weixin_key, 'MD5')
         return partner_values, weixin_tx_values
 
