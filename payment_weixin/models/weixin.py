@@ -6,16 +6,15 @@ except ImportError:
     import json
 import logging
 import urlparse
-from urllib import urlencode
 import datetime
 
 from openerp.osv import osv
 from openerp import SUPERUSER_ID
-from openerp import fields, api
+from openerp import fields
 
 import util
 from openerp.addons.payment.models.payment_acquirer import ValidationError
-from openerp.addons.payment_weixin.controllers.main import weixinController
+from openerp.http import request
 
 _logger = logging.getLogger(__name__)
 
@@ -23,62 +22,66 @@ _logger = logging.getLogger(__name__)
 class AcquirerWeixin(osv.Model):
     _inherit = 'payment.acquirer'
 
+    @api.one
+    def _get_ipaddress(self):
+        return request.httprequest.environ['REMOTE_ADDR']
+
     def _get_providers(self, cr, uid, context=None):
         providers = super(AcquirerWeixin, self)._get_providers(cr, uid, context=context)
         providers.append(['weixin', 'weixin'])
         return providers
 
     _columns = {
-        'weixin_appid': fields.char('Weixin AppID', required_if_provider='weixin'),
-        'weixin_paySignKey': fields.char('Wexin PaySignKey', required_if_provider='weixin'),
-        'weixin_appSecret': fields.char('Wexin AppSecret', required_if_provider='weixin'),
-        'weixin_partnerId': fields.char('Wexin Partner ID', required_if_provider='weixin'),
-        'weixin_partnerKey': fields.char('Weixin Partner Key', required_if_provider='weixin'),
+        'weixin_appid': fields.char('APPID', required_if_provider='weixin'),
+        'weixin_mch_id': fields.char(u'微信支付商户号', required_if_provider='weixin'),
+        'weixin_key': fields.char(u'API密钥', required_if_provider='weixin'),
+        'weixin_secret': fields.char('Appsecret', required_if_provider='weixin'),
     }
 
-    @api.one
-    def _get_weixin_appid(self):
-        return self.weixin_appid
+    def _get_weixin_urls(self, cr, uid, environment, context=None):
+        """ Weixin URLS """
+        if environment == 'prod':
+            return {
+                'weixin_url': 'https://api.mch.weixin.qq.com/pay/unifiedorder'
+            }
+        else:
+            return {
+                'weixin_url': 'https://api.mch.weixin.qq.com/pay/unifiedorder'
+            }
 
     _defaults = {
         'fees_active': False,
     }
 
-    def _get_weixin_urls(self, cr, uid, environment, context=None):
-        return {
-            'weixin_url': 'weixin://wxpay/bizpayurl?'
-        }
-
     def weixin_form_generate_values(self, cr, uid, id, partner_values, tx_values, context=None):
         base_url = self.pool['ir.config_parameter'].get_param(cr, SUPERUSER_ID, 'web.base.url')
         acquirer = self.browse(cr, uid, id, context=context)
         amount = int(tx_values.get('total_fee', 0) * 100)
-        time = datetime.datetime.now()
         noncestr = 'kskakkaj1999999999'
 
         weixin_tx_values = dict(tx_values)
         weixin_tx_values.update({
             'appid': acquirer.weixin_appid,
-            'product_id': tx_values['reference'],
-            'timestamp': time,
+            'mch_id': acquirer.weixin_mch_id,
             'noncestr': noncestr,
+            'body': tx_values['reference'],
+            'out_trade_no': tx_values['reference'],
+            'total_fee': amount,
+            'spbill_create_ip': acquirer._get_ipaddress(),
+            'notify_url': '%s' % urlparse.urljoin(base_url, WexinController._notify_url),
+            'trade_type': 'NATIVE',
+            'product_id': tx_values['reference'],
+
         })
 
-        to_sign = {}
-        to_sign.update({
-            'appid': acquirer.weixin_partner_account,
-            'productid': tx_values['reference'],
-            'timestamp': time,
-            'noncestr': noncestr,
-            'appkey': acquirer.weixin_paySignKey,
-        })
-        _, prestr = util.params_filter(to_sign)
-        weixin_tx_values['sign'] = util.build_mysign(prestr, acquirer.weixin_partner_key, 'MD5')
+        _, prestr = util.params_filter(weixin_tx_values)
+        weixin_tx_values['sign'] = util.build_mysign(prestr, acquirer.weixin_key, 'MD5')
         return partner_values, weixin_tx_values
 
     def weixin_get_form_action_url(self, cr, uid, id, context=None):
         acquirer = self.browse(cr, uid, id, context=context)
         return self._get_weixin_urls(cr, uid, acquirer.environment, context=context)['weixin_url']
+
 
 class TxWeixin(osv.Model):
     _inherit = 'payment.transaction'
