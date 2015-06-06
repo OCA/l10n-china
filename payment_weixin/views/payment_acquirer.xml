@@ -2,19 +2,19 @@
 <openerp>
     <data>
 
-        <record id="acquirer_form_tenpay" model="ir.ui.view">
-            <field name="name">acquirer.form.tenpay</field>
+        <record id="acquirer_form_weixin" model="ir.ui.view">
+            <field name="name">acquirer.form.weixin</field>
             <field name="model">payment.acquirer</field>
             <field name="inherit_id" ref="payment.acquirer_form"/>
             <field name="arch" type="xml">
                 <xpath expr='//group[@name="acquirer_base"]' position='after'>
-                    <group attrs="{'invisible': [('provider', '!=', 'tenpay')]}">
+                    <group attrs="{'invisible': [('provider', '!=', 'weixin')]}">
                         <group>
                             <group>
-                                <field name="tenpay_partner_account"/>
-                                <field name="tenpay_partner_key"/>
-                                <field name="tenpay_partner_email"/>
-
+                                <field name="weixin_appid"/>
+                                <field name="weixin_mch_id"/>
+                                <field name="weixin_key"/>
+                                <field name="weixin_secret"/>
                             </group>
                         </group>
                     </group>
@@ -22,16 +22,16 @@
             </field>
         </record>
 
-        <record id="transaction_form_tenpay" model="ir.ui.view">
-            <field name="name">acquirer.transaction.form.tenpay</field>
+        <record id="transaction_form_weixin" model="ir.ui.view">
+            <field name="name">acquirer.transaction.form.weixin</field>
             <field name="model">payment.transaction</field>
             <field name="inherit_id" ref="payment.transaction_form"/>
             <field name="arch" type="xml">
                 <xpath expr='//notebook' position='inside'>
-                    <page string="Tenpay TX Details">
+                    <page string="weixin TX Details">
                         <group>
-                            <field name="tenpay_txn_id"/>
-                            <field name="tenpay_txn_type"/>
+                            <field name="weixin_txn_id"/>
+                            <field name="weixin_txn_type"/>
                         </group>
                     </page>
                 </xpath>

@@ -11,7 +11,6 @@
     'data': [
         'views/weixin.xml',
         'views/payment_acquirer.xml',
-        'views/res_config_view.xml',
         'data/weixin.xml',
     ],
     'installable': True,

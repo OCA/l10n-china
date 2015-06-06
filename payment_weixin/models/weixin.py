@@ -22,8 +22,7 @@ _logger = logging.getLogger(__name__)
 class AcquirerWeixin(osv.Model):
     _inherit = 'payment.acquirer'
 
-    @api.one
-    def _get_ipaddress(self):
+    def _get_ipaddress(self, cr, uid, context=None):
         return request.httprequest.environ['REMOTE_ADDR']
 
     def _get_providers(self, cr, uid, context=None):
