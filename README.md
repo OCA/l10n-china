@@ -9,4 +9,6 @@ todo lists
 - allPay 台湾欧付宝 [done] 
 
 
-接受赞赏   ![image](https://cloud.githubusercontent.com/assets/1404460/8102138/515f2b64-1050-11e5-8c9d-d19ddb61f256.png)
+接受赞赏  
+
+![aed88f1tymbjqy9dc8 1](https://cloud.githubusercontent.com/assets/1404460/8102186/a1209bf6-1050-11e5-9c22-f035c0e56b09.png)
