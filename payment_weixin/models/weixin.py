@@ -33,10 +33,10 @@ class AcquirerWeixin(models.Model):
         providers.append(['weixin', 'weixin'])
         return providers
 
-    weixin_appid = fields.Char(string='Weixin APPID', required_if_provider='weixin'),
-    weixin_mch_id = fields.Char(string=u'微信支付商户号', required_if_provider='weixin'),
-    weixin_key = fields.Char(string=u'API密钥', required_if_provider='weixin'),
-    weixin_secret = fields.Char(string='Weixin Appsecret', required_if_provider='weixin'),
+    weixin_appid = fields.Char(string='Weixin APPID', required_if_provider='weixin')
+    weixin_mch_id = fields.Char(string=u'微信支付商户号', required_if_provider='weixin')
+    weixin_key = fields.Char(string=u'API密钥', required_if_provider='weixin')
+    weixin_secret = fields.Char(string='Weixin Appsecret', required_if_provider='weixin')
 
     def _get_weixin_urls(self, environment):
         if environment == 'prod':
@@ -149,13 +149,12 @@ class AcquirerWeixin(models.Model):
         return self._get_weixin_urls(cr, uid, acquirer.environment, context=context)['weixin_url']
 
 
-class TxWeixin(osv.Model):
+class TxWeixin(models.Model):
     _inherit = 'payment.transaction'
 
-    _columns = {
-        'weixin_txn_id': fields.char('Transaction ID'),
-        'weixin_txn_type': fields.char('Transaction type'),
-    }
+    weixin_txn_id = fields.Char(string='Transaction ID')
+    weixin_txn_type = fields.Char(string='Transaction type')
+
 
     # --------------------------------------------------
     # FORM RELATED METHODS
