@@ -27,7 +27,7 @@ class AcquirerWeixin(models.Model):
     _inherit = 'payment.acquirer'
 
     def _get_ipaddress(self):
-        return request.httprequest.environ['REMOTE_ADDR']
+        return request.httprequest.environ['HTTP_HOST']
 
     @api.model
     def _get_providers(self):
@@ -93,14 +93,14 @@ class AcquirerWeixin(models.Model):
         self.ensure_one()
         base_url = self.env['ir.config_parameter'].get_param('web.base.url')
         amount = int(tx_values.get('amount', 0) * 100)
-        noncestr = self.random_generator()
+        nonce_str = self.random_generator()
 
         weixin_tx_values = dict(tx_values)
         weixin_tx_values.update(
             {
                 'appid': self.weixin_appid,
                 'mch_id': self.weixin_mch_id,
-                'noncestr': noncestr,
+                'nonce_str': nonce_str,
                 'body': tx_values['reference'],
                 'out_trade_no': tx_values['reference'],
                 'total_fee': amount,
@@ -116,7 +116,7 @@ class AcquirerWeixin(models.Model):
             {
                 'appid': self.weixin_appid,
                 'mch_id': self.weixin_mch_id,
-                'noncestr': noncestr,
+                'nonce_str': nonce_str,
                 'body': tx_values['reference'],
                 'out_trade_no': tx_values['reference'],
                 'total_fee': amount,
