@@ -12,9 +12,6 @@ from lxml import etree
 import random
 import string
 
-from openerp.osv import osv
-from openerp import SUPERUSER_ID
-
 import util
 from openerp.addons.payment.models.payment_acquirer import ValidationError
 from openerp.http import request
