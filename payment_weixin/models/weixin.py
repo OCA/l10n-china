@@ -85,16 +85,16 @@ class AcquirerWeixin(models.Model):
 
     @api.multi
     def weixin_form_generate_values(self, partner_values, tx_values):
-        base_url = self.pool['ir.config_parameter'].get_param(cr, SUPERUSER_ID, 'web.base.url')
-        acquirer = self.browse(cr, uid, id, context=context)
+        self.ensure_one()
+        base_url = self.env['ir.config_parameter'].get_param('web.base.url')
         amount = int(tx_values.get('total_fee', 0) * 100)
         noncestr = 'kskakkaj1999999999'
 
         weixin_tx_values = dict(tx_values)
         weixin_tx_values.update(
             {
-                'appid': acquirer.weixin_appid,
-                'mch_id': acquirer.weixin_mch_id,
+                'appid': self.weixin_appid,
+                'mch_id': self.weixin_mch_id,
                 'noncestr': noncestr,
                 'body': tx_values['reference'],
                 'out_trade_no': tx_values['reference'],
@@ -110,13 +110,13 @@ class AcquirerWeixin(models.Model):
         data_post = {}
         data_post.update(
             {
-                'appid': acquirer.weixin_appid,
-                'mch_id': acquirer.weixin_mch_id,
+                'appid': self.weixin_appid,
+                'mch_id': self.weixin_mch_id,
                 'noncestr': noncestr,
                 'body': tx_values['reference'],
                 'out_trade_no': tx_values['reference'],
                 'total_fee': amount,
-                'spbill_create_ip': acquirer._get_ipaddress(),
+                'spbill_create_ip': self._get_ipaddress(),
                 'notify_url': '%s' % urlparse.urljoin(base_url, WexinController._notify_url),
                 'trade_type': 'NATIVE',
                 'product_id': tx_values['reference'],
@@ -145,8 +145,8 @@ class AcquirerWeixin(models.Model):
 
     @api.multi
     def weixin_get_form_action_url(self):
-        acquirer = self.browse(cr, uid, id, context=context)
-        return self._get_weixin_urls(cr, uid, acquirer.environment, context=context)['weixin_url']
+        self.ensure_one()
+        return self._get_weixin_urls(self.environment)['weixin_url']
 
 
 class TxWeixin(models.Model):
@@ -160,7 +160,7 @@ class TxWeixin(models.Model):
     # FORM RELATED METHODS
     # --------------------------------------------------
 
-    def _weixin_form_get_tx_from_data(self, cr, uid, data, context=None):
+    def _weixin_form_get_tx_from_data(self, data):
         reference, txn_id = data.get('out_trade_no'), data.get('out_trade_no')
         if not reference or not txn_id:
             error_msg = 'weixin: received data with missing reference (%s) or txn_id (%s)' % (reference, txn_id)
@@ -168,7 +168,7 @@ class TxWeixin(models.Model):
             raise ValidationError(error_msg)
 
         # find tx -> @TDENOTE use txn_id ?
-        tx_ids = self.pool['payment.transaction'].search(cr, uid, [('reference', '=', reference)], context=context)
+        tx_ids = self.search([('reference', '=', reference)])
         if not tx_ids or len(tx_ids) > 1:
             error_msg = 'weixin: received data for reference %s' % (reference)
             if not tx_ids:
@@ -177,9 +177,9 @@ class TxWeixin(models.Model):
                 error_msg += '; multiple order found'
             _logger.error(error_msg)
             raise ValidationError(error_msg)
-        return self.browse(cr, uid, tx_ids[0], context=context)
+        return tx_ids[0]
 
-    def _weixin_form_validate(self, cr, uid, tx, data, context=None):
+    def _weixin_form_validate(self, tx, data):
         status = data.get('trade_state')
         data = {
             'acquirer_reference': data.get('out_trade_no'),
