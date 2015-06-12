@@ -117,7 +117,7 @@ class AcquirerWeixin(models.Model):
                 'out_trade_no': tx_values['reference'],
                 'total_fee': amount,
                 'spbill_create_ip': self._get_ipaddress(),
-                'notify_url': '%s' % urlparse.urljoin(base_url, WexinController._notify_url),
+                'notify_url': '%s' % urlparse.urljoin(base_url, WeixinController._notify_url),
                 'trade_type': 'NATIVE',
                 'product_id': tx_values['reference'],
 
