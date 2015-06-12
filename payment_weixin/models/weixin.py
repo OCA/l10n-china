@@ -9,6 +9,8 @@ import logging
 import urlparse
 import urllib2
 from lxml import etree
+import random
+import string
 
 from openerp.osv import osv
 from openerp import SUPERUSER_ID
@@ -83,12 +85,15 @@ class AcquirerWeixin(models.Model):
         res.close()
         return result
 
+    def random_generator(self, size=6, chars=string.ascii_uppercase + string.digits):
+        return ''.join([random.choice(chars) for n in xrange(size)])
+
     @api.multi
     def weixin_form_generate_values(self, partner_values, tx_values):
         self.ensure_one()
         base_url = self.env['ir.config_parameter'].get_param('web.base.url')
-        amount = int(tx_values.get('total_fee', 0) * 100)
-        noncestr = 'kskakkaj1999999999'
+        amount = int(tx_values.get('amount', 0) * 100)
+        noncestr = self.random_generator()
 
         weixin_tx_values = dict(tx_values)
         weixin_tx_values.update(
@@ -103,7 +108,6 @@ class AcquirerWeixin(models.Model):
                 'notify_url': '%s' % urlparse.urljoin(base_url, WeixinController._notify_url),
                 'trade_type': 'NATIVE',
                 'product_id': tx_values['reference'],
-
             }
         )
 
@@ -120,9 +124,7 @@ class AcquirerWeixin(models.Model):
                 'notify_url': '%s' % urlparse.urljoin(base_url, WeixinController._notify_url),
                 'trade_type': 'NATIVE',
                 'product_id': tx_values['reference'],
-
             }
-
         )
 
         _, prestr = util.params_filter(data_post)
@@ -135,13 +137,17 @@ class AcquirerWeixin(models.Model):
 
         request = urllib2.Request(url, data_xml)
         result = self._try_url(request, tries=3)
+
+        _logger.info("request to %s and the request data is %s, and request result is %s" % (url, data_xml, result))
         return_xml = etree.fromstring(result)
+
         if return_xml.find('return_code').text == "SUCCESS" and return_xml.find('code_url').text <> False:
             qrcode = return_xml.find('code_url').text
             weixin_tx_values['qrcode'] = qrcode
         else:
-            error_msg = "can not generate payment preparation ! please check the weixin account and settigns. "
-            raise ValidationError(error_msg)
+            return_code = return_xml.find('return_code').text
+            return_msg = return_xml.find('return_msg').text
+            raise ValidationError("%s, %s" % (return_code, return_msg))
 
         return partner_values, weixin_tx_values
 
