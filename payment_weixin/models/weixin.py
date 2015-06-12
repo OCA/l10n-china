@@ -99,7 +99,7 @@ class AcquirerWeixin(models.Model):
                 'body': tx_values['reference'],
                 'out_trade_no': tx_values['reference'],
                 'total_fee': amount,
-                'spbill_create_ip': acquirer._get_ipaddress(),
+                'spbill_create_ip': self._get_ipaddress(),
                 'notify_url': '%s' % urlparse.urljoin(base_url, WeixinController._notify_url),
                 'trade_type': 'NATIVE',
                 'product_id': tx_values['reference'],
@@ -126,12 +126,12 @@ class AcquirerWeixin(models.Model):
         )
 
         _, prestr = util.params_filter(data_post)
-        weixin_tx_values['sign'] = util.build_mysign(prestr, acquirer.weixin_key, 'MD5')
+        weixin_tx_values['sign'] = util.build_mysign(prestr, self.weixin_key, 'MD5')
         data_post['sign'] = weixin_tx_values['sign']
 
         data_xml = "<xml>" + self.json2xml(data_post) + "</xml>"
 
-        request = urllib2.Request(acquirer.weixin_get_form_action_url, data_xml)
+        request = urllib2.Request(self.weixin_get_form_action_url, data_xml)
         result = self._paypal_try_url(request, tries=3)
         return_xml = etree.fromstring(result)
         if return_xml.find('return_code').text == "SUCCESS" and return_xml.find('code_url').text <> False:
