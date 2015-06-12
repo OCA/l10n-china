@@ -1,5 +1,5 @@
 # -*- coding: utf-'8' "-*-"
-from ..controllers.main import WeixinController
+from  openerp.addons.payment_weixini.controllers.main import WeixinController
 
 try:
     import simplejson as json
@@ -117,7 +117,7 @@ class AcquirerWeixin(models.Model):
                 'out_trade_no': tx_values['reference'],
                 'total_fee': amount,
                 'spbill_create_ip': self._get_ipaddress(),
-                'notify_url': '%s' % urlparse.urljoin(base_url, WexinController._notify_url),
+                'notify_url': '%s' % urlparse.urljoin(base_url, WeixinController._notify_url),
                 'trade_type': 'NATIVE',
                 'product_id': tx_values['reference'],
 
@@ -131,8 +131,10 @@ class AcquirerWeixin(models.Model):
 
         data_xml = "<xml>" + self.json2xml(data_post) + "</xml>"
 
-        request = urllib2.Request(self.weixin_get_form_action_url, data_xml)
-        result = self._paypal_try_url(request, tries=3)
+        url = self._get_weixin_urls(self.environment)['weixin_url']
+
+        request = urllib2.Request(url, data_xml)
+        result = self._try_url(request, tries=3)
         return_xml = etree.fromstring(result)
         if return_xml.find('return_code').text == "SUCCESS" and return_xml.find('code_url').text <> False:
             qrcode = return_xml.find('code_url').text
