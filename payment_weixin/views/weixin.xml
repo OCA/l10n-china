@@ -20,8 +20,9 @@
 
                 <button type="submit" width="100px"
                         t-att-class="submit_class">
-                    <img t-if="not submit_txt" t-att-src="'/report/barcode/?
-    type=%s&value=%s&width=%s&height=%s'%('QR', t-esc=' tx_values['qrcode']', 200, 200)"/>
+                    <t t-if="not submit_txt">
+                        <img t-attf-src="/report/barcode/?type=QR&amp;value={{tx_values['qrcode']}}&amp;width=200&amp;height=200"/>
+                    </t>
                     <span t-if="submit_txt">
                         <t t-esc="submit_txt"/>
                         <span class="fa fa-long-arrow-right"/>
