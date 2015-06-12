@@ -131,8 +131,10 @@ class AcquirerWeixin(models.Model):
 
         data_xml = "<xml>" + self.json2xml(data_post) + "</xml>"
 
-        request = urllib2.Request(self._get_weixin_urls(self.environment)['weixin_url'], data_xml)
-        result = self._paypal_try_url(request, tries=3)
+        url = self._get_weixin_urls(self.environment)['weixin_url']
+
+        request = urllib2.Request(url, data_xml)
+        result = self._try_url(request, tries=3)
         return_xml = etree.fromstring(result)
         if return_xml.find('return_code').text == "SUCCESS" and return_xml.find('code_url').text <> False:
             qrcode = return_xml.find('code_url').text
