@@ -1,5 +1,5 @@
 # -*- coding: utf-'8' "-*-"
-from  openerp.addons.payment_weixini.controllers.main import WeixinController
+from  openerp.addons.payment_weixin.controllers.main import WeixinController
 
 try:
     import simplejson as json
