@@ -24,7 +24,7 @@ class AcquirerWeixin(models.Model):
     _inherit = 'payment.acquirer'
 
     def _get_ipaddress(self):
-        return request.httprequest.environ['HTTP_HOST']
+        return self.ip_address
 
     @api.model
     def _get_providers(self):
@@ -36,6 +36,7 @@ class AcquirerWeixin(models.Model):
     weixin_mch_id = fields.Char(string=u'微信支付商户号', required_if_provider='weixin')
     weixin_key = fields.Char(string=u'API密钥', required_if_provider='weixin')
     weixin_secret = fields.Char(string='Weixin Appsecret', required_if_provider='weixin')
+    ip_address = fields.Char(string='IP Address', required_if_provider='weixin')
 
     def _get_weixin_urls(self, environment):
         if environment == 'prod':
