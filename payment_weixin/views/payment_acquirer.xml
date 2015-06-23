@@ -15,6 +15,7 @@
                                 <field name="weixin_mch_id"/>
                                 <field name="weixin_key"/>
                                 <field name="weixin_secret"/>
+                                <field name="ip_address"/>
                             </group>
                         </group>
                     </group>
