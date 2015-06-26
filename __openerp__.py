@@ -15,4 +15,6 @@
         'data/tenpay.xml',
     ],
     'installable': True,
+    'price': 499.99,
+    'currency': 'EUR',
 }
