@@ -1,18 +1,17 @@
 # -*- coding: utf-8 -*-
 
 {
-    'name': 'Tenpay Payment Acquirer',
+    'name': 'Weixin Payment Acquirer',
     'category': 'Website',
-    'summary': 'Payment Acquirer: Tenpay Implementation',
+    'summary': 'Payment Acquirer: Weixin Implementation',
     'version': '1.0',
-    'description': """Tenpay Payment Acquirer""",
+    'description': """Weixin Payment Acquirer""",
     'author': 'Odoo CN, Jeffery <jeffery9@gmail.com>',
     'depends': ['payment'],
     'data': [
-        'views/tenpay.xml',
+        'views/weixin.xml',
         'views/payment_acquirer.xml',
-        'views/res_config_view.xml',
-        'data/tenpay.xml',
+        'data/weixin.xml',
     ],
     'installable': True,
     'price': 499.99,
