@@ -6,7 +6,7 @@
     'summary': 'Payment Acquirer: Weixin Implementation',
     'version': '1.0',
     'description': """Weixin Payment Acquirer""",
-    'author': 'Odoo CN, Jeffery <jeffery9@gmail.com>',
+    'author': 'Odoo CN Community, Jeffery <jeffery9@gmail.com>',
     'depends': ['payment'],
     'data': [
         'views/weixin.xml',
