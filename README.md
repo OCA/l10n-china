@@ -8,3 +8,6 @@ This l10n-china repository is hosted in Github and might contain any module rela
 * Specific connectors (Wechat, taobao, Tmall, JD)
 * Specific website modules ("get-rid-of-google-content" modules, ICP BeiAn etc.)
 * Other specific modules (Link to courrier companies, etc.)
+
+[//]: # (addons)
+[//]: # (end addons)
