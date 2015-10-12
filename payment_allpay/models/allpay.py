@@ -33,54 +33,62 @@ sys.setdefaultencoding('utf8')
 class AcquirerallPay(osv.Model):
     _inherit = 'payment.acquirer'
 
-    def checkout_feedback(self, acquirer_id, values):
+    def checkout_feedback(self, cr, uid, id, values, context=None):
         """
         :param post: post is a dictionary which allPay server sent to us.
         :return: a dictionary containing data the allpay server return to us.
         """
         _logger.info('inside the feedback')
-        acquirer =  self.browse(cr, uid, acquirer_id, context=context)
+        _logger.info('vales: %s' % (values))
+
+        acquirer = self.browse(cr, uid, id, context=context)
+        _logger.info('acquirer: %s' % (acquirer))
+
         HASH_KEY = acquirer.allpay_hash_key
         HASH_IV = acquirer.allpay_hash_iv
+        _logger.info('HASH_KEY: %s' % (HASH_KEY))
+        _logger.info('HASH_IV: %s' % (HASH_IV))
+
         returns = {}
         ar_parameter = {}
         check_mac_value = ''
-        try:
-            payment_type_replace_map = {'_CVS': '', '_BARCODE': '', '_Alipay': '', '_Tenpay': '', '_CreditCard': ''}
-            period_type_replace_map = {'Y': 'Year', 'M': 'Month', 'D': 'Day'}
-            for key, val in values.iteritems():
 
-                print key, val
-                if key == 'CheckMacValue':
-                    check_mac_value = val
-                else:
-                    ar_parameter[key.lower()] = val
-                    if key == 'PaymentType':
-                        for origin, replacement in payment_type_replace_map.iteritems():
-                            val = val.replace(origin, replacement)
-                    elif key == 'PeriodType':
-                        for origin, replacement in period_type_replace_map.iteritems():
-                            val = val.replace(origin, replacement)
-                    returns[key] = val
+        payment_type_replace_map = {'_CVS': '', '_BARCODE': '', '_Alipay': '', '_Tenpay': '', '_CreditCard': ''}
+        period_type_replace_map = {'Y': 'Year', 'M': 'Month', 'D': 'Day'}
+        for key, val in values.iteritems():
 
-            sorted_returns = sorted(ar_parameter.iteritems())
-            sz_confirm_mac_value = "HashKey=" + HASH_KEY
-
-            for val in sorted_returns:
-                sz_confirm_mac_value = "".join((str(sz_confirm_mac_value), "&", str(val[0]), "=", str(val[1])))
-
-            sz_confirm_mac_value = "".join((sz_confirm_mac_value, "&HashIV=", HASH_IV))
-            sz_confirm_mac_value = util.do_str_replace((urllib.quote_plus(sz_confirm_mac_value)).lower(), False)
-            sz_confirm_mac_value = hashlib.md5(sz_confirm_mac_value).hexdigest().upper()
-
-            _logger.info('sz-checkMacValue: %s & checkMacValue: %s' % (sz_confirm_mac_value, check_mac_value))
-
-            if sz_confirm_mac_value != check_mac_value:
-                return False
+            print key, val
+            if key == 'CheckMacValue':
+                check_mac_value = val
             else:
-                return returns
-        except:
-            _logger.info('Exception!')
+                ar_parameter[key.lower()] = val
+                if key == 'PaymentType':
+                    for origin, replacement in payment_type_replace_map.iteritems():
+                        val = val.replace(origin, replacement)
+                elif key == 'PeriodType':
+                    for origin, replacement in period_type_replace_map.iteritems():
+                        val = val.replace(origin, replacement)
+                returns[key] = val
+
+        sorted_returns = sorted(ar_parameter.iteritems())
+        sz_confirm_mac_value = "HashKey=" + HASH_KEY
+
+        for val in sorted_returns:
+            sz_confirm_mac_value = "".join((str(sz_confirm_mac_value), "&", str(val[0]), "=", str(val[1])))
+
+        sz_confirm_mac_value = "".join((sz_confirm_mac_value, "&HashIV=", HASH_IV))
+        _logger.info( 'sz_confirm_mac_value : %s' % sz_confirm_mac_value )
+        sz_confirm_mac_value = util.do_str_replace((urllib.quote_plus(sz_confirm_mac_value.encode('utf8'))).lower(), False)
+        # sz_confirm_mac_value = util.do_str_replace(urllib.quote(werkzeug.url_encode(sz_confirm_mac_value), '+%').lower())
+        sz_confirm_mac_value = hashlib.md5(sz_confirm_mac_value).hexdigest().upper()
+
+        _logger.info('sz-checkMacValue: %s & checkMacValue: %s' % (sz_confirm_mac_value, check_mac_value))
+
+        if sz_confirm_mac_value != check_mac_value:
+            return False
+        else:
+            return returns
+
 
     def _get_allpay_urls(self, cr, uid, environment, context=None):
         """ allPay URLS """
@@ -163,6 +171,7 @@ class AcquirerallPay(osv.Model):
             'TradeDesc': '%s: %s' % (acquirer.company_id.name, tx_values['reference']),
             'ItemName': '%s: %s' % (acquirer.company_id.name, tx_values['reference']),
             'ChoosePayment': 'ALL',
+            'IgnorePayment': 'ATM#CVS#BARCODE',
             'ReturnURL': '%s' % urlparse.urljoin(base_url, allPayController._return_url),
             # 'PaymentInfoURL': '%s' % urlparse.urljoin(base_url, allPayController._return_url),
             # 'ClientBackURL': '%s' % urlparse.urljoin(base_url, '/shop'),
@@ -178,6 +187,7 @@ class AcquirerallPay(osv.Model):
             'TradeDesc': '%s: %s' % (acquirer.company_id.name, tx_values['reference']),
             'ItemName': '%s: %s' % (acquirer.company_id.name, tx_values['reference']),
             'ChoosePayment': 'ALL',
+            'IgnorePayment': 'ATM#CVS#BARCODE',
             'ReturnURL': '%s' % urlparse.urljoin(base_url, allPayController._return_url),
             # 'PaymentInfoURL': '%s' % urlparse.urljoin(base_url, allPayController._return_url),
             # 'ClientBackURL': '%s' % urlparse.urljoin(base_url, '/shop'),
@@ -227,31 +237,33 @@ class TxallPay(osv.Model):
             _logger.error(error_msg)
             raise ValidationError(error_msg)
         tx = self.browse(cr, uid, tx_ids[0], context=context)
-        CheckMacValue_result = self.pool['payment.acquirer'].checkout_feedback(tx.acquirer_id, data)
+        acquirer = tx.acquirer_id
+        _logger.info('acquirer id: %s' % acquirer.id)
+        CheckMacValue_result = self.pool['payment.acquirer'].checkout_feedback(cr, uid, acquirer.id, data, context=context)
         if CheckMacValue_result:
             return tx
 
         else:
-            error_msg = 'allPay: invalid CheckMacValue, received %s, computed %s' % (
-            data.get('CheckMacValue'), CheckMacValue_result)
+            error_msg = 'allPay: invalid CheckMacValue, received %s, computed %s' % (data.get('CheckMacValue'), CheckMacValue_result)
             _logger.warning(error_msg)
             raise ValidationError(error_msg)
 
     def _allpay_form_validate(self, cr, uid, tx, data, context=None):
         status = data.get('RtnCode')
+        _message =  data.get('RtnMsg', '')
         data = {
             'acquirer_reference': data.get('MerchantTradeNo'),
             'allpay_txn_id': data.get('TradeNo'),
             'allpay_txn_type': data.get('PaymentType'),
         }
 
-        if status == 1:
+        if status == '1':
             _logger.info('Validated allPay payment for tx %s: set as done' % (tx.reference))
-            data.update(state='done', date_validate=data.get('PaymentDate', fields.datetime.now()))
+            data.update(state='done', date_validate=data.get('PaymentDate', fields.datetime.now()), state_message=_message)
             return tx.write(data)
-        elif status == 800:
+        elif status == '800':
             _logger.info('Received notification for allPay payment %s: set as pending' % (tx.reference))
-            data.update(state='pending', state_message=data.get('RtnMsg', ''))
+            data.update(state='pending', state_message=_message)
             return tx.write(data)
         else:
             error = 'Received unrecognized status for allPay payment %s: %s, set as error' % (tx.reference, status)
