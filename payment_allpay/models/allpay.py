@@ -20,7 +20,7 @@ from openerp.addons.payment.models.payment_acquirer import ValidationError
 from openerp.addons.payment_allpay.controllers.main import allPayController
 from openerp.osv import osv, fields
 from openerp.tools.float_utils import float_compare
-from openerp import SUPERUSER_ID
+from openerp import SUPERUSER_ID, api
 
 _logger = logging.getLogger(__name__)
 
@@ -33,13 +33,13 @@ sys.setdefaultencoding('utf8')
 class AcquirerallPay(osv.Model):
     _inherit = 'payment.acquirer'
 
-    @classmethod
-    def checkout_feedback(cls, post):
+    def checkout_feedback(self, acquirer_id, values):
         """
         :param post: post is a dictionary which allPay server sent to us.
         :return: a dictionary containing data the allpay server return to us.
         """
         _logger.info('inside the feedback')
+        acquirer =  self.browse(cr, uid, acquirer_id, context=context)
         HASH_KEY = acquirer.allpay_hash_key
         HASH_IV = acquirer.allpay_hash_iv
         returns = {}
@@ -48,7 +48,7 @@ class AcquirerallPay(osv.Model):
         try:
             payment_type_replace_map = {'_CVS': '', '_BARCODE': '', '_Alipay': '', '_Tenpay': '', '_CreditCard': ''}
             period_type_replace_map = {'Y': 'Year', 'M': 'Month', 'D': 'Day'}
-            for key, val in post.iteritems():
+            for key, val in values.iteritems():
 
                 print key, val
                 if key == 'CheckMacValue':
@@ -104,7 +104,6 @@ class AcquirerallPay(osv.Model):
                 'allpay_url': 'http://payment-stage.allpay.com.tw/AioHelper/GenCheckMacValue'
             }
 
-
     def _get_providers(self, cr, uid, context=None):
         providers = super(AcquirerallPay, self)._get_providers(cr, uid, context=context)
         providers.append(['allpay', 'allPay'])
@@ -143,7 +142,7 @@ class AcquirerallPay(osv.Model):
         else:
             percentage = acquirer.fees_int_var
             fixed = acquirer.fees_int_fixed
-        fees = (percentage / 100.0 * amount + fixed ) / (1 - percentage / 100.0)
+        fees = (percentage / 100.0 * amount + fixed) / (1 - percentage / 100.0)
         return fees
 
     def allpay_form_generate_values(self, cr, uid, id, partner_values, tx_values, context=None):
@@ -165,7 +164,8 @@ class AcquirerallPay(osv.Model):
             'ItemName': '%s: %s' % (acquirer.company_id.name, tx_values['reference']),
             'ChoosePayment': 'ALL',
             'ReturnURL': '%s' % urlparse.urljoin(base_url, allPayController._return_url),
-            'ClientBackURL': '%s' % urlparse.urljoin(base_url, '/shop/cart'),
+            # 'PaymentInfoURL': '%s' % urlparse.urljoin(base_url, allPayController._return_url),
+            # 'ClientBackURL': '%s' % urlparse.urljoin(base_url, '/shop'),
         })
 
         to_sign = {}
@@ -179,7 +179,8 @@ class AcquirerallPay(osv.Model):
             'ItemName': '%s: %s' % (acquirer.company_id.name, tx_values['reference']),
             'ChoosePayment': 'ALL',
             'ReturnURL': '%s' % urlparse.urljoin(base_url, allPayController._return_url),
-            'ClientBackURL': '%s' % urlparse.urljoin(base_url, '/shop/cart'),
+            # 'PaymentInfoURL': '%s' % urlparse.urljoin(base_url, allPayController._return_url),
+            # 'ClientBackURL': '%s' % urlparse.urljoin(base_url, '/shop'),
         })
 
         sorted_to_sign = sorted(to_sign.iteritems())
@@ -209,7 +210,7 @@ class TxallPay(osv.Model):
     # --------------------------------------------------
 
     def _allpay_form_get_tx_from_data(self, cr, uid, data, context=None):
-        reference, txn_id = data.get('TradeNo'), data.get('MerchantTradeNo')
+        reference, txn_id = data.get('MerchantTradeNo'), data.get('TradeNo')
         if not reference or not txn_id:
             error_msg = 'allPay: received data with missing reference (%s) or txn_id (%s)' % (reference, txn_id)
             _logger.error(error_msg)
@@ -225,7 +226,16 @@ class TxallPay(osv.Model):
                 error_msg += '; multiple order found'
             _logger.error(error_msg)
             raise ValidationError(error_msg)
-        return self.browse(cr, uid, tx_ids[0], context=context)
+        tx = self.browse(cr, uid, tx_ids[0], context=context)
+        CheckMacValue_result = self.pool['payment.acquirer'].checkout_feedback(tx.acquirer_id, data)
+        if CheckMacValue_result:
+            return tx
+
+        else:
+            error_msg = 'allPay: invalid CheckMacValue, received %s, computed %s' % (
+            data.get('CheckMacValue'), CheckMacValue_result)
+            _logger.warning(error_msg)
+            raise ValidationError(error_msg)
 
     def _allpay_form_validate(self, cr, uid, tx, data, context=None):
         status = data.get('RtnCode')
@@ -248,4 +258,3 @@ class TxallPay(osv.Model):
             _logger.info(error)
             data.update(state='error', state_message=error)
             return tx.write(data)
-
