@@ -11,7 +11,6 @@
     'data': [
         'views/tenpay.xml',
         'views/payment_acquirer.xml',
-        'views/res_config_view.xml',
         'data/tenpay.xml',
     ],
     'installable': True,
