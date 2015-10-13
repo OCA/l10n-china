@@ -15,11 +15,13 @@ except ImportError:
     sha_hmac = sha
 
 import sys
+import types
 
 reload(sys)
 sys.setdefaultencoding('utf8')
 
 md5 = md5_constructor
+
 
 def smart_str(s, encoding='utf-8', strings_only=False, errors='strict'):
     """
@@ -37,8 +39,7 @@ def smart_str(s, encoding='utf-8', strings_only=False, errors='strict'):
                 # An Exception subclass containing non-ASCII data that doesn't
                 # know how to print itself properly. We shouldn't raise a
                 # further exception.
-                return ' '.join([smart_str(arg, encoding, strings_only,
-                        errors) for arg in s])
+                return ' '.join([smart_str(arg, encoding, strings_only, errors) for arg in s])
             return unicode(s).encode(encoding, errors)
     elif isinstance(s, unicode):
         return s.encode(encoding, errors)
@@ -46,6 +47,7 @@ def smart_str(s, encoding='utf-8', strings_only=False, errors='strict'):
         return s.decode('utf-8', errors).encode(encoding, errors)
     else:
         return s
+
 
 def params_filter(params):
     ks = params.keys()
@@ -55,13 +57,14 @@ def params_filter(params):
     for k in ks:
         v = params[k]
         k = smart_str(k, 'utf-8')
-        if k not in ('sign','sign_type') and v != '':
+        if k not in ('sign', 'sign_type') and v != '':
             newparams[k] = smart_str(v, 'utf-8')
             prestr += '%s=%s&' % (k, newparams[k])
     prestr = prestr[:-1]
     return newparams, prestr
 
-def build_mysign(prestr, key, sign_type = 'MD5'):
+
+def build_mysign(prestr, key, sign_type='MD5'):
     if sign_type == 'MD5':
         return md5(prestr + key).hexdigest()
     return ''
