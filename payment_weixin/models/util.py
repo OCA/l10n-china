@@ -15,6 +15,7 @@ except ImportError:
     sha_hmac = sha
 
 import sys
+import types
 reload(sys)
 sys.setdefaultencoding('utf8')
 
