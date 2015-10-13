@@ -73,7 +73,7 @@ class AcquirerAlipay(osv.Model):
         'fees_dom_var': 0.0,
         'fees_int_fixed': 0.0,
         'fees_int_var': 0.0,
-        'alipay_interface_type':'trade_create_by_buyer',
+        'alipay_interface_type': 'trade_create_by_buyer',
     }
 
     def alipay_compute_fees(self, cr, uid, id, amount, currency_id, country_id, context=None):
@@ -95,7 +95,7 @@ class AcquirerAlipay(osv.Model):
         else:
             percentage = acquirer.fees_int_var
             fixed = acquirer.fees_int_fixed
-        fees = (percentage / 100.0 * amount + fixed ) / (1 - percentage / 100.0)
+        fees = (percentage / 100.0 * amount + fixed) / (1 - percentage / 100.0)
         return fees
 
     def alipay_form_generate_values(self, cr, uid, id, partner_values, tx_values, context=None):
@@ -218,6 +218,7 @@ class TxAlipay(osv.Model):
             'alipay_txn_type': data.get('payment_type'),
             'partner_reference': data.get('buyer_id')
         }
+        acquirer = tx.acquirer_id
         if acquirer.alipay_interface_type == 'create_direct_pay_by_user':
             if status in ['TRADE_FINISHED', 'TRADE_SUCCESS']:
                 _logger.info('Validated Alipay payment for tx %s: set as done' % (tx.reference))

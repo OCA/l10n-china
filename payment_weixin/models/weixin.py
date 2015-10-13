@@ -139,7 +139,7 @@ class AcquirerWeixin(models.Model):
         _logger.info("request to %s and the request data is %s, and request result is %s" % (url, data_xml, result))
         return_xml = etree.fromstring(result)
 
-        if return_xml.find('return_code').text == "SUCCESS" and return_xml.find('code_url').text <> False:
+        if return_xml.find('return_code').text == "SUCCESS" and return_xml.find('code_url').text != False:
             qrcode = return_xml.find('code_url').text
             weixin_tx_values['qrcode'] = qrcode
         else:

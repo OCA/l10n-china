@@ -11,7 +11,6 @@
     'data': [
         'views/allpay.xml',
         'views/payment_acquirer.xml',
-        'views/res_config_view.xml',
         'data/allpay.xml',
     ],
     'installable': True,

@@ -41,8 +41,8 @@ class AlipayController(http.Controller):
         alipay_urls = request.registry['payment.acquirer']._get_alipay_urls(cr, uid, tx and tx.acquirer_id and tx.acquirer_id.environment or 'prod', context=context)
         validate_url = alipay_urls['alipay_url']
         new_post = {
-            'service':'notify_verify',
-            'partner': seller_id ,
+            'service': 'notify_verify',
+            'partner': seller_id,
             'notify_id': notify_id,
         }
         urequest = urllib2.Request(validate_url, werkzeug.url_encode(new_post))
@@ -67,14 +67,14 @@ class AlipayController(http.Controller):
     @http.route('/payment/alipay/return', type='http', auth="none", methods=['GET'])
     def alipay_return(self, **get):
         """ Alipay Return """
+        cr, uid, context = request.cr, request.uid, request.context
         _logger.info('Beginning Alipay return form_feedback with post data %s', pprint.pformat(get))  # debug
-        res = request.registry['payment.transaction'].form_feedback(cr, SUPERUSER_ID, get, 'alipay', context=context)
+        request.registry['payment.transaction'].form_feedback(cr, SUPERUSER_ID, get, 'alipay', context=context)
         return ''
 
     @http.route('/payment/alipay/cancel', type='http', auth="none")
     def alipay_cancel(self, **post):
         """ When the user cancels its Alipay payment: GET on this route """
-        cr, uid, context = request.cr, SUPERUSER_ID, request.context
         _logger.info('Beginning Alipay cancel with post data %s', pprint.pformat(post))  # debug
 
         return ''
