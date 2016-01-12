@@ -6,7 +6,7 @@
     'category': 'Localization',
     'version': '9.0.2.0.1',
     'website': 'www.elico-corp.com',
-    'author': "Elico Corp",
+    'author': "Elico Corp, Odoo Community Association (OCA)",
     'depends': [
         'hr_payroll',
     ],
