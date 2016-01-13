@@ -44,49 +44,22 @@ class TestPaymentAcquirer(common.TransactionCase):
             'notify_type': u'trade_status_sync',
             'is_success': u'T', 'buyer_id': u'2088002451351968'}
         self.payment_transaction = self.env['payment.transaction'].create({
-            # 'message_follower_ids': [3], 'state_message': False,
-            # 'create_date': '2015-09-24 02:54:23',
             'reference': u'SO-2015-24059',
             'write_uid': 1,
             'date_create': '2015-09-24 02:54:23',
             'acquirer_id': self.payment_acquirer.id,
             'fees': 0.0,
-            # 'partner_id': (3, u'Administrator'),
-            # 'message_ids': [581, 580],
-            # 'message_summary': u' ', 'create_uid': (1, u'Administrator'),
             'display_name': u'SO-2015-24059',
-            # 'partner_reference': False,
-            # 'message_is_follower': True,
-            # '__last_update': '2015-09-24 02:55:05',
-            # 'partner_name': u'Administrator',
-            # 'message_last_post': False,
             'partner_phone': u'1',
             'state': u'draft',
             'alipay_txn_tradeno': False,
             'type': u'form',
             'partner_country_id': 6,
-            # 'acquirer_reference': False,
-            # 'partner_address': u'q 1',
-            # 'partner_email': u'admin@yourcompany.example.com',
-            # 'partner_lang': u'en_US',
             'sale_order_id': self.sale_order.id,
-            # 'write_date': '2015-09-24 02:55:05',
-            # 'partner_zip': u'1',
             'currency_id': 8,
-            # 'message_unread': False, 'date_validate': False,
-            # 'partner_city': u'1',
             'amount': 0.01, 'website_message_ids': []})
         self.base_url = self.env['ir.config_parameter'].sudo().get_param(
             'web.base.url')
-
-    # def test_alipay_validate_data(self):
-    #     """ Checks if the alipay_validate_data works properly
-    #     """
-
-    #     req = urllib2.Request(
-    #         self.base_url + '/payment/alipay/notify/')
-    #     urllib2.urlopen(req)
-        # self.alipay_validate_data(self.return_data)
 
     def test_alipay_return(self):
         """ Checks if the alipay_return works properly

@@ -41,7 +41,6 @@ class AlipayController(http.Controller):
             if tx_ids:
                 tx = request.registry['payment.transaction'].browse(
                     cr, uid, tx_ids[0], context=context)
-            # Luke create transaction, if payment via email url
             else:
                 tx = self.create_transaction_alipay(post)
         else:

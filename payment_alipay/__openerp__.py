@@ -5,8 +5,10 @@
     'name': 'Alipay Payment Acquirer',
     'category': 'Hidden',
     'summary': 'Payment Acquirer: Alipay Implementation',
-    'version': '8.0.2.0.2',
+    'version': '8.0.2.0.3',
     'author': 'Elico-Corp, Odoo Community Association (OCA)',
+    'license': 'AGPL-3',
+    'website': 'https://www.elico-corp.com',
     'depends': [
         'portal_sale',
         'website_sale',
