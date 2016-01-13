@@ -31,8 +31,7 @@ class TestSaleOrder(common.TransactionCase):
         # state = sent
         self.sale_order.write({'state': 'sent'})
         # service is create_direct_pay_by_user
-        import pdb
-        pdb.set_trace()
+
         self.payment_acquirer.write({
             'service': 'create_direct_pay_by_user'})
         self.sale_order._edi_alipay_url_direct_pay()

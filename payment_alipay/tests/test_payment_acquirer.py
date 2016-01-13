@@ -28,7 +28,11 @@ class TestPaymentAcquirer(common.TransactionCase):
         """ Checks if the _get_alipay_urls works properly
         """
         environment = None
-        self.payment_acquirer._get_alipay_urls(environment)
+        url = self.payment_acquirer._get_alipay_urls(environment)
+        alpay_url = {
+            'alipay_form_url': 'https://mapi.alipay.com/gateway.do',
+        }
+        self.assertEqual(url, alpay_url)
 
     def test_alipay_get_form_action_url(self):
         """

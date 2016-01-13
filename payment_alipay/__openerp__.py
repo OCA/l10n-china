@@ -5,22 +5,17 @@
     'name': 'Alipay Payment Acquirer',
     'category': 'Hidden',
     'summary': 'Payment Acquirer: Alipay Implementation',
-    'version': '8.0.2.0.1',
-    'description':
-    """
-    Alipay Payment Acquirer
-    """,
-    'author': 'Elico-Corp',
+    'version': '8.0.2.0.2',
+    'author': 'Elico-Corp, Odoo Community Association (OCA)',
     'depends': [
-        'sale',
-        'payment',
         'portal_sale',
-        'account',
-        'website_sale'],
+        'website_sale',
+    ],
     'data': [
         'views/alipay.xml',
         'views/payment_acquirer.xml',
         'data/alipay.xml',
-        'edi/sale_order_action_data.xml'],
+        'edi/sale_order_action_data.xml',
+    ],
     'installable': True,
 }
