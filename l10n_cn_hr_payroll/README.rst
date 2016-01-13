@@ -13,7 +13,8 @@ Chinese Payroll Rules
     and adds complete Chinese payroll rules for the following cities:
 
     * Shanghai
-    * Shenzhen Are included the following concepts:
+    * Shenzhen 
+    Are included the following concepts:
     * Personal Social insurance
     * Company contribution
     * Personal Income tax

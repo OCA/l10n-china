@@ -26,45 +26,6 @@
             <field name="register_id" ref="hr_payroll.contrib_register_employees"/>
         </record>
 
-        <!-- 津贴 -->
-        <record id="hr_rule_allowance" model="hr.salary.rule">
-            <field name="category_id" ref="hr_payroll.ALW"/>
-            <field name="name">Allowance</field>
-            <field name="code">ALLOWANCE</field>
-            <field name="appears_on_payslip" eval="False"/>
-            <field name="sequence">300</field>
-            <field name="condition_select">none</field>
-            <field name="amount_select">fix</field>
-        </record>
-
-        <!-- 津贴-车贴补助 -->
-        <record id="hr_rule_transportation_allowance" model="hr.salary.rule">
-            <field name="category_id" ref="hr_payroll.ALW"/>
-            <field name="parent_rule_id" ref="hr_rule_allowance"/>
-            <field name="name">Transportation Allowance</field>
-            <field name="code">TransportationAllowance</field>
-            <field name="appears_on_payslip" eval="True"/>
-            <field name="sequence">310</field>
-            <field name="condition_select">none</field>
-            <field name="amount_select">percentage</field>
-            <field name="amount_percentage_base">inputs.TransportationAllowance and inputs.TransportationAllowance.amount</field>
-            <field name="amount_percentage">100.0</field>
-        </record>
-
-        <!-- 津贴-话费补助 -->
-        <record id="hr_rule_communication_allowance" model="hr.salary.rule">
-            <field name="category_id" ref="hr_payroll.ALW"/>
-            <field name="parent_rule_id" ref="hr_rule_allowance"/>
-            <field name="name">Communication Allowance</field>
-            <field name="code">CommunicationAllowance</field>
-            <field name="appears_on_payslip" eval="True"/>
-            <field name="sequence">320</field>
-            <field name="condition_select">none</field>
-            <field name="amount_select">percentage</field>
-            <field name="amount_percentage_base">inputs.CommunicationAllowance and inputs.CommunicationAllowance.amount</field>
-            <field name="amount_percentage">100.0</field>
-        </record>
-
         <!-- 扣除 -->
         <record id="hr_rule_deduction" model="hr.salary.rule">
             <field name="category_id" ref="hr_payroll.DED"/>
