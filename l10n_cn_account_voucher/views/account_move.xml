@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <!--print account move -->
+        <report
+            id="action_report_account_move"
+            string="Voucher"
+            model="account.move"
+            report_type="qweb-pdf"
+            file="l10n_cn_account_voucher.report_account_move"
+            name="l10n_cn_account_voucher.report_account_move"
+        />
+    </data>
+</openerp>
