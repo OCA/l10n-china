@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="rules_bt" model="hr.salary.rule">
+            <field name="category_id" ref="hr_payroll.GROSS"/>
+            <field name="name">Salary Before PIT</field>
+            <field name="code">BFPIT</field>
+            <field name="appears_on_payslip" eval="True"/>
+            <field name="sequence">500</field>
+            <field name="condition_select">none</field>
+            <field name="amount_select">percentage</field>
+            <field name="amount_percentage_base">categories.BASIC + categories.ALW - categories.DED</field>
+            <field name="amount_percentage">100.0</field>
+        </record>
+
+        <record id="hr_payroll.hr_rule_net" model="hr.salary.rule">
+            <field name="name">Net</field>
+            <field name="sequence" eval="700"/>
+            <field name="code">NET</field>
+            <field name="category_id" ref="hr_payroll.NET"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">percentage</field>
+            <field name="amount_percentage_base">categories.BASIC + categories.ALW - categories.DED</field>
+            <field name="amount_percentage">100.0</field>
+            <field name="register_id" ref="hr_payroll.contrib_register_employees"/>
+        </record>
+
+        <!-- 扣除 -->
+        <record id="hr_rule_deduction" model="hr.salary.rule">
+            <field name="category_id" ref="hr_payroll.DED"/>
+            <field name="name">Deduction</field>
+            <field name="code">DEDUCTION</field>
+            <field name="appears_on_payslip" eval="False"/>
+            <field name="sequence">400</field>
+            <field name="condition_select">none</field>
+            <field name="amount_select">fix</field>
+        </record>
+
+        <!-- 扣除-工会费 -->
+        <record id="hr_rule_union_fee" model="hr.salary.rule">
+            <field name="category_id" ref="hr_payroll.DED"/>
+            <field name="parent_rule_id" ref="hr_rule_deduction"/>
+            <field name="name">Union Fee</field>
+            <field name="code">UnionFee</field>
+            <field name="appears_on_payslip" eval="True"/>
+            <field name="sequence">410</field>
+            <field name="condition_select">none</field>
+            <field name="amount_select">percentage</field>
+            <field name="amount_percentage_base">inputs.UnionFee and inputs.UnionFee.amount</field>
+            <field name="amount_percentage">100.0</field>
+        </record>
+
+        <!-- Rule Inputs -->
+        <record id="hr_rule_input_transportation_allowance" model="hr.rule.input">
+            <field name="code">TransportationAllowance</field>
+            <field name="name">Transportation Allowance</field>
+            <field name="input_id" ref="hr_rule_transportation_allowance"/>
+        </record>
+
+        <record id="hr_rule_input_communication_allowance" model="hr.rule.input">
+            <field name="code">CommunicationAllowance</field>
+            <field name="name">Communication Allowance</field>
+            <field name="input_id" ref="hr_rule_communication_allowance"/>
+        </record>
+
+        <record id="hr_rule_input_union_fee" model="hr.rule.input">
+            <field name="code">UnionFee</field>
+            <field name="name">Union Fee</field>
+            <field name="input_id" ref="hr_rule_union_fee"/>
+        </record>
+
+        <!-- 个人所得税母规则-->
+        <record id="hr_rule_pit" model="hr.salary.rule">
+            <field name="category_id" ref="hr_payroll.DED"/>
+            <field name="name">Personal Income Tax</field>
+            <field name="code">PIT</field>
+            <field name="amount_select">fix</field>
+            <field name="sequence">600</field>
+            <field name="condition_select">none</field>
+            <field name="appears_on_payslip" eval="False"/>
+        </record>
+
+        <record id="hr_rule_pit1" model="hr.salary.rule">
+            <field name="category_id" ref="hr_payroll.DED"/>
+            <field name="parent_rule_id" ref="hr_rule_pit"/>
+            <field name="name">Personal Income Tax</field>
+            <field name="code">PIT1</field>
+            <field name="sequence">610</field>
+            <field name="appears_on_payslip" eval="True"/>
+            <field name="condition_select">range</field>
+            <field name="condition_range">min(BFPIT,contract.pit_base_amount) - contract.pit_exemption_amount</field>
+            <field name="condition_range_min">0</field>
+            <field name="condition_range_max">1499.99</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = ((min(BFPIT,contract.pit_base_amount) - contract.pit_exemption_amount) * 0.03)</field>
+        </record>
+
+        <record id="hr_rule_pit2" model="hr.salary.rule">
+            <field name="category_id" ref="hr_payroll.DED"/>
+            <field name="parent_rule_id" ref="hr_rule_pit"/>
+            <field name="name">Personal Income Tax</field>
+            <field name="code">PIT2</field>
+            <field name="sequence">620</field>
+            <field name="appears_on_payslip" eval="True"/>
+            <field name="condition_select">range</field>
+            <field name="condition_range">min(BFPIT,contract.pit_base_amount) - contract.pit_exemption_amount</field>
+            <field name="condition_range_min">1500</field>
+            <field name="condition_range_max">4499.99</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = ((min(BFPIT,contract.pit_base_amount) - contract.pit_exemption_amount) * 0.10 - 105.00)</field>
+        </record>
+
+        <record id="hr_rule_pit3" model="hr.salary.rule">
+            <field name="category_id" ref="hr_payroll.DED"/>
+            <field name="parent_rule_id" ref="hr_rule_pit"/>
+            <field name="name">Personal Income Tax</field>
+            <field name="code">PIT3</field>
+            <field name="sequence">630</field>
+            <field name="appears_on_payslip" eval="True"/>
+            <field name="condition_select">range</field>
+            <field name="condition_range">min(BFPIT,contract.pit_base_amount) - contract.pit_exemption_amount</field>
+            <field name="condition_range_min">4500</field>
+            <field name="condition_range_max">8999.99</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = ((min(BFPIT,contract.pit_base_amount) - contract.pit_exemption_amount) * 0.20 - 555.00)</field>
+        </record>
+
+        <record id="hr_rule_pit4" model="hr.salary.rule">
+            <field name="category_id" ref="hr_payroll.DED"/>
+            <field name="parent_rule_id" ref="hr_rule_pit"/>
+            <field name="name">Personal Income Tax</field>
+            <field name="code">PIT4</field>
+            <field name="sequence">640</field>
+            <field name="appears_on_payslip" eval="True"/>
+            <field name="condition_select">range</field>
+            <field name="condition_range">min(BFPIT,contract.pit_base_amount) - contract.pit_exemption_amount</field>
+            <field name="condition_range_min">9000.00</field>
+            <field name="condition_range_max">34999.99</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = ((min(BFPIT,contract.pit_base_amount) - contract.pit_exemption_amount) * 0.25 - 1005.00)</field>
+        </record>
+
+        <record id="hr_rule_pit5" model="hr.salary.rule">
+            <field name="category_id" ref="hr_payroll.DED"/>
+            <field name="parent_rule_id" ref="hr_rule_pit"/>
+            <field name="name">Personal Income Tax</field>
+            <field name="code">PIT5</field>
+            <field name="sequence">650</field>
+            <field name="appears_on_payslip" eval="True"/>
+            <field name="condition_select">range</field>
+            <field name="condition_range">min(BFPIT,contract.pit_base_amount) - contract.pit_exemption_amount</field>
+            <field name="condition_range_min">35000.00</field>
+            <field name="condition_range_max">54999.99</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = ((min(BFPIT,contract.pit_base_amount) - contract.pit_exemption_amount) * 0.30 - 2755.00)</field>
+        </record>
+
+        <record id="hr_rule_pit6" model="hr.salary.rule">
+            <field name="category_id" ref="hr_payroll.DED"/>
+            <field name="parent_rule_id" ref="hr_rule_pit"/>
+            <field name="name">Personal Income Tax</field>
+            <field name="code">PIT6</field>
+            <field name="sequence">660</field>
+            <field name="appears_on_payslip" eval="True"/>
+            <field name="condition_select">range</field>
+            <field name="condition_range">min(BFPIT,contract.pit_base_amount) - contract.pit_exemption_amount</field>
+            <field name="condition_range_min">55000.00</field>
+            <field name="condition_range_max">79999.99</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = ((min(BFPIT,contract.pit_base_amount) - contract.pit_exemption_amount) * 0.35 - 5505.00)</field>
+        </record>
+
+        <record id="hr_rule_pit7" model="hr.salary.rule">
+            <field name="category_id" ref="hr_payroll.DED"/>
+            <field name="parent_rule_id" ref="hr_rule_pit"/>
+            <field name="name">Personal Income Tax</field>
+            <field name="code">PIT7</field>
+            <field name="sequence">670</field>
+            <field name="appears_on_payslip" eval="True"/>
+            <field name="condition_select">range</field>
+            <field name="condition_range">min(BFPIT,contract.pit_base_amount) - contract.pit_exemption_amount</field>
+            <field name="condition_range_min">80000.00</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = ((min(BFPIT,contract.pit_base_amount) - contract.pit_exemption_amount) * 0.45 - 13505.00)</field>
+        </record>
+
+    </data>
+</openerp>
