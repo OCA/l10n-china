@@ -51,19 +51,6 @@
             <field name="amount_percentage">100.0</field>
         </record>
 
-        <!-- Rule Inputs -->
-        <record id="hr_rule_input_transportation_allowance" model="hr.rule.input">
-            <field name="code">TransportationAllowance</field>
-            <field name="name">Transportation Allowance</field>
-            <field name="input_id" ref="hr_rule_transportation_allowance"/>
-        </record>
-
-        <record id="hr_rule_input_communication_allowance" model="hr.rule.input">
-            <field name="code">CommunicationAllowance</field>
-            <field name="name">Communication Allowance</field>
-            <field name="input_id" ref="hr_rule_communication_allowance"/>
-        </record>
-
         <record id="hr_rule_input_union_fee" model="hr.rule.input">
             <field name="code">UnionFee</field>
             <field name="name">Union Fee</field>
