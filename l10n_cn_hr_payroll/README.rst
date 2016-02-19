@@ -53,6 +53,7 @@ Contributors
 
 * Eric Caudal <eric.caudal@elico-corp.com>
 * Alex Duan <alex.duan@elico-corp.com>
+* Connie Xia <Connie.xiao[p5r44@elico-corp.com>
 * Xie XiaoPeng <xie.xiaopeng@elico-corp.com>
 
 Maintainer
