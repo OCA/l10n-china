@@ -165,9 +165,8 @@
             <field name="code">PIT7</field>
             <field name="sequence">670</field>
             <field name="appears_on_payslip" eval="True"/>
-            <field name="condition_select">range</field>
-            <field name="condition_range">min(BFPIT,contract.pit_base_amount) - contract.pit_exemption_amount</field>
-            <field name="condition_range_min">80000.00</field>
+            <field name="condition_select">python</field>
+            <field name="condition_python">result = min(BFPIT,contract.pit_base_amount) - contract.pit_exemption_amount >= 80000.00</field>
             <field name="amount_select">code</field>
             <field name="amount_python_compute">result = ((min(BFPIT,contract.pit_base_amount) - contract.pit_exemption_amount) * 0.45 - 13505.00)</field>
         </record>
