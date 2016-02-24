@@ -50,7 +50,7 @@ Contributors
 * Jeff/开阖软件 <jeff@openerp.cn>
 * Matt.Cai <cysnake4713@gmail.com>
 * hdjmd <hdjmd@qq.com>
-* Luke Zheng <Luke.Zheng@elico-corp.com>
+* Luke Zheng <luke.zheng@elico-corp.com>
 
 
 Maintainer

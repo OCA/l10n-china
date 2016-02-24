@@ -38,10 +38,10 @@ class AccountMove(models.Model):
             return False
 
     def _get_exchange_rate(self, line):
-        '''
+        """
         Exchange rate: Debit or Credit / currency ammount
         Why not get it from currency code + date ?
-        '''
+        """
         exchange_rate = False
         if line.amount_currency:
             if line.debit > 0:
@@ -51,9 +51,9 @@ class AccountMove(models.Model):
         return round(exchange_rate, 6)
 
     def _get_unit_price(self, line):
-        '''
+        """
         Unit price：Debit or Credit / Quantity
-        '''
+        """
         unit_price = False
         if line.quantity:
             if line.debit > 0:
@@ -118,7 +118,7 @@ class AccountMoveLine(models.Model):
     _inherit = 'account.move.line'
 
     currency_rate = fields.Float(
-        'Currency Rate', digits=(10, 6), compute='_compute_currency_rate')
+        'Currency Rate', digits=(10, 6), compute='_compute_currency_rate', store=True)
 
     @api.depends('credit', 'debit', 'amount_currency')
     def _compute_currency_rate(self):
