@@ -26,6 +26,9 @@ To use this module, you need to:
 
     * Select the corresponding rule to your employee
     * Adjust some percentage in the rule (depending on the company)
+    * Add a leave type "LongSickLeave" in Leave types model to calculat the deduction for more than 6 months of sick leave
+    * Add a leave type "ShortSickLeave" in Leave types model to calculat the deduction for less than 6 months of sick leave
+    * Add a leave type "Unpaid" in Leave types model to calculat the deduction for unpaid leave
 
 
 Known issues / Roadmap

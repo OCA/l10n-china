@@ -10,6 +10,11 @@
             <field eval="[(6, 0, [
                     ref('hr_payroll.hr_rule_basic'),
                     ref('hr_payroll.hr_rule_net'),
+                    ref('hr_rule_sl'),
+                    ref('hr_rule_upl'),
+                    ref('hr_rule_bonuse'),
+                    ref('hr_rule_adj'),
+                    ref('hr_rule_topay'),
                     ref('hr_rule_pit'),
                     ref('rules_bt')
                 ])]" name="rule_ids"/>

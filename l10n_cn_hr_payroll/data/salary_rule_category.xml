@@ -13,5 +13,10 @@
             <field name="code">TCC</field>
         </record>
 
+        <record id="ADJ" model="hr.salary.rule.category">
+            <field name="name">Adjustment</field>
+            <field name="code">ADJ</field>
+        </record>
+
     </data>
 </openerp>

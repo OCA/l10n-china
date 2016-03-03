@@ -4,6 +4,7 @@
 from openerp import fields, models, api, _
 import openerp.addons.decimal_precision as dp
 from openerp.exceptions import ValidationError
+import datetime
 
 
 class HrContractCn(models.Model):
@@ -54,3 +55,21 @@ class HrSalaryRule(models.Model):
 class HrPayslipLine(models.Model):
     _inherit = "hr.payslip.line"
     _order = "sequence"
+
+
+class HrEmployee(models.Model):
+    _inherit = "hr.employee"
+
+    entry_date = fields.Date(string="Entry Date", required=True)
+    worked_years = fields.Integer(
+        string='Worked Years',
+        compute='_compute_worked_years'
+    )
+
+    @api.depends('entry_date')
+    def _compute_worked_years(self):
+        if self.entry_date:
+            self.worked_years = (
+                datetime.datetime.now() - datetime.datetime.strptime(
+                    self.entry_date, '%Y-%m-%d')
+            ).days / 360

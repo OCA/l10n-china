@@ -2,6 +2,117 @@
 <openerp>
     <data>
 
+        <record id="hr_rule_sl" model="hr.salary.rule">
+            <field name="category_id" ref="hr_payroll.DED"/>
+            <field name="name">Sick Leave</field>
+            <field name="code">SL</field>
+            <field name="appears_on_payslip" eval="True"/>
+            <field name="sequence">110</field>
+            <field name="condition_select">none</field>
+            <field name="appears_on_payslip" eval="True"/>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute"><![CDATA[
+worked_years = employee.worked_years or 0
+working_days = 21.75
+try:
+    shortsick_days = worked_days.ShortSickLeave.number_of_days
+except:
+    shortsick_days = 0
+try:
+    longsick_days = worked_days.LongSickLeave.number_of_days
+except:
+    longsick_days = 0
+
+short_deduction = 0
+if shortsick_days > 0:
+    if worked_years >= 8:
+        short_deduction= categories.BASIC * 0.0 / working_days * shortsick_days
+    elif worked_years >= 6:
+        short_deduction= categories.BASIC * 0.1 / working_days * shortsick_days
+    elif worked_years >= 4:
+        short_deduction= categories.BASIC * 0.2 / working_days * shortsick_days
+    elif worked_years >= 2:
+        short_deduction= categories.BASIC * 0.3 / working_days * shortsick_days
+    else:
+        short_deduction= categories.BASIC * 0.4 / working_days * shortsick_days
+
+long_deduction = 0
+if longsick_days > 0:
+    if worked_years >= 3:
+        long_deduction = categories.BASIC * 0.4 / working_days * longsick_days
+    elif worked_years >= 1:
+        long_deduction= categories.BASIC * 0.5 / working_days * longsick_days
+    else:
+        long_deduction = categories.BASIC * 0.6 / working_days * longsick_days
+result = short_deduction + long_deduction
+
+]]>
+            </field>
+        </record>
+
+        <record id="hr_rule_upl" model="hr.salary.rule">
+            <field name="category_id" ref="hr_payroll.DED"/>
+            <field name="name">Unpaid Leave</field>
+            <field name="code">UPL</field>
+            <field name="appears_on_payslip" eval="True"/>
+            <field name="sequence">120</field>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute"><![CDATA[
+try:
+    unpaid_days = worked_days.Unpaid.number_of_days
+except:
+    unpaid_days = 0
+result = categories.BASIC / 21.75 * unpaid_days
+]]>
+            </field>
+        </record>
+
+        <record id="hr_rule_bonuse" model="hr.salary.rule">
+            <field name="category_id" ref="hr_payroll.ALW"/>
+            <field name="name">Bonus</field>
+            <field name="code">BONUS</field>
+            <field name="appears_on_payslip" eval="True"/>
+            <field name="sequence">130</field>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = inputs.BONUS and inputs.BONUS.amount</field>
+        </record>
+
+        <record id="hr_rule_adj" model="hr.salary.rule">
+            <field name="category_id" ref="ADJ"/>
+            <field name="name">Adjustment</field>
+            <field name="code">ADJ</field>
+            <field name="appears_on_payslip" eval="True"/>
+            <field name="sequence">710</field>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = inputs.ADJ and inputs.ADJ.amount</field>
+        </record>
+
+        <record id="hr_rule_topay" model="hr.salary.rule">
+            <field name="name">To Pay</field>
+            <field name="sequence" eval="720"/>
+            <field name="code">TOPAY</field>
+            <field name="category_id" ref="hr_payroll.NET"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = categories.NET + categories.ADJ</field>
+        </record>
+
+        <!-- Rule Inputs -->
+        <record id="hr_rule_input_bonus" model="hr.rule.input">
+            <field name="code">BONUS</field>
+            <field name="name">Bonus</field>
+            <field name="input_id" ref="hr_rule_bonuse"/>
+        </record>
+
+        <record id="hr_rule_input_adj" model="hr.rule.input">
+            <field name="code">ADJ</field>
+            <field name="name">Adjustment</field>
+            <field name="input_id" ref="hr_rule_adj"/>
+        </record>
+
         <record id="rules_bt" model="hr.salary.rule">
             <field name="category_id" ref="hr_payroll.GROSS"/>
             <field name="name">Salary Before PIT</field>
