@@ -14,6 +14,7 @@
     [
         'views/l10n_cn_hr_payroll_view.xml',
         'views/report_payslip.xml',
+        'data/leave_type_data.xml',
         'data/salary_rule_category.xml',
         'data/salary_rule_basic.xml',
         'data/salary_rule_sz1.xml',

@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 9.0c\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-03-03 05:40+0000\n"
-"PO-Revision-Date: 2016-03-03 05:40+0000\n"
+"POT-Creation-Date: 2016-03-10 02:26+0000\n"
+"PO-Revision-Date: 2016-03-10 02:26+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -60,7 +60,7 @@ msgstr "生育"
 #. module: l10n_cn_hr_payroll
 #: model:hr.salary.rule,name:l10n_cn_hr_payroll.hr_rule_bonuse
 msgid "Bonus"
-msgstr "补贴"
+msgstr "津贴"
 
 #. module: l10n_cn_hr_payroll
 #: model:ir.model,name:l10n_cn_hr_payroll.model_hr_contract
@@ -101,9 +101,19 @@ msgid "Housing Fund"
 msgstr "住房公积金"
 
 #. module: l10n_cn_hr_payroll
+#: model:ir.model.fields,field_description:l10n_cn_hr_payroll.field_hr_contract_housing_fund_base_amount
+msgid "Housing Fund Base"
+msgstr "住房公积金"
+
+#. module: l10n_cn_hr_payroll
 #: model:ir.model.fields,field_description:l10n_cn_hr_payroll.field_hr_contract_pit_exemption_amount
 msgid "Individual Income Tax Threshold"
 msgstr "个人所得税起征点"
+
+#. module: l10n_cn_hr_payroll
+#: model:hr.holidays.status,name:l10n_cn_hr_payroll.holiday_status_lsl
+msgid "LongSickLeaves"
+msgstr "LongSickLeaves"
 
 #. module: l10n_cn_hr_payroll
 #: model:hr.salary.rule,name:l10n_cn_hr_payroll.hr_rule_medical_cp_sh1
@@ -124,12 +134,17 @@ msgid "Medical"
 msgstr "医疗"
 
 #. module: l10n_cn_hr_payroll
+#: model:hr.salary.rule.category,name:l10n_cn_hr_payroll.DED2
+msgid "Other Deduction"
+msgstr "其他扣除"
+
+#. module: l10n_cn_hr_payroll
 #: model:ir.model.fields,field_description:l10n_cn_hr_payroll.field_hr_contract_pit_base_amount
 msgid "PIT Base"
 msgstr "个人所得税基数"
 
 #. module: l10n_cn_hr_payroll
-#: code:addons/l10n_cn_hr_payroll/models/l10n_cn_hr_payroll.py:33
+#: code:addons/l10n_cn_hr_payroll/models/l10n_cn_hr_payroll.py:38
 #, python-format
 msgid "PIT Base must be greater than 0."
 msgstr "个人所得税基数必须大于0"

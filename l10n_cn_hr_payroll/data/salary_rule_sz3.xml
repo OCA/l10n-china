@@ -77,7 +77,7 @@
             <field name="sequence">260</field>
             <field name="condition_select">none</field>
             <field name="amount_select">percentage</field>
-            <field name="amount_percentage_base">min(max(contract.social_insurance_amount,1808),30271)</field>
+            <field name="amount_percentage_base">min(max(contract.housing_fund_base_amount,1808),30271)</field>
             <field name="amount_percentage">5.0</field>
         </record>
 
@@ -167,7 +167,7 @@
             <field name="sequence">860</field>
             <field name="condition_select">none</field>
             <field name="amount_select">percentage</field>
-            <field name="amount_percentage_base">min(max(contract.social_insurance_amount,1808),30271)</field>
+            <field name="amount_percentage_base">min(max(contract.housing_fund_base_amount,1808),30271)</field>
             <field name="amount_percentage">5.0</field>
         </record>
 

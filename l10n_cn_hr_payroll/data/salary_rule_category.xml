@@ -18,5 +18,10 @@
             <field name="code">ADJ</field>
         </record>
 
+        <record id="DED2" model="hr.salary.rule.category">
+            <field name="name">Other Deduction</field>
+            <field name="code">DED2</field>
+        </record>
+
     </data>
 </openerp>

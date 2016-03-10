@@ -3,11 +3,11 @@
     <data>
 
         <record id="hr_rule_sl" model="hr.salary.rule">
-            <field name="category_id" ref="hr_payroll.DED"/>
+            <field name="category_id" ref="DED2"/>
             <field name="name">Sick Leave</field>
             <field name="code">SL</field>
             <field name="appears_on_payslip" eval="True"/>
-            <field name="sequence">110</field>
+            <field name="sequence">708</field>
             <field name="condition_select">none</field>
             <field name="appears_on_payslip" eval="True"/>
             <field name="amount_select">code</field>
@@ -15,11 +15,11 @@
 worked_years = employee.worked_years or 0
 working_days = 21.75
 try:
-    shortsick_days = worked_days.ShortSickLeave.number_of_days
+    shortsick_days = worked_days.SickLeaves.number_of_days
 except:
     shortsick_days = 0
 try:
-    longsick_days = worked_days.LongSickLeave.number_of_days
+    longsick_days = worked_days.LongSickLeaves.number_of_days
 except:
     longsick_days = 0
 
@@ -51,11 +51,11 @@ result = short_deduction + long_deduction
         </record>
 
         <record id="hr_rule_upl" model="hr.salary.rule">
-            <field name="category_id" ref="hr_payroll.DED"/>
+            <field name="category_id" ref="DED2"/>
             <field name="name">Unpaid Leave</field>
             <field name="code">UPL</field>
             <field name="appears_on_payslip" eval="True"/>
-            <field name="sequence">120</field>
+            <field name="sequence">709</field>
             <field name="condition_select">none</field>
             <field name="amount_select">code</field>
             <field name="amount_python_compute"><![CDATA[
@@ -97,7 +97,7 @@ result = categories.BASIC / 21.75 * unpaid_days
             <field name="category_id" ref="hr_payroll.NET"/>
             <field name="condition_select">none</field>
             <field name="amount_select">code</field>
-            <field name="amount_python_compute">result = categories.NET + categories.ADJ</field>
+            <field name="amount_python_compute">result = categories.NET + categories.ADJ - categories.DED2</field>
         </record>
 
         <!-- Rule Inputs -->

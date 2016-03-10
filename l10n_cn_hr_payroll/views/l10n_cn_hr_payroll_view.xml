@@ -12,6 +12,7 @@
             <data>
                  <xpath expr="//field[@name='struct_id']" position="after">
                     <field name="social_insurance_amount"/>
+                    <field name="housing_fund_base_amount"/>
                     <field name="pit_exemption_amount"/>
                     <field name="pit_base_amount"/>
                  </xpath>

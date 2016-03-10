@@ -14,6 +14,11 @@ class HrContractCn(models.Model):
         'Social Insurance Base',
         digits_compute=dp.get_precision('Payroll')
     )
+    housing_fund_base_amount = fields.Float(
+        'Housing Fund Base',
+        digits_compute=dp.get_precision('Payroll'),
+        default=0
+    )
     pit_base_amount = fields.Float(
         'PIT Base',
         digits_compute=dp.get_precision('Payroll'),
