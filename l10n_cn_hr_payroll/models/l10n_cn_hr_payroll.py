@@ -31,11 +31,12 @@ class HrContractCn(models.Model):
         default=3500.00
     )
 
-    @api.one
+    @api.multi
     @api.constrains('pit_base_amount')
     def _pit_base_amount_check(self):
-        if not self.pit_base_amount > 0:
-            raise ValidationError(_('PIT Base must be greater than 0.'))
+        for rec in self:
+            if not rec.pit_base_amount > 0:
+                raise ValidationError(_('PIT Base must be greater than 0.'))
 
 
 class HrPayrollStructure(models.Model):
@@ -71,10 +72,12 @@ class HrEmployee(models.Model):
         compute='_compute_worked_years'
     )
 
+    @api.multi
     @api.depends('entry_date')
     def _compute_worked_years(self):
-        if self.entry_date:
-            self.worked_years = (
-                datetime.datetime.now() - datetime.datetime.strptime(
-                    self.entry_date, '%Y-%m-%d')
-            ).days / 360
+        for rec in self:
+            if rec.entry_date:
+                rec.worked_years = (
+                    datetime.datetime.now() - datetime.datetime.strptime(
+                        rec.entry_date, '%Y-%m-%d')
+                ).days / 360

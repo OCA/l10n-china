@@ -111,6 +111,11 @@ msgid "Individual Income Tax Threshold"
 msgstr "个人所得税起征点"
 
 #. module: l10n_cn_hr_payroll
+#: model:hr.holidays.status,name:l10n_cn_hr_payroll.holiday_status_sl
+msgid "SickLeaves"
+msgstr "SickLeaves"
+
+#. module: l10n_cn_hr_payroll
 #: model:hr.holidays.status,name:l10n_cn_hr_payroll.holiday_status_lsl
 msgid "LongSickLeaves"
 msgstr "LongSickLeaves"

@@ -2,7 +2,7 @@
 <openerp>
     <data noupdate="0">
         <!-- Short Sick leave -->
-        <record id="hr_holidays.holiday_status_sl" model="hr.holidays.status">
+        <record id="holiday_status_sl" model="hr.holidays.status">
             <field name="name">SickLeaves</field>
             <field name="limit" eval="True"/>
             <field name="color_name">red</field>
