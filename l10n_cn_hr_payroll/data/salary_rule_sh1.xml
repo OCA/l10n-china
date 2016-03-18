@@ -180,6 +180,7 @@
                     ref('hr_payroll.hr_rule_basic'),
                     ref('hr_payroll.hr_rule_net'),
                     ref('hr_rule_sl'),
+                    ref('hr_rule_lsl'),
                     ref('hr_rule_upl'),
                     ref('hr_rule_bonuse'),
                     ref('hr_rule_adj'),

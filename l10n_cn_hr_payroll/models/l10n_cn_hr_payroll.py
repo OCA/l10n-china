@@ -58,6 +58,35 @@ class HrSalaryRule(models.Model):
     name = fields.Char('Name', required=True, translate=True)
 
 
+class HrPayslip(models.Model):
+    _inherit = "hr.payslip"
+
+    @api.multi
+    def compute_sheet(self):
+        workday_obj = self.env['hr.payslip.worked_days']
+        leaves = {
+            'SickLeave': _('Sick Leave'),
+            'LongSickLeave': _('Long Sick Leave'),
+            'Unpaid': _('Unpaid Leave'),
+        }
+        for rec in self:
+            for (code, name) in leaves.items():
+                num = len(
+                    [x for x in rec.worked_days_line_ids if x.code == code])
+                if not num:
+                    vals = {
+                        'payslip_id': rec.id,
+                        'sequence': 1,
+                        'code': code,
+                        'name': name,
+                        'number_of_days': 0,
+                        'number_of_hours': 0,
+                        'contract_id': rec.contract_id.id,
+                    }
+                    workday_obj.create(vals)
+        return super(HrPayslip, self).compute_sheet()
+
+
 class HrPayslipLine(models.Model):
     _inherit = "hr.payslip.line"
     _order = "sequence"

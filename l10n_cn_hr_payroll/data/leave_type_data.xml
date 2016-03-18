@@ -3,14 +3,14 @@
     <data noupdate="0">
         <!-- Short Sick leave -->
         <record id="holiday_status_sl" model="hr.holidays.status">
-            <field name="name">SickLeaves</field>
+            <field name="name">SickLeave</field>
             <field name="limit" eval="True"/>
             <field name="color_name">red</field>
         </record>
 
         <!-- Long Sick leave -->
         <record id="holiday_status_lsl" model="hr.holidays.status">
-            <field name="name">LongSickLeaves</field>
+            <field name="name">LongSickLeave</field>
             <field name="limit" eval="True"/>
             <field name="color_name">red</field>
         </record>

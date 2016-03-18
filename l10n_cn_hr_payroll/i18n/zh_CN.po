@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 9.0c\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-03-10 02:26+0000\n"
-"PO-Revision-Date: 2016-03-10 02:26+0000\n"
+"POT-Creation-Date: 2016-03-18 08:44+0000\n"
+"PO-Revision-Date: 2016-03-18 08:44+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -73,6 +73,11 @@ msgid "Deduction"
 msgstr "扣除"
 
 #. module: l10n_cn_hr_payroll
+#: model:hr.salary.rule.category,name:l10n_cn_hr_payroll.DED2
+msgid "Deduction After Tax"
+msgstr "税后扣除"
+
+#. module: l10n_cn_hr_payroll
 #: model:ir.model,name:l10n_cn_hr_payroll.model_hr_employee
 msgid "Employee"
 msgstr "员工"
@@ -111,9 +116,14 @@ msgid "Individual Income Tax Threshold"
 msgstr "个人所得税起征点"
 
 #. module: l10n_cn_hr_payroll
-#: model:hr.holidays.status,name:l10n_cn_hr_payroll.holiday_status_sl
-msgid "SickLeaves"
-msgstr "SickLeaves"
+#: code:addons/l10n_cn_hr_payroll/models/l10n_cn_hr_payroll.py:69
+#: model:hr.salary.rule,name:l10n_cn_hr_payroll.hr_rule_lsl
+#: model:hr.salary.rule,name:l10n_cn_hr_payroll.hr_rule_lsl1
+#: model:hr.salary.rule,name:l10n_cn_hr_payroll.hr_rule_lsl2
+#: model:hr.salary.rule,name:l10n_cn_hr_payroll.hr_rule_lsl3
+#, python-format
+msgid "Long Sick Leave"
+msgstr "长期病假"
 
 #. module: l10n_cn_hr_payroll
 #: model:hr.holidays.status,name:l10n_cn_hr_payroll.holiday_status_lsl
@@ -139,20 +149,20 @@ msgid "Medical"
 msgstr "医疗"
 
 #. module: l10n_cn_hr_payroll
-#: model:hr.salary.rule.category,name:l10n_cn_hr_payroll.DED2
-msgid "Other Deduction"
-msgstr "其他扣除"
-
-#. module: l10n_cn_hr_payroll
 #: model:ir.model.fields,field_description:l10n_cn_hr_payroll.field_hr_contract_pit_base_amount
 msgid "PIT Base"
 msgstr "个人所得税基数"
 
 #. module: l10n_cn_hr_payroll
-#: code:addons/l10n_cn_hr_payroll/models/l10n_cn_hr_payroll.py:38
+#: code:addons/l10n_cn_hr_payroll/models/l10n_cn_hr_payroll.py:39
 #, python-format
 msgid "PIT Base must be greater than 0."
 msgstr "个人所得税基数必须大于0"
+
+#. module: l10n_cn_hr_payroll
+#: model:ir.model,name:l10n_cn_hr_payroll.model_hr_payslip
+msgid "Pay Slip"
+msgstr "工资单"
 
 #. module: l10n_cn_hr_payroll
 #: model:ir.model,name:l10n_cn_hr_payroll.model_hr_payslip_line
@@ -250,9 +260,21 @@ msgid "Salary Structure"
 msgstr "薪酬结构"
 
 #. module: l10n_cn_hr_payroll
+#: code:addons/l10n_cn_hr_payroll/models/l10n_cn_hr_payroll.py:68
 #: model:hr.salary.rule,name:l10n_cn_hr_payroll.hr_rule_sl
+#: model:hr.salary.rule,name:l10n_cn_hr_payroll.hr_rule_ssl1
+#: model:hr.salary.rule,name:l10n_cn_hr_payroll.hr_rule_ssl2
+#: model:hr.salary.rule,name:l10n_cn_hr_payroll.hr_rule_ssl3
+#: model:hr.salary.rule,name:l10n_cn_hr_payroll.hr_rule_ssl4
+#: model:hr.salary.rule,name:l10n_cn_hr_payroll.hr_rule_ssl5
+#, python-format
 msgid "Sick Leave"
 msgstr "病假"
+
+#. module: l10n_cn_hr_payroll
+#: model:hr.holidays.status,name:l10n_cn_hr_payroll.holiday_status_sl
+msgid "SickLeave"
+msgstr "SickLeave"
 
 #. module: l10n_cn_hr_payroll
 #: model:ir.model.fields,field_description:l10n_cn_hr_payroll.field_hr_contract_social_insurance_amount
@@ -300,7 +322,9 @@ msgid "Union Fee"
 msgstr "工会费"
 
 #. module: l10n_cn_hr_payroll
+#: code:addons/l10n_cn_hr_payroll/models/l10n_cn_hr_payroll.py:70
 #: model:hr.salary.rule,name:l10n_cn_hr_payroll.hr_rule_upl
+#, python-format
 msgid "Unpaid Leave"
 msgstr "无薪假"
 

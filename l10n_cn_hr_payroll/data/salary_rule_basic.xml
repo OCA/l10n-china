@@ -2,52 +2,146 @@
 <openerp>
     <data>
 
+        <!-- 短期病假母规则 -->
         <record id="hr_rule_sl" model="hr.salary.rule">
             <field name="category_id" ref="DED2"/>
             <field name="name">Sick Leave</field>
-            <field name="code">SL</field>
+            <field name="code">SSL</field>
+            <field name="appears_on_payslip" eval="False"/>
+            <field name="sequence">707</field>
+            <field name="condition_select">none</field>
+            <field name="amount_select">fix</field>
+        </record>
+
+        <record id="hr_rule_ssl1" model="hr.salary.rule">
+            <field name="category_id" ref="DED2"/>
+            <field name="parent_rule_id" ref="hr_rule_sl"/>
+            <field name="name">Sick Leave</field>
+            <field name="code">SSL</field>
             <field name="appears_on_payslip" eval="True"/>
+            <field name="sequence">707</field>
+            <field name="condition_select">python</field>
+            <field name="condition_python"><![CDATA[result = True if employee.worked_years<2 else False]]></field>
+            <field name="quantity">worked_days.SickLeave.number_of_days</field>
+            <field name="amount_select">percentage</field>
+            <field name="amount_percentage_base">categories.BASIC/21.75</field>
+            <field name="amount_percentage">40.0</field>
+        </record>
+
+        <record id="hr_rule_ssl2" model="hr.salary.rule">
+            <field name="category_id" ref="DED2"/>
+            <field name="parent_rule_id" ref="hr_rule_sl"/>
+            <field name="name">Sick Leave</field>
+            <field name="code">SSL</field>
+            <field name="appears_on_payslip" eval="True"/>
+            <field name="sequence">707</field>
+            <field name="condition_select">python</field>
+            <field name="condition_python"><![CDATA[result = True if employee.worked_years>=2 and employee.worked_years<4 else False]]></field>
+            <field name="quantity">worked_days.SickLeave.number_of_days</field>
+            <field name="amount_select">percentage</field>
+            <field name="amount_percentage_base">categories.BASIC/21.75</field>
+            <field name="amount_percentage">30.0</field>
+        </record>
+
+        <record id="hr_rule_ssl3" model="hr.salary.rule">
+            <field name="category_id" ref="DED2"/>
+            <field name="parent_rule_id" ref="hr_rule_sl"/>
+            <field name="name">Sick Leave</field>
+            <field name="code">SSL</field>
+            <field name="appears_on_payslip" eval="True"/>
+            <field name="sequence">707</field>
+            <field name="condition_select">python</field>
+            <field name="condition_python"><![CDATA[result = True if employee.worked_years>=4 and employee.worked_years<6 else False]]></field>
+            <field name="quantity">worked_days.SickLeave.number_of_days</field>
+            <field name="amount_select">percentage</field>
+            <field name="amount_percentage_base">categories.BASIC/21.75</field>
+            <field name="amount_percentage">20.0</field>
+        </record>
+
+        <record id="hr_rule_ssl4" model="hr.salary.rule">
+            <field name="category_id" ref="DED2"/>
+            <field name="parent_rule_id" ref="hr_rule_sl"/>
+            <field name="name">Sick Leave</field>
+            <field name="code">SSL</field>
+            <field name="appears_on_payslip" eval="True"/>
+            <field name="sequence">707</field>
+            <field name="condition_select">python</field>
+            <field name="condition_python"><![CDATA[result = True if employee.worked_years>=6 and employee.worked_years<8 else False]]></field>
+            <field name="quantity">worked_days.SickLeave.number_of_days</field>
+            <field name="amount_select">percentage</field>
+            <field name="amount_percentage_base">categories.BASIC/21.75</field>
+            <field name="amount_percentage">10.0</field>
+        </record>
+
+        <record id="hr_rule_ssl5" model="hr.salary.rule">
+            <field name="category_id" ref="DED2"/>
+            <field name="parent_rule_id" ref="hr_rule_sl"/>
+            <field name="name">Sick Leave</field>
+            <field name="code">SSL</field>
+            <field name="appears_on_payslip" eval="True"/>
+            <field name="sequence">707</field>
+            <field name="condition_select">python</field>
+            <field name="condition_python"><![CDATA[result = True if employee.worked_years>=8 else False]]></field>
+            <field name="quantity">worked_days.SickLeave.number_of_days</field>
+            <field name="amount_select">percentage</field>
+            <field name="amount_percentage_base">categories.BASIC/21.75</field>
+            <field name="amount_percentage">0.0</field>
+        </record>
+
+        <!-- 长期病假母规则 -->
+        <record id="hr_rule_lsl" model="hr.salary.rule">
+            <field name="category_id" ref="DED2"/>
+            <field name="name">Long Sick Leave</field>
+            <field name="code">LSL</field>
+            <field name="appears_on_payslip" eval="False"/>
             <field name="sequence">708</field>
             <field name="condition_select">none</field>
+            <field name="amount_select">fix</field>
+        </record>
+
+        <record id="hr_rule_lsl1" model="hr.salary.rule">
+            <field name="category_id" ref="DED2"/>
+            <field name="parent_rule_id" ref="hr_rule_lsl"/>
+            <field name="name">Long Sick Leave</field>
+            <field name="code">LSL</field>
             <field name="appears_on_payslip" eval="True"/>
-            <field name="amount_select">code</field>
-            <field name="amount_python_compute"><![CDATA[
-worked_years = employee.worked_years or 0
-working_days = 21.75
-try:
-    shortsick_days = worked_days.SickLeaves.number_of_days
-except:
-    shortsick_days = 0
-try:
-    longsick_days = worked_days.LongSickLeaves.number_of_days
-except:
-    longsick_days = 0
+            <field name="sequence">708</field>
+            <field name="condition_select">python</field>
+            <field name="condition_python"><![CDATA[result = True if employee.worked_years<1 else False]]></field>
+            <field name="quantity">worked_days.LongSickLeave.number_of_days</field>
+            <field name="amount_select">percentage</field>
+            <field name="amount_percentage_base">categories.BASIC/21.75</field>
+            <field name="amount_percentage">60.0</field>
+        </record>
 
-short_deduction = 0
-if shortsick_days > 0:
-    if worked_years >= 8:
-        short_deduction= categories.BASIC * 0.0 / working_days * shortsick_days
-    elif worked_years >= 6:
-        short_deduction= categories.BASIC * 0.1 / working_days * shortsick_days
-    elif worked_years >= 4:
-        short_deduction= categories.BASIC * 0.2 / working_days * shortsick_days
-    elif worked_years >= 2:
-        short_deduction= categories.BASIC * 0.3 / working_days * shortsick_days
-    else:
-        short_deduction= categories.BASIC * 0.4 / working_days * shortsick_days
+        <record id="hr_rule_lsl2" model="hr.salary.rule">
+            <field name="category_id" ref="DED2"/>
+            <field name="parent_rule_id" ref="hr_rule_lsl"/>
+            <field name="name">Long Sick Leave</field>
+            <field name="code">LSL</field>
+            <field name="appears_on_payslip" eval="True"/>
+            <field name="sequence">708</field>
+            <field name="condition_select">python</field>
+            <field name="condition_python"><![CDATA[result = True if employee.worked_years>=1 and employee.worked_years<3 else False]]></field>
+            <field name="quantity">worked_days.LongSickLeave.number_of_days</field>
+            <field name="amount_select">percentage</field>
+            <field name="amount_percentage_base">categories.BASIC/21.75</field>
+            <field name="amount_percentage">50.0</field>
+        </record>
 
-long_deduction = 0
-if longsick_days > 0:
-    if worked_years >= 3:
-        long_deduction = categories.BASIC * 0.4 / working_days * longsick_days
-    elif worked_years >= 1:
-        long_deduction= categories.BASIC * 0.5 / working_days * longsick_days
-    else:
-        long_deduction = categories.BASIC * 0.6 / working_days * longsick_days
-result = short_deduction + long_deduction
-
-]]>
-            </field>
+        <record id="hr_rule_lsl3" model="hr.salary.rule">
+            <field name="category_id" ref="DED2"/>
+            <field name="parent_rule_id" ref="hr_rule_lsl"/>
+            <field name="name">Long Sick Leave</field>
+            <field name="code">LSL</field>
+            <field name="appears_on_payslip" eval="True"/>
+            <field name="sequence">708</field>
+            <field name="condition_select">python</field>
+            <field name="condition_python"><![CDATA[result = True if employee.worked_years>=3 else False]]></field>
+            <field name="quantity">worked_days.LongSickLeave.number_of_days</field>
+            <field name="amount_select">percentage</field>
+            <field name="amount_percentage_base">categories.BASIC/21.75</field>
+            <field name="amount_percentage">40.0</field>
         </record>
 
         <record id="hr_rule_upl" model="hr.salary.rule">
@@ -56,16 +150,11 @@ result = short_deduction + long_deduction
             <field name="code">UPL</field>
             <field name="appears_on_payslip" eval="True"/>
             <field name="sequence">709</field>
+            <field name="quantity">worked_days.Unpaid.number_of_days</field>
             <field name="condition_select">none</field>
-            <field name="amount_select">code</field>
-            <field name="amount_python_compute"><![CDATA[
-try:
-    unpaid_days = worked_days.Unpaid.number_of_days
-except:
-    unpaid_days = 0
-result = categories.BASIC / 21.75 * unpaid_days
-]]>
-            </field>
+            <field name="amount_select">percentage</field>
+            <field name="amount_percentage_base">categories.BASIC/21.75</field>
+            <field name="amount_percentage">100.0</field>
         </record>
 
         <record id="hr_rule_bonuse" model="hr.salary.rule">
