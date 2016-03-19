@@ -2,7 +2,7 @@
 # © 2016 Elico Corp (www.elico-corp.com).
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
-from openerp import fields, models
+from openerp import fields, models, _
 
 
 class Partner(models.Model):
@@ -11,5 +11,6 @@ class Partner(models.Model):
     _inherit = 'res.partner'
 
     type = fields.Selection(selection_add=[
-        ("residence_address", "Residence Address"), ("huji2", "huji2")
+        ("residence_address", _("Residence Address")),
+        ("permanent_address", _("Permanent address"))
     ])

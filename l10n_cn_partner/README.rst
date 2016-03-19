@@ -2,11 +2,11 @@
    :target: http://www.gnu.org/licenses/agpl-3.0-standalone.html
    :alt: License: AGPL-3
 
-===============
-l10n_cn Partner
-===============
+====================
+Chinese address type
+====================
 
- This module extends the functionality of Hr to add a type selection option on the partner view.
+ This module extends the functionality of Hr to enhance the address type selection on the partner view for HR purpose.
 
 Installation
 ============
