@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="partner_view_buttons" model="ir.ui.view">
+            <field name="name">res.partner.form</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form" />
+            <field name="groups_id" eval="[(4, ref('account.group_account_invoice'))]"/>
+            <field name="arch" type="xml">
+                <xpath expr="//kanban/field[@name='fax']" position="after">
+                    <field name="type"/>
+                </xpath>
+                <xpath expr="//div[@class='oe_kanban_details']" position="inside">
+                    <div t-if="record.type.raw_value">Type: <field name="type"/></div>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</openerp>

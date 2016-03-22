@@ -12,6 +12,10 @@
     "application": False,
     "installable": True,
     "depends": [
+        "account",
         "hr",
     ],
+    "data": [
+        'views/partner_view.xml',
+    ]
 }

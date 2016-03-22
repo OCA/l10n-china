@@ -12,5 +12,5 @@ class Partner(models.Model):
 
     type = fields.Selection(selection_add=[
         ("residence_address", _("Residence Address")),
-        ("permanent_address", _("Permanent address"))
+        ("permanent_address", _("Permanent Address"))
     ])
