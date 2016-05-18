@@ -103,7 +103,7 @@
             <field name="condition_select">none</field>
             <field name="amount_select">percentage</field>
             <field name="amount_percentage_base">min(max(contract.social_insurance_amount,3563),16353)</field>
-            <field name="amount_percentage">21.0</field>
+            <field name="amount_percentage">20.0</field>
         </record>
 
         <!--医疗-->
