@@ -12,7 +12,7 @@
             <field name="sequence">210</field>
             <field name="condition_select">none</field>
             <field name="amount_select">percentage</field>
-            <field name="amount_percentage_base">min(max(contract.social_insurance_amount,3271),16353)</field>
+            <field name="amount_percentage_base">min(max(contract.social_insurance_amount,3563),16353)</field>
             <field name="amount_percentage">8.0</field>
         </record>
 
@@ -25,7 +25,7 @@
             <field name="sequence">220</field>
             <field name="condition_select">none</field>
             <field name="amount_select">percentage</field>
-            <field name="amount_percentage_base">min(max(contract.social_insurance_amount,3271),16353)</field>
+            <field name="amount_percentage_base">min(max(contract.social_insurance_amount,3563),16353)</field>
             <field name="amount_percentage">2.0</field>
         </record>
 
@@ -51,7 +51,7 @@
             <field name="sequence">240</field>
             <field name="condition_select">none</field>
             <field name="amount_select">percentage</field>
-            <field name="amount_percentage_base">min(max(contract.social_insurance_amount,3271),16353)</field>
+            <field name="amount_percentage_base">min(max(contract.social_insurance_amount,3563),16353)</field>
             <field name="amount_percentage">0.5</field>
         </record>
 
@@ -102,8 +102,8 @@
             <field name="sequence">810</field>
             <field name="condition_select">none</field>
             <field name="amount_select">percentage</field>
-            <field name="amount_percentage_base">min(max(contract.social_insurance_amount,3271),16353)</field>
-            <field name="amount_percentage">21.0</field>
+            <field name="amount_percentage_base">min(max(contract.social_insurance_amount,3563),16353)</field>
+            <field name="amount_percentage">20.0</field>
         </record>
 
         <!--医疗-->
@@ -115,8 +115,8 @@
             <field name="sequence">820</field>
             <field name="condition_select">none</field>
             <field name="amount_select">percentage</field>
-            <field name="amount_percentage_base">min(max(contract.social_insurance_amount,3271),16353)</field>
-            <field name="amount_percentage">11.0</field>
+            <field name="amount_percentage_base">min(max(contract.social_insurance_amount,3563),16353)</field>
+            <field name="amount_percentage">10.0</field>
         </record>
 
         <!--生育-->
@@ -128,7 +128,7 @@
             <field name="sequence">830</field>
             <field name="condition_select">none</field>
             <field name="amount_select">percentage</field>
-            <field name="amount_percentage_base">min(max(contract.social_insurance_amount,3271),16353)</field>
+            <field name="amount_percentage_base">min(max(contract.social_insurance_amount,3563),16353)</field>
             <field name="amount_percentage">1.0</field>
         </record>
 
@@ -141,8 +141,8 @@
             <field name="sequence">840</field>
             <field name="condition_select">none</field>
             <field name="amount_select">percentage</field>
-            <field name="amount_percentage_base">min(max(contract.social_insurance_amount,3271),16353)</field>
-            <field name="amount_percentage">1.5</field>
+            <field name="amount_percentage_base">min(max(contract.social_insurance_amount,3563),16353)</field>
+            <field name="amount_percentage">1.0</field>
         </record>
 
         <!--工伤-->
@@ -154,8 +154,8 @@
             <field name="sequence">850</field>
             <field name="condition_select">none</field>
             <field name="amount_select">percentage</field>
-            <field name="amount_percentage_base">min(max(contract.social_insurance_amount,3271),16353)</field>
-            <field name="amount_percentage">0.5</field>
+            <field name="amount_percentage_base">min(max(contract.social_insurance_amount,3563),16353)</field>
+            <field name="amount_percentage">0.2</field>
         </record>
 
         <!--公积金-->
@@ -174,7 +174,7 @@
         <!-- 薪酬结构 -->
         <record id="hr_payroll_salary_structure_sh1" model="hr.payroll.structure">
             <field name="code">SHUH</field>
-            <field name="name">SH (CN Urban Hukou)</field>
+            <field name="name">SH (CN Hukou)</field>
             <field name="company_id" ref="base.main_company"/>
             <field eval="[(6, 0, [
                     ref('hr_payroll.hr_rule_basic'),

@@ -13,8 +13,10 @@ Chinese Payroll Rules
     and adds complete Chinese payroll rules for the following cities:
 
     * Shanghai
-    * Shenzhen 
+    * Shenzhen
+
     Are included the following concepts:
+
     * Personal Social insurance
     * Company contribution
     * Personal Income tax
@@ -53,15 +55,15 @@ Contributors
 
 * Eric Caudal <eric.caudal@elico-corp.com>
 * Alex Duan <alex.duan@elico-corp.com>
-* Connie Xia <Connie.xiao[p5r44@elico-corp.com>
+* Connie Xia <Connie.xiao@elico-corp.com>
 * Xie XiaoPeng <xie.xiaopeng@elico-corp.com>
 
 Maintainer
 ----------
 
 .. image:: https://odoo-community.org/logo.png
-:alt: Odoo Community Association
-:target: https://odoo-community.org
+    :alt: Odoo Community Association
+    :target: https://odoo-community.org
 
 This module is maintained by the OCA.
 

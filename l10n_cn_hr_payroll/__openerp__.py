@@ -22,7 +22,6 @@
         'data/salary_rule_sz3.xml',
         'data/salary_rule_sz4.xml',
         'data/salary_rule_sh1.xml',
-        'data/salary_rule_sh2.xml',
         'data/salary_rule_sh3.xml',
         'data/salary_rule_sh4.xml',
     ],

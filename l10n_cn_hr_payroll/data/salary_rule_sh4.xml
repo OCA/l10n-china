@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
-       <data>
+    <data>
 
         <!-- 薪酬结构 -->
         <record id="hr_payroll_salary_structure_sh4" model="hr.payroll.structure">
