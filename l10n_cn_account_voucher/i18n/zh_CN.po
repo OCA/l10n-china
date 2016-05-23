@@ -23,7 +23,7 @@ msgstr "科目条目"
 #. module: l10n_cn_account_voucher
 #: model:ir.model.fields,field_description:l10n_cn_account_voucher.field_account_move_proof
 msgid "Attachment Count"
-msgstr "Attachment Count"
+msgstr "附件"
 
 #. module: l10n_cn_account_voucher
 #: model:ir.model.fields,field_description:l10n_cn_account_voucher.field_account_move_line_currency_rate
