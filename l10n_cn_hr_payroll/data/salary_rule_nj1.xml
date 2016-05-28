@@ -29,6 +29,19 @@
             <field name="amount_percentage">2.0</field>
         </record>
 
+        <!--大病-->
+        <record id="hr_rule_medical_nj2" model="hr.salary.rule">
+            <field name="category_id" ref="hr_payroll.DED"/>
+            <field name="name">Serious Disease</field>
+            <field name="code">NJHKPSD</field>
+            <field name="appears_on_payslip" eval="True"/>
+            <field name="sequence">221</field>
+            <field name="condition_select">none</field>
+            <field name="amount_select">percentage</field>
+            <field name="amount_percentage_base">10</field>
+            <field name="amount_percentage">100.0</field>
+        </record>
+
         <!--生育-->
         <record id="hr_rule_bearing_nj1" model="hr.salary.rule">
             <field name="category_id" ref="hr_payroll.DED"/>
@@ -142,7 +155,7 @@
             <field name="condition_select">none</field>
             <field name="amount_select">percentage</field>
             <field name="amount_percentage_base">min(max(contract.social_insurance_amount,3563),16353)</field>
-            <field name="amount_percentage">1.5</field>
+            <field name="amount_percentage">1.0</field>
         </record>
 
         <!--工伤-->
@@ -187,6 +200,7 @@
                     ref('hr_rule_topay'),
                     ref('hr_rule_pension1_nj1'),
                     ref('hr_rule_medical_nj1'),
+                    ref('hr_rule_medical_nj2'),
                     ref('hr_rule_bearing_nj1'),
                     ref('hr_rule_unemployment_nj1'),
                     ref('hr_rule_accident_nj1'),
