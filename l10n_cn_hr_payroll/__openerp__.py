@@ -25,6 +25,7 @@
         'data/salary_rule_sh2.xml',
         'data/salary_rule_sh3.xml',
         'data/salary_rule_sh4.xml',
+        'data/salary_rule_nj1.xml',
     ],
     'license': 'AGPL-3',
     'installable': True,

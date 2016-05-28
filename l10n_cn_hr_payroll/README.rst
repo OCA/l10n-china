@@ -14,6 +14,7 @@ Chinese Payroll Rules
 
     * Shanghai
     * Shenzhen
+    * Nangjing
 
     Are included the following concepts:
 
