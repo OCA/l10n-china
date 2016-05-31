@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <record id="view_account_journal_form_inherit_elico" model="ir.ui.view">
+           <field name="name">account.journal.form.inherit.elico</field>
+           <field name="model">account.journal</field>
+           <field name="inherit_id" ref="account.view_account_journal_form"/>
+           <field name="arch" type="xml">
+                <field name="sequence_id" position="after">
+                    <field name="internal_sequence_transfer_id" string="Transfer sequence"/>
+                    <field name="internal_sequence_in_id" string="In sequence"/>
+                    <field name="internal_sequence_out_id" string="Out Sequence"/>
+                </field>
+           </field>
+        </record>
+        
+    </data>
+</openerp>
