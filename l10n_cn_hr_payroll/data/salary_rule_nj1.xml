@@ -12,7 +12,7 @@
             <field name="sequence">210</field>
             <field name="condition_select">none</field>
             <field name="amount_select">percentage</field>
-            <field name="amount_percentage_base">min(max(contract.social_insurance_amount,3563),16353)</field>
+            <field name="amount_percentage_base">min(max(contract.social_insurance_amount,2628),16353)</field>
             <field name="amount_percentage">8.0</field>
         </record>
 
@@ -25,7 +25,7 @@
             <field name="sequence">220</field>
             <field name="condition_select">none</field>
             <field name="amount_select">percentage</field>
-            <field name="amount_percentage_base">min(max(contract.social_insurance_amount,3563),16353)</field>
+            <field name="amount_percentage_base">min(max(contract.social_insurance_amount,2628),16353)</field>
             <field name="amount_percentage">2.0</field>
         </record>
 
@@ -64,7 +64,7 @@
             <field name="sequence">240</field>
             <field name="condition_select">none</field>
             <field name="amount_select">percentage</field>
-            <field name="amount_percentage_base">min(max(contract.social_insurance_amount,3563),16353)</field>
+            <field name="amount_percentage_base">min(max(contract.social_insurance_amount,2628),16353)</field>
             <field name="amount_percentage">0.5</field>
         </record>
 
@@ -115,7 +115,7 @@
             <field name="sequence">810</field>
             <field name="condition_select">none</field>
             <field name="amount_select">percentage</field>
-            <field name="amount_percentage_base">min(max(contract.social_insurance_amount,3563),16353)</field>
+            <field name="amount_percentage_base">min(max(contract.social_insurance_amount,2628),16353)</field>
             <field name="amount_percentage">20.0</field>
         </record>
 
@@ -128,7 +128,7 @@
             <field name="sequence">820</field>
             <field name="condition_select">none</field>
             <field name="amount_select">percentage</field>
-            <field name="amount_percentage_base">min(max(contract.social_insurance_amount,3563),16353)</field>
+            <field name="amount_percentage_base">min(max(contract.social_insurance_amount,2628),16353)</field>
             <field name="amount_percentage">9.0</field>
         </record>
 
@@ -141,7 +141,7 @@
             <field name="sequence">830</field>
             <field name="condition_select">none</field>
             <field name="amount_select">percentage</field>
-            <field name="amount_percentage_base">min(max(contract.social_insurance_amount,3563),16353)</field>
+            <field name="amount_percentage_base">min(max(contract.social_insurance_amount,2628),16353)</field>
             <field name="amount_percentage">0.5</field>
         </record>
 
@@ -154,7 +154,7 @@
             <field name="sequence">840</field>
             <field name="condition_select">none</field>
             <field name="amount_select">percentage</field>
-            <field name="amount_percentage_base">min(max(contract.social_insurance_amount,3563),16353)</field>
+            <field name="amount_percentage_base">min(max(contract.social_insurance_amount,2628),16353)</field>
             <field name="amount_percentage">1.0</field>
         </record>
 
@@ -167,7 +167,7 @@
             <field name="sequence">850</field>
             <field name="condition_select">none</field>
             <field name="amount_select">percentage</field>
-            <field name="amount_percentage_base">min(max(contract.social_insurance_amount,3563),16353)</field>
+            <field name="amount_percentage_base">min(max(contract.social_insurance_amount,2628),16353)</field>
             <field name="amount_percentage">0.4</field>
         </record>
 
