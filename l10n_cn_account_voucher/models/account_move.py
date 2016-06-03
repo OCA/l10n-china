@@ -10,6 +10,9 @@ class AccountMove(models.Model):
     _inherit = 'account.move'
 
     proof = fields.Integer('Attachment Count', required=False, default=1)
+    chinese_sequence_number = fields.Char('Chinese Voucher Number',
+                                          size=64, copy=False, readonly=True,
+                                          help='Internal Sequence Number')
 
     def _paginate(self, items, max_per_page=5):
         """
