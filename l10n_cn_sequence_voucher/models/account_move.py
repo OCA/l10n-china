@@ -14,9 +14,6 @@ class AccountMove(models.Model):
         ('transfer', '转')],
         'Voucher Type change to',
         help='Internal Sequence Type')
-    chinese_sequence_number = fields.Char(
-        'Chinese Voucher Number', size=64, copy=False,
-        readonly=True, help='Internal Sequence Number')
 
     @api.multi
     def write(self, vals):

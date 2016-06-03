@@ -9,7 +9,6 @@
            <field name="arch" type="xml">
                 <field name="partner_id" position="after">
                     <field name="chinese_sequence_type" attrs="{'readonly':[('state','!=','draft')]}"/>
-                    <field name="chinese_sequence_number"/>
                 </field>
            </field>
         </record>

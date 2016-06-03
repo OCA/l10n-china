@@ -12,6 +12,7 @@
     "installable": True,
     "depends": [
         "account",
+        "l10n_cn_account_voucher",
     ],
     "data": [
         "views/account_journal.xml",
