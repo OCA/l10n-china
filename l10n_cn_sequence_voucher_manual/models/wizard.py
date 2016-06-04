@@ -1,24 +1,23 @@
-# coding=utf-8
-"""
-author: matt.cai(cysnake4713@gmail.com)
-"""
+# -*- coding: utf-8 -*-
+# © 2016 <matt.cai>cysnake4713@gmail.com
+# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 from openerp import tools
 from openerp import models, fields, api
 from openerp.tools.translate import _
 
 
-class AccountMoveSequenceGenerateWizard(models.TransientModel):
+class AccountMoveSequenceGenerationWizard(models.TransientModel):
     _name = 'account.move.sequence.generate.wizard'
     _rec_name = 'prefix'
-    _description = 'Account Voucher Sequence Generate Wizard'
+    _description = 'Account Voucher Sequence Generation Wizard'
 
-    prefix = fields.Char('Prefix Code', help="Prefix value of the record for the Voucher sequence", default='记')
-    suffix = fields.Char('Suffix Code', help="Suffix value of the record for the Voucher")
-    number_begin = fields.Integer('Begin Number', required=True, default=1, help="Begin number of Voucher")
-    padding = fields.Integer('Sequence Size', required=True, default=3,
+    prefix = fields.Char('Prefix Code', help="Prefix for the Voucher sequence", default='记')
+    suffix = fields.Char('Suffix Code', help="Suffix for the Voucher sequence")
+    number_begin = fields.Integer('Starting number', required=True, default=1, help="Begin number of Voucher")
+    padding = fields.Integer('Sequence Padding', required=True, default=3,
                              help="Odoo will automatically adds some '0' on the left of the "
-                                  "'Begin Number' to get the required padding size.")
-    is_rewrite = fields.Boolean('Rewrite Exist Number?', default=False)
+                                  "'Starting Number' to get the required padding size.")
+    is_rewrite = fields.Boolean('Rewriting Existing Number?', default=False)
     has_sequence_move_ids = fields.Many2many('account.move', 'move_has_sequence_wizard_voucher_rel', 'wizard_id', 'move_id',
                                              string='Had Sequence Vouchers', readonly=True)
     empty_sequence_move_ids = fields.Many2many('account.move', 'move_empty_sequence_wizard_voucher_rel', 'wizard_id', 'move_id',
@@ -26,7 +25,7 @@ class AccountMoveSequenceGenerateWizard(models.TransientModel):
 
     @api.model
     def default_get(self, fields_list):
-        result = super(AccountMoveSequenceGenerateWizard, self).default_get(fields_list)
+        result = super(AccountMoveSequenceGenerationWizard, self).default_get(fields_list)
         if self._context.get('active_ids'):
             move_ids = self._context['active_ids']
             empty_seq_move_ids = self.env['account.move'].search([('id', 'in', move_ids), ('chinese_sequence_number', '=', False)]).ids

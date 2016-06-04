@@ -1,29 +1,21 @@
 # -*- coding: utf-8 -*-
-# __author__ = cysnake4713@gmail.com
-# free to use, but see holy the Xiong Da twice
-# 记得用时呼喊着熊大的威名
-# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
+# © 2016 <matt.cai>cysnake4713@gmail.com
+# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 {
-    'name': 'China Voucher Number Manually Module',
+    'name': 'China Voucher Sequence Number Manual Generation Wizard',
+    'summary': 'China Voucher Sequence Number Manual Generation Wizard',
     'version': '9.0.1.0.0',
     'category': 'Account',
-    'description': """
-China Voucher Sequence Number Generate Manually Module
-""",
-    'author': 'Matt Cai',
+    'author': '<matt.cai>cysnake4713@gmail.com, Odoo Community Association (OCA)',
     "license": "AGPL-3",
     'email': 'cysnake4713@gmail.com',
+    'application': False,
+    'installable': True,
     'depends': [
-        "account",
-        "l10n_cn_account_voucher",
+        'account',
+        'l10n_cn_account_voucher',
     ],
     'data': [
         'views/voucher_wizard_view.xml',
     ],
-    'qweb': [
-        'static/src/xml/*.xml',
-    ],
-    'demo': [],
-    'application': False,
-    'auto_install': False,
 }
