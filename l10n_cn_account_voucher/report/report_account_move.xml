@@ -2,13 +2,13 @@
 <openerp>
 <data>
     <template id='report_account_move'>
-        <t t-call='report.html_container' >
+        <t t-call='report.minimal_layout' >
             <t t-set="data_report_margin_top" t-value="12"/>
             <t t-set="data_report_header_spacing" t-value="9"/>
             <t t-set="data_report_dpi" t-value="110"/>
             <t t-set="data-report_format" t-value='A5' />
-            <t t-foreach='docs' t-as='o' >
-                <t t-call="report.internal_layout">
+            <t t-set="body">
+                <t t-foreach='docs' t-as='o'>
                     <div class='page'>
                         <div class='row' >
                             <div class='oe_structure' />
