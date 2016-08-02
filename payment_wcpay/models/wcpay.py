@@ -4,9 +4,12 @@
 
 import logging
 import urlparse
+from datetime import datetime, timedelta
+
 from openerp.addons.payment.models.payment_acquirer import ValidationError
-from openerp.addons.payment_wcpay.controllers.main import WcpayController
+
 from openerp import api, fields, models
+from openerp.addons.payment_wcpay.controllers.main import WcpayController
 from openerp.tools.float_utils import float_compare
 
 _logger = logging.getLogger(__name__)
@@ -119,7 +122,7 @@ class TxWcPay(models.Model):
             _logger.error(error_msg)
             raise ValidationError(error_msg)
 
-        tx_ids = self.pool['payment.transaction'].search(
+        tx_ids = self.env['payment.transaction'].search(
             [('reference', '=', reference)])
         if not tx_ids or len(tx_ids) > 1:
             error_msg = 'wcpay: received data for reference %s' % (reference)
@@ -129,7 +132,7 @@ class TxWcPay(models.Model):
                 error_msg += '; multiple order found'
             _logger.error(error_msg)
             raise ValidationError(error_msg)
-        tx = self.pool['payment.transaction'].browse(tx_ids[0])
+        tx = self.env['payment.transaction'].browse(tx_ids[0].id)
         return tx
 
     @api.model
@@ -145,7 +148,7 @@ class TxWcPay(models.Model):
                 tx.acquirer_reference))
 
         total_fee = float(data.get('total_fee', '0.0'))
-        if float_compare(total_fee, tx.amount, 2) != 0:
+        if float_compare(total_fee, tx.amount * 100, 2) != 0:
             invalid_parameters.append(
                 ('Amount', data.get('total_fee'), '%.2f' % tx.amount))
 
@@ -153,12 +156,14 @@ class TxWcPay(models.Model):
 
     @api.model
     def _wcpay_form_validate(self, tx, data):
-        if data.get('trade_status') in ['TRADE_SUCCESS', 'TRADE_FINISHED']:
+        if data.get('return_code') in ['SUCCESS', 'FINISHED']:
+            date_validate = datetime.strptime(data.get('time_end'), "%Y%m%d%H%M%S") - timedelta(hours=8)
+
             tx.write({
                 'state': 'done',
                 'acquirer_reference': data.get('out_trade_no'),
-                'wcpay_txn_tradeno': data.get('trade_no'),
-                'date_validate': data.get('notify_time'),
+                'wcpay_txn_tradeno': data.get('transaction_id'),
+                'date_validate': date_validate,
             })
             return True
         else:

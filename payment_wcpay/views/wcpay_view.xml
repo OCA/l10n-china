@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
     <data noupdate="1">
-        
+
+        <template id="assets_frontend" inherit_id="website.assets_frontend" name="Shop">
+          <xpath expr="." position="inside">
+              <script type="text/javascript" src="/payment_wcpay/static/src/js/website_sale_validate.js"></script>
+          </xpath>
+        </template>
+
         <template id="wcpay_acquirer_button">
             <form t-att-action="tx_url" method="post" target="_self">
                 <input type="hidden" name="_input_charset" t-att-value="tx_values['_input_charset']"/>
@@ -21,12 +27,23 @@
             </form>
         </template>
 
-        <template id="confirmation" inherit_id="website_sale.confirmation">
+        <template id="confirmation" inherit_id="payment_wcpay.wcpay_confirmation">
             <xpath expr="//div[@class='oe_website_sale_tx_status']" position="after">
-                <t t-if="order.payment_acquirer_id and order.payment_acquirer_id.provider == 'wcpay'">
-                    <div>
-                        <img t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s'%('QR', order.payment_tx_id.wcpay_txn_paylink, 300, 300)"/>
-                    </div>
+
+                <t t-if="order">
+                    <t t-if="order.payment_acquirer_id and order.payment_acquirer_id.provider == 'wcpay'">
+                        <div>
+                            <img t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s'%('QR', order.payment_tx_id.wcpay_txn_paylink, 300, 300)"/>
+                        </div>
+                    </t>
+                </t>
+
+                <t t-if="invoice">
+                    <t t-if="invoice.payment_acquirer_id and invoice.payment_acquirer_id.provider == 'wcpay'">
+                        <div>
+                            <img t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s'%('QR', invoice.payment_tx_id.wcpay_txn_paylink, 300, 300)"/>
+                        </div>
+                    </t>
                 </t>
                 
             </xpath>

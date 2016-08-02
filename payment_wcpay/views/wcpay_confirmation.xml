@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+<data>
+
+<template id="wcpay_confirmation">
+  <t t-call="website.layout">
+      <t t-set="additional_title">Shop - Confirmed</t>
+      <div id="wrap">
+        <div class="container oe_website_sale">
+
+          <ul class="wizard pull-right">
+              <li class="text-muted">Review Order<span class="chevron"></span></li>
+              <li class="text-muted">Shipping &amp; Billing<span class="chevron"></span></li>
+              <li class="text-muted">Payment<span class="chevron"></span></li>
+              <li class="text-primary">Confirmation<span class="chevron"></span></li>
+          </ul>
+          <h1 class="mb32">Order <em t-field="invoice.number"/> Confirmed</h1>
+          <div class="row">
+              <div class="col-md-8 oe_cart">
+                  <h2>Thank you for your order.</h2>
+                  <div t-if="invoice">
+                    <div class="oe_website_sale_tx_status" t-att-data-invoice-id="invoice.id"/>
+                  </div>
+                  <div t-if="order">
+                    <div class="oe_website_sale_tx_status" t-att-data-order-id="order.id"/>
+                  </div>
+                  <div class="clearfix"/>
+                  <div class="oe_structure"/>
+              </div>
+          </div>
+
+        </div>
+        <div class="oe_structure"/>
+      </div>
+
+  </t>
+</template>
+
+</data>
+</openerp>
+
