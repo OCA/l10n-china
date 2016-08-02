@@ -110,7 +110,6 @@ class AlipayController(http.Controller):
     def create_transaction_alipay(self, post):
         acquirer = request.env['payment.acquirer'].sudo().search(
             [('provider', '=', 'alipay')])
-        # Noah add support for invoice
         if str(post.get('out_trade_no')).startswith('SO'):
             sale_order = request.env['sale.order'].sudo().search(
                 [('name', '=', post.get('out_trade_no'))])

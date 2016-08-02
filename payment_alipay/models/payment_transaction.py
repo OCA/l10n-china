@@ -1,3 +1,7 @@
+# -*- coding: utf-8 -*-
+# © 2016 Elico Corp (www.elico-corp.com).
+# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
+
 import logging
 from datetime import datetime, timedelta
 
@@ -56,7 +60,7 @@ class TxAlipay(models.Model):
 
     @api.model
     def _alipay_form_get_invalid_parameters(
-            self, tx, data
+        self, tx, data
     ):
         invalid_parameters = []
         diff = data.get('out_trade_no') != tx.acquirer_reference

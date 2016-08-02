@@ -1,3 +1,7 @@
+# -*- coding: utf-8 -*-
+# © 2016 Elico Corp (www.elico-corp.com).
+# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
+
 from openerp.tests import common
 
 
@@ -47,6 +51,29 @@ class TestSaleOrder(common.TransactionCase):
             Test alipay url acquirer:
                 _get_ids
         """
+
+    def test_edi_alipay_url_direct_pay(self):
+        """
+            Test _edi_alipay_url_direct_pay:
+        """
+        # search one record
+        self.sale_order._edi_alipay_url_direct_pay()
+        # state = sent
+        self.sale_order.write({'state': 'sent'})
+        # service is create_direct_pay_by_user
+
+        self.payment_acquirer.write({
+            'service': 'create_direct_pay_by_user'})
+        self.sale_order._edi_alipay_url_direct_pay()
+        # service is not create_direct_pay_by_user
+        self.payment_acquirer.write({
+            'service': 'create_partner_trade_by_buyer'})
+        self.sale_order._edi_alipay_url_direct_pay()
+
+        # state = cancel
+        self.sale_order.write({'state': 'cancel'})
+        self.sale_order._edi_alipay_url_direct_pay()
+
         # create multi payment acquirer for testing
         self.payment_acquirer = self.env['payment.acquirer'].create(
             {'name': 'alipay', 'provider': 'alipay',
@@ -66,3 +93,13 @@ class TestSaleOrder(common.TransactionCase):
         self.sale_order._edi_alipay_url_direct_pay()
 
         print '00--confirmed--88', self.sale_order.alipay_url_direct_pay
+        # state = sent
+        self.sale_order.write({'state': 'sent'})
+        self.sale_order._edi_alipay_url_direct_pay()
+        # state = cancel
+        self.sale_order.write({'state': 'cancel'})
+        self.sale_order._edi_alipay_url_direct_pay()
+
+        # # null payment acquirer for testing
+        self.env['payment.acquirer'].unlink()
+        self.sale_order._edi_alipay_url_direct_pay()
