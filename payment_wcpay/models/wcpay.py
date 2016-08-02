@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+# © 2016 Elico Corp (www.elico-corp.com).
+# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
+
 import logging
 import urlparse
 from datetime import datetime, timedelta
@@ -56,7 +59,6 @@ class AcquirerWcpay(models.Model):
     def _get_wcpay_urls(self, environment):
         """ Wcpay URLs
         """
-        # TODO noah here should be different for Sale order or Invoice for wcpay
         base_url = self.env['ir.config_parameter'].get_param('web.base.url')
         wcpay_form_url = '%s' % urlparse.urljoin(
             base_url, '/shop/confirmation')
@@ -72,7 +74,7 @@ class AcquirerWcpay(models.Model):
 
     @api.multi
     def wcpay_form_generate_values(
-            self, partner_values, tx_values
+        self, partner_values, tx_values
     ):
         base_url = self.env['ir.config_parameter'].get_param('web.base.url')
         acquirer = self.browse(self.id)

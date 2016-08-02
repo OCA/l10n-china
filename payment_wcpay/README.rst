@@ -6,13 +6,15 @@
 Wechat Payment Acquirer
 =======================
 
-Wechat Payment Acquirer
+ This module extends the functionality of Website and adds a Wechat payment methods of Sale Orders.
+
 
 Installation
 ============
 
 To install this module, you need to:
 
+ * have basic modules installed (website_sale)
 
 
 Configuration
@@ -59,7 +61,8 @@ Credits
 Contributors
 ------------
 
-Xie XiaoPeng<xie.xiaopeng@elico-corp.com>
+* Xie XiaoPeng<xie.xiaopeng@elico-corp.com>
+
 
 Maintainer
 ----------
