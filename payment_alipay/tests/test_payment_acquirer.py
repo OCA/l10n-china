@@ -24,15 +24,20 @@ class TestPaymentAcquirer(common.TransactionCase):
         )
         # create an payment acquirer for testing
         self.payment_acquirer = self.env['payment.acquirer'].create(
-            {'name': 'alipay', 'provider': 'alipay',
+            {
+                'name': 'alipay',
+                'provider': 'alipay',
                 'website_published': True,
                 'alipay_pid': 000000,
-                'alipay_seller_email': 'luke.zheng@elico-corp.com',
+                'alipay_seller_email': 'dummy',
                 'view_template_id': 1,
                 'alipay_key': 1,
-                'service': 'create_direct_pay_by_user'})
+                'service': 'create_direct_pay_by_user'
+            }
+        )
         self.product_ids = self.env['product.product'].search(
-            [('id', 'in', ids)])
+            [('id', 'in', ids)]
+        )
 
     def test_alipay_get_form_action_url(self):
         """
@@ -72,24 +77,6 @@ class TestPaymentAcquirer(common.TransactionCase):
         """
         provider = self.payment_acquirer._get_providers()
         _logger.warning(provider)
-
-    # def test_alipay_form_generate_values(self):
-    #     """ Checks if the alipay_form_generate_values works properly
-    #     """
-    #     partner_values = {
-    #         'lang': u'en_US',
-    #         'city': u'1', 'first_name': u'Administrator', 'last_name': '',
-    #         'name': u'Administrator', 'zip': u'1',
-    #         'country_id': 63, 'phone': u'1',
-    #         'address': u'1 111', 'email': u'admin@example.com'}
-    #     tx_values = {
-    #         'currency_id': 8,
-    #         'amount': 0.01, 'reference': u'SO-2015-17-0048',
-    #         'return_url': '/shop/payment/validate'}
-    #     partner_values, tx_values = self.env['ir.ui.view'].browse(1).\
-    #         _alipay_form_generate_values(
-    #             partner_values, tx_values)
-    #     _logger.warning(partner_values, tx_values)
 
     def test_alipay_generate_md5_sign(self):
         """ Checks if the _alipay_generate_md5_sign works properly

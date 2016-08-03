@@ -16,10 +16,13 @@ _logger = logging.getLogger(__name__)
 class TxAlipay(models.Model):
     _inherit = 'payment.transaction'
 
-    alipay_txn_tradeno = fields.Char('Transaction Trade Number')
+    alipay_txn_tradeno = fields.Char(
+        string='Transaction Trade Number'
+    )
     account_invoice_id = fields.Many2one(
         comodel_name='account.invoice',
-        string='Account Invoice')
+        string='Account Invoice'
+    )
 
     # --------------------------------------------------
     # FORM RELATED METHODS
@@ -65,22 +68,26 @@ class TxAlipay(models.Model):
         invalid_parameters = []
         diff = data.get('out_trade_no') != tx.acquirer_reference
         if tx.acquirer_reference and diff:
-            invalid_parameters.append((
-                'Transaction Id',
-                data.get('out_trade_no'),
-                tx.acquirer_reference))
+            invalid_parameters.append(
+                ('Transaction Id', data.get('out_trade_no'), tx.acquirer_reference)
+            )
 
         total_fee = float(data.get('total_fee', '0.0'))
         if float_compare(total_fee, tx.amount, 2) != 0:
             invalid_parameters.append(
-                ('Amount', data.get('total_fee'), '%.2f' % tx.amount))
+                ('Amount', data.get('total_fee'), '%.2f' % tx.amount)
+            )
 
         return invalid_parameters
 
     @api.model
     def _alipay_form_validate(self, tx, data):
         if data.get('trade_status') in ['TRADE_SUCCESS', 'TRADE_FINISHED']:
-            date_validate = datetime.strptime(data.get('notify_time'), "%Y-%m-%d %H:%M:%S") - timedelta(hours=8)
+            date_validate = datetime.strptime(
+                date_string=data.get('notify_time'),
+                format="%Y-%m-%d %H:%M:%S"
+            )
+            date_validate = date_validate - timedelta(hours=8)
 
             tx.write({
                 'state': 'done',

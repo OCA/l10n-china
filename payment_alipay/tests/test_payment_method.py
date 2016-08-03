@@ -31,9 +31,3 @@ class TestPaymentMethod(common.TransactionCase):
         #     {})
         self.product_ids = self.env['product.product'].search(
             [('id', 'in', ids)])
-
-    # def test_check_payment_acquirer_id(self):
-    #     """
-    #         Test check_payment_acquirer_id:
-    #     """
-    #     self.payment_acquirer._check_payment_acquirer_id()
