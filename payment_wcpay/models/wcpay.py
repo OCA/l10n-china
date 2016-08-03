@@ -19,38 +19,72 @@ class AcquirerWcpay(models.Model):
     _inherit = 'payment.acquirer'
 
     appid = fields.Char(
-        'APPID', required_if_provider='wcpay', help='JSAPI接口中获取openid')
+        string='APPID',
+        required_if_provider='wcpay',
+        help='JSAPI接口中获取openid'
+    )
     appsecret = fields.Char(
-        'APPSECRET', required_if_provider='wcpay', help='JSAPI接口中获取openid')
+        string='APPSECRET',
+        required_if_provider='wcpay',
+        help='JSAPI接口中获取openid'
+    )
     mchid = fields.Char(
-        'MCHID', required_if_provider='wcpay', help='商户ID')
+        string='MCHID',
+        required_if_provider='wcpay',
+        help='商户ID'
+    )
     key = fields.Char(
-        'KEY', required_if_provider='wcpay', help='商户支付密钥')
+        string='KEY',
+        required_if_provider='wcpay',
+        help='商户支付密钥'
+    )
     sslcert_path = fields.Char(
-        'SSLCERT_PATH - 证书路径', required_if_provider='wcpay',
-        help='证书路径,注意应该填写绝对路径')
+        string='SSLCERT_PATH - 证书路径',
+        required_if_provider='wcpay',
+        help='证书路径,注意应该填写绝对路径'
+    )
     sslkey_path = fields.Char(
-        'SSLKEY_PATH - 证书路径', required_if_provider='wcpay',
-        help='证书路径,注意应该填写绝对路径')
+        string='SSLKEY_PATH - 证书路径',
+        required_if_provider='wcpay',
+        help='证书路径,注意应该填写绝对路径'
+    )
     curl_timeout = fields.Char(
-        'CURL_TIMEOUT - curl超时', required_if_provider='wcpay', default=30)
+        string='CURL_TIMEOUT - curl超时',
+        required_if_provider='wcpay',
+        default=30
+    )
     http_client = fields.Selection(
-        [('CURL', 'CURL'), ('URLLIB', 'URLLIB')],
-        'HTTP_CLIENT - HTTP客户端', required_if_provider='wcpay', default='CURL')
+        selection=[
+            ('CURL', 'CURL'),
+            ('URLLIB', 'URLLIB')
+        ],
+        string='HTTP_CLIENT - HTTP客户端',
+        required_if_provider='wcpay',
+        default='CURL'
+    )
     ip_address = fields.Char(
-        'IP Address', required_if_provider='wcpay', default='127.0.0.1')
+        string='IP Address',
+        required_if_provider='wcpay',
+        default='127.0.0.1'
+    )
     logistics_type = fields.Char(
-        'Logistics Type', required_if_provider='wcpay')
+        string='Logistics Type',
+        required_if_provider='wcpay'
+    )
     logistics_fee = fields.Char(
-        'Logistics Fee', required_if_provider='wcpay')
+        string='Logistics Fee',
+        required_if_provider='wcpay'
+    )
     logistics_payment = fields.Char(
-        'Logistics Payment', required_if_provider='wcpay')
+        string='Logistics Payment',
+        required_if_provider='wcpay'
+    )
     service = fields.Selection(
-        [('create_direct_pay_by_user',
-          'create_direct_pay_by_user'),
-         ('create_partner_trade_by_buyer',
-          'create_partner_trade_by_buyer'), ],
-        'Payment Type',
+        selection=[
+            ('create_direct_pay_by_user', 'create_direct_pay_by_user'),
+            ('create_partner_trade_by_buyer', 'create_partner_trade_by_buyer'),
+        ],
+        string='Payment Type',
         default='create_direct_pay_by_user',
         required_if_provider='wcpay'
     )
@@ -61,7 +95,8 @@ class AcquirerWcpay(models.Model):
         """
         base_url = self.env['ir.config_parameter'].get_param('web.base.url')
         wcpay_form_url = '%s' % urlparse.urljoin(
-            base_url, '/shop/confirmation')
+            base_url, '/shop/confirmation'
+        )
         return {
             'wcpay_form_url': wcpay_form_url,
         }
@@ -74,7 +109,7 @@ class AcquirerWcpay(models.Model):
 
     @api.multi
     def wcpay_form_generate_values(
-        self, partner_values, tx_values
+            self, partner_values, tx_values
     ):
         base_url = self.env['ir.config_parameter'].get_param('web.base.url')
         acquirer = self.browse(self.id)
@@ -94,7 +129,8 @@ class AcquirerWcpay(models.Model):
             'logistics_payment': acquirer.logistics_payment,
             'logistics_type': acquirer.logistics_type,
             'notify_url': '%s' % urlparse.urljoin(
-                base_url, WcpayController._notify_url),
+                base_url, WcpayController._notify_url
+            ),
             'sign': ''
         })
         return partner_values, wcpay_tx_values
@@ -108,13 +144,19 @@ class AcquirerWcpay(models.Model):
 class TxWcPay(models.Model):
     _inherit = 'payment.transaction'
 
-    wcpay_txn_tradeno = fields.Char('Transaction Trade Number')
-    wcpay_txn_paylink = fields.Char('Transaction Pay Link')
+    wcpay_txn_tradeno = fields.Char(
+        string='Transaction Trade Number'
+    )
+    wcpay_txn_paylink = fields.Char(
+        string='Transaction Pay Link'
+    )
 
     @api.model
     def _wcpay_form_get_tx_from_data(self, data):
-        """ Given a data dict coming from wcpay, verify it and find the related
-        transaction record. """
+        """
+        Given a data dict coming from wcpay, verify it and find the related
+        transaction record.
+        """
         reference = data.get('out_trade_no')
         if not reference:
             error_msg = 'Wcpay: received data with missing reference (%s)' % (
@@ -142,22 +184,26 @@ class TxWcPay(models.Model):
 
         diff = data.get('out_trade_no') != tx.acquirer_reference
         if tx.acquirer_reference and diff:
-            invalid_parameters.append((
-                'Transaction Id',
-                data.get('out_trade_no'),
-                tx.acquirer_reference))
+            invalid_parameters.append(
+                ('Transaction Id', data.get('out_trade_no'), tx.acquirer_reference)
+            )
 
         total_fee = float(data.get('total_fee', '0.0'))
         if float_compare(total_fee, tx.amount * 100, 2) != 0:
             invalid_parameters.append(
-                ('Amount', data.get('total_fee'), '%.2f' % tx.amount))
+                ('Amount', data.get('total_fee'), '%.2f' % tx.amount)
+            )
 
         return invalid_parameters
 
     @api.model
     def _wcpay_form_validate(self, tx, data):
         if data.get('return_code') in ['SUCCESS', 'FINISHED']:
-            date_validate = datetime.strptime(data.get('time_end'), "%Y%m%d%H%M%S") - timedelta(hours=8)
+            date_validate = datetime.strptime(
+                date_string=data.get('time_end'),
+                format="%Y%m%d%H%M%S"
+            )
+            date_validate = date_validate - timedelta(hours=8)
 
             tx.write({
                 'state': 'done',

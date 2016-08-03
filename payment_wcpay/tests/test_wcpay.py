@@ -2,9 +2,11 @@
 # © 2016 Elico Corp (www.elico-corp.com).
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
-from openerp.tests import common
-import openerp
 import logging
+
+import openerp
+from openerp.tests import common
+
 _logger = logging.getLogger(__name__)
 
 
@@ -19,65 +21,60 @@ class AcquirerWcpayTestCase(common.TransactionCase):
         self.currency = self.env['res.currency']
 
     def test_wcpay_form_generate_values(self):
-        country = self.country.browse(self.env.cr, self.env.uid, 3)
+        country = self.country.browse(3)
         state = False
-        currency = self.currency.browse(self.env.cr, self.env.uid, 1)
-        partner = self.partner.browse(self.env.cr, self.env.uid, 3)
 
         partner_values = {
-            'lang': u'en_US', 'city': u'cc', 'first_name': u'Administrator',
-            'last_name': '', 'name': u'Administrator', 'zip': u'cc',
-            'country': country, 'country_id': 3, 'phone': u'cc',
-            'state': state, 'address': u'cc cc', 'email': u'admin@example.com'
+            'lang': u'en_US',
+            'city': u'cc',
+            'first_name': u'Administrator',
+            'last_name': '',
+            'name': u'Administrator',
+            'zip': u'cc',
+            'country': country,
+            'country_id': 3,
+            'phone': u'cc',
+            'state': state,
+            'address': u'cc cc',
+            'email': u'admin@example.com'
         }
         tx_values = {
-            'currency_id': 1, 'currency': currency, 'amount': 1.0,
-            'reference': u'SO060', 'partner': partner,
-            'return_url': '/shop/payment/validate'
+            'amount': 1.0,
+            'reference': u'SO0001000',
         }
-        ids = [15]
 
-        partner_values2, wcpay_tx_values2 = self.pay_model.wcpay_form_generate_values(
-            self.env.cr, self.env.uid, ids, partner_values, tx_values)
-        pay_link = False
-        if wcpay_tx_values2['pay_link']:
-            pay_link = True
+        partner_values_result, wcpay_tx_values_result = \
+            self.pay_model.wcpay_form_generate_values(
+                partner_values, tx_values
+            )
 
-        self.assertTrue(pay_link)
-        self.assertEquals(
-            wcpay_tx_values2['notify_url'],
-            'http://localhost:6162/payment/weixin/notify')
-        self.assertEquals(wcpay_tx_values2['amount'], 1)
-        self.assertEquals(wcpay_tx_values2['price'], 1.0)
-        self.assertEquals(wcpay_tx_values2['quantity'], 1)
+        payment_type = False
+        if wcpay_tx_values_result['payment_type']:
+            payment_type = True
 
-        def test_wcpay_get_form_action_url(self):
-            ids = [15]
-            url = self.pay_model.wcpay_get_form_action_url(
-                self.env.cr, self.env.uid, ids)
-            self.assertEquals(
-                url, 'https://api.mch.weixin.qq.com/pay/unifiedorder')
+        notify_url = False
+        if wcpay_tx_values_result['notify_url']:
+            notify_url = True
 
-        def test_get_providers(self):
-            providers = self.pay_model._get_providers(
-                self.env.cr, self.env.uid)
+        self.assertTrue(payment_type)
+        self.assertTrue(notify_url)
+        self.assertEquals(wcpay_tx_values_result['total_fee'], 1.0)
+        self.assertEquals(wcpay_tx_values_result['out_trade_no'], u'SO0001000')
+        self.assertEquals(wcpay_tx_values_result['price'], 1.0)
+        self.assertEquals(wcpay_tx_values_result['subject'], u'SO0001000')
+        self.assertEquals(wcpay_tx_values_result['quantity'], 1)
+        self.assertEquals(wcpay_tx_values_result['sign_type'], 'MD5')
 
-            count = providers.count(['wcpay', 'Wechat Pay'])
-            self.assertEquals(count, 1)
+    def test_wcpay_get_wcpay_urls(self):
+        url = self.pay_model._get_wcpay_urls('test')
 
-        def test_connect_wcpay(self):
-            currency = self.country.browse(self.env.cr, self.env.uid, 1)
-            partner = self.partner.browse(self.env.cr, self.env.uid, 3)
+        if url:
+            self.assertTrue(url)
+        else:
+            self.assertFalse(url)
 
-            tx_values = {
-                'currency_id': 1, 'currency': currency, 'amount': 1.0,
-                'notify_url': u'http://localhost:6162/payment/weixin/notify',
-                'reference': u'SO060', 'partner': partner,
-                'return_url': '/shop/payment/validate'
-            }
+    def test_get_providers(self):
+        providers = self.pay_model._get_providers()
 
-            result = self.pay_model._get_providers(
-                self.env.cr, self.env.uid, tx_values)
-
-            return_code = result.get('return_code', None)
-            self.assertEquals(return_code, 'SUCCESS')
+        count = providers.count(['wcpay', 'Wechat Pay'])
+        self.assertEquals(count, 1)
