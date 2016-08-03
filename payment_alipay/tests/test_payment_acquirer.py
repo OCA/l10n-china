@@ -85,11 +85,16 @@ class TestPaymentAcquirer(common.TransactionCase):
             'seller_email': u'luke.zheng@elico-corp.com',
             '_input_charset': 'utf-8',
             'notify_url': u'http://192.168.99.100:8070/payment/alipay/notify',
-            'partner': False, 'subject': u'SO116',
-            'service': u'create_direct_pay_by_user', 'out_trade_no': u'SO116',
-            'payment_type': '1', 'total_fee': 0.0, 'sign_type': 'MD5',
+            'partner': False,
+            'subject': u'SO116',
+            'service': u'create_direct_pay_by_user',
+            'out_trade_no': u'SO116',
+            'payment_type': '1',
+            'total_fee': 0.0,
+            'sign_type': 'MD5',
             'is_success': 'T',
-            'return_url': u'http://192.168.99.100:8070/payment/alipay/return'}
+            'return_url': u'http://192.168.99.100:8070/payment/alipay/return'
+        }
         inout = 'in'
         acquirer = self.payment_acquirer
         # values has is_success

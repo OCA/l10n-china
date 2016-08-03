@@ -2,11 +2,16 @@
 # © 2016 Elico Corp (www.elico-corp.com).
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
-from openerp.tests import common
 import logging
+
+import openerp
+from openerp.tests import common
+
 _logger = logging.getLogger(__name__)
 
 
+@openerp.tests.common.at_install(False)
+@openerp.tests.common.post_install(True)
 class TestPaymentTransaction(common.TransactionCase):
     def setUp(self):
         super(TestPaymentTransaction, self).setUp()
@@ -20,128 +25,133 @@ class TestPaymentTransaction(common.TransactionCase):
             )
         # create an payment acquirer for testing
         self.payment_acquirer = self.env['payment.acquirer'].create(
-            {'name': 'alipay', 'provider': 'alipay',
+            {
+                'name': 'alipay',
+                'provider': 'alipay',
                 'website_published': True,
                 'alipay_pid': 000000,
-                'alipay_seller_email': 'luke.zheng@elico-corp.com',
+                'alipay_seller_email': 'dummy',
                 'view_template_id': 1,
                 'alipay_key': 1,
-                'service': 'create_direct_pay_by_user'})
-        # self.payment_method = self.env['payment.method'].create(
-        #     {'name': 'alipay',
-        #         'payment_acquirer_id': self.payment_acquirer.id,
-        #         'journal_id': 2,
-        #         'workflow_process_id': 1})
+                'service': 'create_direct_pay_by_user'
+             }
+        )
         # create an empty sale order for testing
         self.sale_order = self.env['sale.order'].create(
-            {'partner_id': 1,
-                'name': 'SO-2015-18-0050',
-                'payment_method_id': self.payment_method.id,
-                'workflow_process_id':
-                    self.payment_method.workflow_process_id.id}
+            {
+                'partner_id': 1,
+                'name': 'SAJ2016080303410037'
+            }
+        )
+        self.account_invoice = self.env['account.invoice'].create(
+            {
+                'account_id': 1,
+                'partner_id': 1,
+                'number': 'SAJ2016080303410037'
+            }
         )
         # create an transaction
         self.payment_transaction = self.env['payment.transaction'].create(
-            {'reference': 'SO-2015-18-0050',
+            {
+                'reference': 'SAJ2016080303410037',
                 'acquirer_id': self.payment_acquirer.id,
                 'sale_order_id': self.sale_order.id,
+                'account_invoice_id': self.account_invoice.id,
                 'amount': 0,
                 'currency_id': 1,
-                'partner_country_id': 1})
+                'partner_country_id': 1
+            }
+        )
         self.product_ids = self.env['product.product'].search(
             [('id', 'in', ids)])
-
+    
     def test_alipay_form_get_tx_from_data(self):
-        """ Checks if the _alipay_form_get_tx_from_data works properly
+        """
+        Checks if the _alipay_form_get_tx_from_data works properly
         """
         return_data = {
-            'seller_email': u'sales@elico-corp.com',
-            'trade_no': u'2015091821001004960062775012',
-            'seller_id': u'2088701568026380',
-            'buyer_email': u'cialuo@126.com',
-            'subject': u'SO-2015-18-0050',
-            'sign': u'0d15f55069ae539ba307ebaa7e299f2d',
-            'exterface': u'create_direct_pay_by_user',
-            'out_trade_no': u'SO-2015-18-0050',
-            'payment_type': u'1', 'total_fee': u'0.01',
-            'sign_type': u'MD5',
-            'notify_time': u'2015-09-18 11:59:52',
-            'trade_status': u'TRADE_SUCCESS',
-            'notify_id': u'RqPnCoPT3K9%2Fvwbh3InVbPoE0j7btVBZMUctZX\
-            TD3%2BDtN9jMfdS3RPF1Kt%2F34kTvi9Jk',
+            'buyer_email': u'234082230@qq.com',
+            'buyer_id': u'2088002032609743',
+            'discount': u'0.00',
+            'gmt_create': u'2016-08-03 11:42:03',
+            'gmt_payment': u'2016-08-03 11:42:25',
+            'is_total_fee_adjust': u'N',
+            'notify_id': u'4cfcf56af12f37b0943c7a1105aea55lpm',
+            'notify_time': u'2016-08-03 11:42:25',
             'notify_type': u'trade_status_sync',
-            'is_success': u'T', 'buyer_id': u'2088002451351968'}
+            'out_trade_no': u'SAJ2016080303410037',
+            'payment_type': u'1',
+            'price': u'0.01',
+            'quantity': u'1',
+            'seller_email': u'sales@elico-corp.com',
+            'seller_id': u'2088701568026380',
+            'sign': u'153a5282a2e14197b614e6d23f7e4083',
+            'sign_type': u'MD5',
+            'subject': u'SAJ2016080303410037',
+            'total_fee': u'0.01',
+            'trade_no': u'2016080321001004740210408910',
+            'trade_status': u'TRADE_SUCCESS',
+            'use_coupon': u'N'
+        }
         self.payment_transaction._alipay_form_get_tx_from_data(return_data)
-        pass
 
     def test_alipay_form_get_invalid_parameters(self):
-        """ Checks if the _alipay_form_get_invalid_parameters works properly
+        """
+        Checks if the _alipay_form_get_invalid_parameters works properly
         """
         return_data = {
-            'seller_email': u'sales@elico-corp.com',
-            'trade_no': u'2015091821001004960062775012',
-            'seller_id': u'2088701568026380',
-            'buyer_email': u'cialuo@126.com',
-            'subject': u'SO-2015-18-0050',
-            'sign': u'0d15f55069ae539ba307ebaa7e299f2d',
-            'exterface': u'create_direct_pay_by_user',
-            'out_trade_no': u'SO-2015-18-0050',
-            'payment_type': u'1', 'total_fee': u'0.01',
-            'sign_type': u'MD5',
-            'notify_time': u'2015-09-18 11:59:52',
-            'trade_status': u'TRADE_SUCCESS',
-            'notify_id': u'RqPnCoPT3K9%2Fvwbh3InVbPoE0j7btVBZMUctZX\
-            TD3%2BDtN9jMfdS3RPF1Kt%2F34kTvi9Jk',
+            'buyer_email': u'234082230@qq.com',
+            'buyer_id': u'2088002032609743',
+            'discount': u'0.00',
+            'gmt_create': u'2016-08-03 11:42:03',
+            'gmt_payment': u'2016-08-03 11:42:25',
+            'is_total_fee_adjust': u'N',
+            'notify_id': u'4cfcf56af12f37b0943c7a1105aea55lpm',
+            'notify_time': u'2016-08-03 11:42:25',
             'notify_type': u'trade_status_sync',
-            'is_success': u'T', 'buyer_id': u'2088002451351968'}
+            'out_trade_no': u'SAJ2016080303410037',
+            'payment_type': u'1',
+            'price': u'0.01',
+            'quantity': u'1',
+            'seller_email': u'sales@elico-corp.com',
+            'seller_id': u'2088701568026380',
+            'sign': u'153a5282a2e14197b614e6d23f7e4083',
+            'sign_type': u'MD5',
+            'subject': u'SAJ2016080303410037',
+            'total_fee': u'0.01',
+            'trade_no': u'2016080321001004740210408910',
+            'trade_status': u'TRADE_SUCCESS',
+            'use_coupon': u'N'
+        }
         self.payment_transaction._alipay_form_get_invalid_parameters(
             self.payment_transaction, return_data)
-        pass
 
     def test_alipay_form_validate(self):
         """ Checks if the _alipay_form_validate works properly
         """
         return_data = {
-            'seller_email': u'sales@elico-corp.com',
-            'trade_no': u'2015091821001004960062775012',
-            'seller_id': u'2088701568026380',
-            'buyer_email': u'cialuo@126.com',
-            'subject': u'SO-2015-18-0050',
-            'sign': u'0d15f55069ae539ba307ebaa7e299f2d',
-            'exterface': u'create_direct_pay_by_user',
-            'out_trade_no': u'SO-2015-18-0050',
-            'payment_type': u'1', 'total_fee': u'0.01',
-            'sign_type': u'MD5',
-            'notify_time': u'2015-09-18 11:59:52',
-            'trade_status': u'TRADE_SUCCESS',
-            'notify_id': u'RqPnCoPT3K9%2Fvwbh3InVbPoE0j7btVBZMUctZX\
-            TD3%2BDtN9jMfdS3RPF1Kt%2F34kTvi9Jk',
+            'buyer_email': u'234082230@qq.com',
+            'buyer_id': u'2088002032609743',
+            'discount': u'0.00',
+            'gmt_create': u'2016-08-03 11:42:03',
+            'gmt_payment': u'2016-08-03 11:42:25',
+            'is_total_fee_adjust': u'N',
+            'notify_id': u'4cfcf56af12f37b0943c7a1105aea55lpm',
+            'notify_time': u'2016-08-03 11:42:25',
             'notify_type': u'trade_status_sync',
-            'is_success': u'T', 'buyer_id': u'2088002451351968'}
+            'out_trade_no': u'SAJ2016080303410037',
+            'payment_type': u'1',
+            'price': u'0.01',
+            'quantity': u'1',
+            'seller_email': u'sales@elico-corp.com',
+            'seller_id': u'2088701568026380',
+            'sign': u'153a5282a2e14197b614e6d23f7e4083',
+            'sign_type': u'MD5',
+            'subject': u'SAJ2016080303410037',
+            'total_fee': u'0.01',
+            'trade_no': u'2016080321001004740210408910',
+            'trade_status': u'TRADE_SUCCESS',
+            'use_coupon': u'N'
+        }
         self.payment_transaction._alipay_form_validate(
             self.payment_transaction, return_data)
-        pass
-
-    # def test_alipay_auto_payment(self):
-    #     """ Checks if the alipay_auto_payment works properly
-    #     """
-    #     return_data = {
-    #         'seller_email': u'sales@elico-corp.com',
-    #         'trade_no': u'2015091821001004960062775012',
-    #         'seller_id': u'2088701568026380',
-    #         'buyer_email': u'cialuo@126.com',
-    #         'subject': u'SO-2015-18-0050',
-    #         'sign': u'0d15f55069ae539ba307ebaa7e299f2d',
-    #         'exterface': u'create_direct_pay_by_user',
-    #         'out_trade_no': u'SO-2015-18-0050',
-    #         'payment_type': u'1', 'total_fee': u'0.01',
-    #         'sign_type': u'MD5',
-    #         'notify_time': u'2015-09-18 11:59:52',
-    #         'trade_status': u'TRADE_SUCCESS',
-    #         'notify_id': u'RqPnCoPT3K9%2Fvwbh3InVbPoE0j7btVBZMUctZX\
-    #         TD3%2BDtN9jMfdS3RPF1Kt%2F34kTvi9Jk',
-    #         'notify_type': u'trade_status_sync',
-    #         'is_success': u'T', 'buyer_id': u'2088002451351968'}
-    #     self.payment_transaction.alipay_auto_payment(
-    #         self.payment_transaction, return_data)
-    #     pass

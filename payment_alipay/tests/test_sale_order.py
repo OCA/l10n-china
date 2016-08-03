@@ -2,9 +2,16 @@
 # © 2016 Elico Corp (www.elico-corp.com).
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
+import logging
+
+import openerp
 from openerp.tests import common
 
+_logger = logging.getLogger(__name__)
 
+
+# @openerp.tests.common.at_install(False)
+# @openerp.tests.common.post_install(True)
 class TestSaleOrder(common.TransactionCase):
     def setUp(self):
         super(TestSaleOrder, self).setUp()
@@ -25,7 +32,7 @@ class TestSaleOrder(common.TransactionCase):
             {'name': 'alipay', 'provider': 'alipay',
                 'website_published': True,
                 'alipay_pid': 000000,
-                'alipay_seller_email': 'luke.zheng@elico-corp.com',
+                'alipay_seller_email': 'dummy',
                 'view_template_id': 1,
                 'alipay_key': 1,
                 'service': 'create_direct_pay_by_user'})
@@ -37,14 +44,14 @@ class TestSaleOrder(common.TransactionCase):
             Test alipay url function:
                 _get_ids
         """
-        print '---111print---'
-        print '-111--0000', self.sale_order.alipay_url_direct_pay
+        _logger.info('---111print---')
+        _logger.info('-111--0000' + str(self.sale_order.alipay_url_direct_pay))
         self.sale_order.state = 'draft'
         self.sale_order._edi_alipay_url_direct_pay()
-        print '00----88', self.sale_order.alipay_url_direct_pay
+        _logger.info('00----88' + str(self.sale_order.alipay_url_direct_pay))
         self.sale_order.state = 'sent'
         self.sale_order._edi_alipay_url_direct_pay()
-        print '00--confirmed--88', self.sale_order.alipay_url_direct_pay
+        _logger.info('00--confirmed--88' + str(self.sale_order.alipay_url_direct_pay))
 
     def test_edi_alipay_url_acquirer(self):
         """
@@ -79,20 +86,20 @@ class TestSaleOrder(common.TransactionCase):
             {'name': 'alipay', 'provider': 'alipay',
                 'website_published': True,
                 'alipay_pid': 000000,
-                'alipay_seller_email': 'luke.zheng@elico-corp.com',
+                'alipay_seller_email': 'dummy',
                 'view_template_id': 1,
                 'alipay_key': 1,
                 'service': 'create_direct_pay_by_user'})
-        print '00--2--88', self.sale_order.alipay_url_direct_pay
+        _logger.info('00--2--88' + str(self.sale_order.alipay_url_direct_pay))
         self.sale_order._edi_alipay_url_direct_pay()
-        print '00--confirmed--88', self.sale_order.alipay_url_direct_pay
+        _logger.info('00--confirmed--88' + str(self.sale_order.alipay_url_direct_pay))
 
         # # null payment acquirer for testing
         self.env['payment.acquirer'].unlink()
-        print '00--2--88', self.sale_order.alipay_url_direct_pay
+        _logger.info('00--2--88' + str(self.sale_order.alipay_url_direct_pay))
         self.sale_order._edi_alipay_url_direct_pay()
 
-        print '00--confirmed--88', self.sale_order.alipay_url_direct_pay
+        _logger.info('00--confirmed--88' + str(self.sale_order.alipay_url_direct_pay))
         # state = sent
         self.sale_order.write({'state': 'sent'})
         self.sale_order._edi_alipay_url_direct_pay()
