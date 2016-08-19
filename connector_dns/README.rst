@@ -1,11 +1,11 @@
 .. image:: https://img.shields.io/badge/licence-AGPL--3-blue.svg
     :alt: License
 
+=============
 Connector Dns
-=====================
+=============
 
 This module aims to allows to manage your DNS domain through Odoo.
-
 
 Installation
 ============
@@ -36,10 +36,11 @@ Known issues / Roadmap
 Credits
 =======
 
-
 Contributors
 ------------
 
+* Eric Caudal <eric.caudal@elico-corp.com>
+* Noah Wang <noah.wang@elico-corp.com>
 * Liu Lixia <liu.lixia@elico-corp.com>
 * Augustin Cisterne-Kaas
 
