@@ -13,4 +13,9 @@ This l10n-china repository is hosted in Github and might contain any module rela
 * Other specific modules (Link to courrier companies, etc.)
 
 [//]: # (addons)
+payment_alipay
+payment_allpay
+payment_tenpay
+payment_weixin
 [//]: # (end addons)
+

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="1">
+
+        <template id="weixin_acquirer_button">
+            <form t-if="acquirer.weixin_appid" t-att-action="tx_url" method="post" target="_self" enctype="text/plain">
+                <!--<input type="hidden" name="appid" t-att-value="tx_values['appid']"/>-->
+                <!--<input type="hidden" name="mch_id" t-att-value="tx_values['mch_id']"/>-->
+                <!--<input type="hidden" name="noncestr" t-att-value="tx_values['noncestr']"/>-->
+                <!--<input type="hidden" name="body" t-att-value="tx_values['body']"/>-->
+                <!--<input type="hidden" name="out_trade_no" t-att-value="tx_values['out_trade_no']"/>-->
+                <!--<input type="hidden" name="total_fee" t-att-value="tx_values['total_fee']"/>-->
+                <!--<input type="hidden" name="spbill_create_ip" t-att-value="tx_values['spbill_create_ip']"/>-->
+                <!--<input type="hidden" name="notify_url" t-att-value="tx_values['notify_url']"/>-->
+                <!--<input type="hidden" name="trade_type" t-att-value="tx_values['trade_type']"/>-->
+                <!--<input type="hidden" name="product_id" t-att-value="tx_values['product_id']"/>-->
+                <!--<input type="hidden" name="sign" t-att-value="tx_values['sign']"/>-->
+                <!--<input type="hidden"-->
+                <!--t-att-value=" <xml> <appid>tx_values['appid']</appid> <mch_id>tx_values['mch_id']</mch_id> <noncestr>tx_values['noncestr']</noncestr> <body>tx_values['body']</body> <out_trade_no>tx_values['out_trade_no']</out_trade_no> <total_fee>tx_values['total_fee']</total_fee> <spbill_create_ip>tx_values['spbill_create_ip']</spbill_create_ip> <notify_url>tx_values['notify_url']</notify_url> <trade_type>tx_values['trade_type']</trade_type> <product_id>tx_values['product_id']</product_id> <sign>tx_values['sign']</sign> </xml> "/>-->
+
+                <button type="submit" width="100px"
+                        t-att-class="submit_class">
+                    <t t-if="not submit_txt">
+                        <img t-attf-src="/report/barcode/?type=QR&amp;value={{tx_values['qrcode']}}&amp;width=200&amp;height=200"/>
+                    </t>
+                    <span t-if="submit_txt">
+                        <t t-esc="submit_txt"/>
+                        <span class="fa fa-long-arrow-right"/>
+                    </span>
+                </button>
+            </form>
+        </template>
+
+    </data>
+</openerp>
