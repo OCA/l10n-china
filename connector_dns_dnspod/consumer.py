@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
-# Copyright <YEAR(S)> <AUTHOR(S)>
+# Copyright 2015 Elico Corp
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 from openerp.addons.connector.event import (on_record_write,
-                                            on_record_create,
-                                            on_record_unlink
+                                            on_record_create
                                             )
 from .unit.export_synchronizer import export_record
 
@@ -28,7 +27,16 @@ def write_export_all_bindings(session, model_name, record_id, fields=None):
     if session.context.get('connector_no_export'):
         return
     model = session.pool.get(model_name)
-    record = model.browse(session.cr, session.uid,
-                          record_id, context=session.context)
-    export_record.delay(session, record._model._name, record.id, fields=fields,
-                        method='write')
+    record = model.browse(
+        session.cr,
+        session.uid,
+        context=session.context
+    )
+
+    export_record.delay(
+        session,
+        record._model._name,
+        record.id,
+        fields=fields,
+        method='write'
+    )

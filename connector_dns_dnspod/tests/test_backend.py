@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright <YEAR(S)> <AUTHOR(S)>
+# Copyright 2015 Elico Corp
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 import openerp.tests.common as common
 from openerp.addons.connector.backend import Backend

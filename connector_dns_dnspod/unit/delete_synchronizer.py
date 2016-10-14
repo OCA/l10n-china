@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright <YEAR(S)> <AUTHOR(S)>
+# Copyright 2015 Elico Corp
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 from openerp.addons.connector.unit.synchronizer import Deleter
 from openerp.tools.translate import _
@@ -16,7 +16,8 @@ class DNSDeleter(Deleter):
         :param magento_id: identifier of the record to delete
         """
         result = self.backend_adapter.delete(data)
-        if int(result['status']['code']) == 1 or int(result['status']['code']) == 8:
+        if int(result['status']['code']) == 1 \
+                or int(result['status']['code']) == 8:
             dns_record = self.env['dns.record'].browse(binding_id)
             dns_record.with_context(connector_no_export=True).write(
                 {

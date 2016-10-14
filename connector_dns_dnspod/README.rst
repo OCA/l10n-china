@@ -28,15 +28,14 @@ Usage
 To use this module, you need to:
 #. Create a backend which links to your dnspod.cn.
 #. When you create a domain belongs to the backend,if the domain
-   export to the dnspod.cn successfully,the state will change to
-   done,else exception.
+export to the dnspod.cn successfully,the state will change to
+done,else exception.
 #. Record can be created only in the domain which state is done.
 
 Known issues / Roadmap
 ======================
 
 * This connector is only compatible with dnspod.cn and not dnspod.com which has a different API.
-Add a line note
 
 Credits
 =======

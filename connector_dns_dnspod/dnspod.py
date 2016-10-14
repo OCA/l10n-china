@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
-# Copyright <YEAR(S)> <AUTHOR(S)>
+# Copyright 2015 Elico Corp
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
+
 import httplib
 import json
 import logging
@@ -51,36 +52,43 @@ class DNSPodBackend(models.Model):
         else:
             return None
 
-    @api.one
+    @api.multi
     def button_connect(self):
-        params = self.params()
-        data = self.request('Domain.List', params)
-        data = json.loads(data)
-        if int(data['status']['code']) != -1:
-            self.state = 'done'
-        else:
-            self.state = 'exception'
+        for dns_backend in self:
+            params = dns_backend.params()
+            data = dns_backend.request('Domain.List', params)
+            data = json.loads(data)
+            if int(data['status']['code']) != -1:
+                dns_backend.state = 'done'
+            else:
+                dns_backend.state = 'exception'
 
-    @api.one
+    @api.multi
     def button_set_draft(self):
-        self.state = 'draft'
+        for dns_backend in self:
+            dns_backend.state = 'draft'
 
 
 class DNSPodDomain(models.Model):
     _inherit = 'dns.domain'
 
-    @api.one
+    @api.multi
     def button_get_sub_domains(self):
-        """ Create a job which import all the bindings of a record."""
-        session = ConnectorSession(self._cr, self._uid, context=self._context)
-        if session.context.get('connector_no_export'):
-            return
-        data = {}
-        data['format'] = 'json'
-        data['login_email'] = self.backend_id.login
-        data['login_password'] = self.backend_id.password
-        data['domain_id'] = self.dns_id
-        import_record.delay(session, self.id, data)
+        for dns_backend in self:
+            # Create a job which import all the bindings of a record.
+            session = ConnectorSession(
+                dns_backend._cr,
+                dns_backend._uid,
+                context=dns_backend._context
+            )
+            if session.context.get('connector_no_export'):
+                return
+            data = {}
+            data['format'] = 'json'
+            data['login_email'] = dns_backend.backend_id.login
+            data['login_password'] = dns_backend.backend_id.password
+            data['domain_id'] = dns_backend.dns_id
+            import_record.delay(session, dns_backend.id, data)
 
 
 @job
@@ -92,12 +100,18 @@ def import_record(session, dns_domain_id, data):
         return _(u'Nothing to do because the record has been deleted.')
 
     try:
-        result = dns_domain.backend_id.request('Record.List', data, method='POST')
+        result = dns_domain.backend_id.request(
+            'Record.List',
+            data,
+            method='POST'
+        )
 
         result_json = json.loads(result)
         if result_json['status']['code'] == '1':
             for record in result_json['records']:
-                dns_record_id = dns_record_model.search([('name', '=', record['name'])])
+                dns_record_id = dns_record_model.search(
+                    [('name', '=', record['name'])]
+                )
                 if record['type'] == 'NS':
                     continue
                 if dns_record_id:
