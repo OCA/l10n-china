@@ -11,7 +11,8 @@
     'website': 'https://www.elico-corp.com',
     'data': [
         'security/connector_group.xml',
-        'security/ir.model.access.csv'
+        'security/ir.model.access.csv',
+        'views/dns_domain_view.xml'
     ],
     'installable': True,
     'application': False

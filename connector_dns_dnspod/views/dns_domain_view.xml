@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <record id="dns_domain_form_inherit" model="ir.ui.view">
+            <field name="name">DNS domain form inherit</field>
+            <field name="model">dns.domain</field>
+            <field name="type">form</field>
+            <field name="inherit_id" ref="connector_dns.dns_domain_form"/>
+            <field name="arch" type="xml" >
+                <xpath expr="//field[@name='state']" position="replace">
+                    <button name="button_get_sub_domains" string="Get Sub domains" type="object"/>
+                    <field name="state" widget="statusbar" clickable="True"/>
+                </xpath>
+                <xpath expr="//field[@name='backend_id']" position="after">
+                    <field name="dns_id" />
+                </xpath>
+            </field>
+        </record>
+    </data>
+</openerp>
