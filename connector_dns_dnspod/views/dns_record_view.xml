@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <record id="dns_record_tree_inherit" model="ir.ui.view">
+            <field name="name">DNS Record tree inherit</field>
+            <field name="model">dns.record</field>
+            <field name="type">tree</field>
+            <field name="inherit_id" ref="connector_dns.dns_record_tree"/>
+            <field name="arch" type="xml" >
+                <xpath expr="//field[@name='value']" position="before">
+                    <field name="record_id" />
+                </xpath>
+            </field>
+        </record>
+    </data>
+</openerp>
