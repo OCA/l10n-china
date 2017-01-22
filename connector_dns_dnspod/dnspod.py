@@ -108,6 +108,7 @@ def import_record(session, dns_domain_id, data):
 
         result_json = json.loads(result)
         if result_json['status']['code'] == '1':
+            record_list_str = ''
             for record in result_json['records']:
                 dns_record_id = dns_record_model.search(
                     [('name', '=', record['name'])]
@@ -127,6 +128,11 @@ def import_record(session, dns_domain_id, data):
                             'ttl': record['ttl'],
                             'backend_id': dns_domain.backend_id.id,
                         })
+                    record_list_str = '%s%s.%s:%s, ' % (
+                        record_list_str,
+                        record['name'],
+                        dns_domain.name,
+                        record['value'])
                 else:
                     dns_record_model \
                         .with_context(connector_no_export=True)\
@@ -141,8 +147,14 @@ def import_record(session, dns_domain_id, data):
                             'ttl': record['ttl'],
                             'backend_id': dns_domain.backend_id.id,
                         })
+                    record_list_str = '%s%s.%s:%s, ' % (
+                        record_list_str,
+                        record['name'],
+                        dns_domain.name,
+                        record['value'])
+            return _('Import record success %s' % record_list_str)
         else:
-            raise result
+            return _('Import record error %s' % result_json['records'])
     except:
         raise
 
