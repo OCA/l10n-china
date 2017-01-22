@@ -31,12 +31,12 @@ class DNSExporter(DNSBaseExporter):
             result = self._create(record)
             if int(result['status']['code']) == 1:
                 self.external_id = result['id']
-                self.binding_record.with_context(connector_no_export=True).write(
-                    {
+                self.binding_record.with_context(connector_no_export=True)\
+                    .write({
                         'record_id': result['id']
-                    }
-                )
-                return _('Record successfully exported in DNSPod.')
+                    })
+                return _('Record successfully exported record_id: %s' %
+                         result['id'])
             else:
                 return _('Record export failed with status code: %s' % (
                     result['status']['code']))
@@ -44,12 +44,12 @@ class DNSExporter(DNSBaseExporter):
             result = self._update(record)
             if int(result['status']['code']) == 1:
                 self.external_id = result['id']
-                self.binding_record.with_context(connector_no_export=True).write(
-                    {
+                self.binding_record.with_context(connector_no_export=True)\
+                    .write({
                         'record_id': result['id']
-                    }
-                )
-                return _('Record successfully exported in DNSPod.')
+                    })
+                return _('Record successfully exported record_id: %s' %
+                         result['id'])
             else:
                 return _('Record export failed with status code: %s' % (
                     result['status']['code']))

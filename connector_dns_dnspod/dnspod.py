@@ -128,7 +128,7 @@ def import_record(session, dns_domain_id, data):
                             'ttl': record['ttl'],
                             'backend_id': dns_domain.backend_id.id,
                         })
-                    record_list_str = '%s%s.%s:%s, ' % (
+                    record_list_str = '%s, %s.%s:%s' % (
                         record_list_str,
                         record['name'],
                         dns_domain.name,
@@ -147,12 +147,12 @@ def import_record(session, dns_domain_id, data):
                             'ttl': record['ttl'],
                             'backend_id': dns_domain.backend_id.id,
                         })
-                    record_list_str = '%s%s.%s:%s, ' % (
+                    record_list_str = '%s, %s.%s:%s' % (
                         record_list_str,
                         record['name'],
                         dns_domain.name,
                         record['value'])
-            return _('Import record success %s' % record_list_str)
+            return 'Import record success %s' % record_list_str
         else:
             return _('Import record error %s' % result_json['records'])
     except:
