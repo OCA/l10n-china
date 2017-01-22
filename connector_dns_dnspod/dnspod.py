@@ -111,10 +111,18 @@ def import_record(session, dns_domain_id, data):
             record_list_str = ''
             for record in result_json['records']:
                 dns_record_id = dns_record_model.search(
-                    [('name', '=', record['name'])]
+                    [('record_id', '=', record['id'])]
                 )
-                if record['type'] == 'NS':
-                    continue
+                if not dns_record_id:
+                    dns_record_id = dns_record_model.search(
+                        [('name', '=', record['name']),
+                         ('domain_id', '=', dns_domain.id),
+                         ('type', '=', record['type']),
+                         ('line', '=', record['line']),
+                         ('value', '=', record['value']),
+                         ('mx_priority', '=', record['mx']),
+                         ('ttl', '=', record['ttl'])]
+                    )
                 if dns_record_id:
                     dns_record_id[0]\
                         .with_context(connector_no_export=True)\
