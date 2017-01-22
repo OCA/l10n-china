@@ -16,9 +16,18 @@ def create_domain_all_bindings(session, model_name, record_id, fields=None):
     if session.context.get('connector_no_export'):
         return
     model = session.pool.get(model_name)
-    record = model.browse(session.cr, session.uid,
-                          record_id, context=session.context)
-    export_record.delay(session, record._model._name, record.id, fields=fields)
+    record = model.browse(
+        session.cr,
+        session.uid,
+        record_id,
+        context=session.context
+    )
+    export_record.delay(
+        session,
+        record._model._name,
+        record.id,
+        fields=fields
+    )
 
 
 @on_record_write(model_names=_MODEL_NAMES_RECORD)

@@ -31,15 +31,28 @@ class DNSExporter(DNSBaseExporter):
             result = self._create(record)
             if int(result['status']['code']) == 1:
                 self.external_id = result['id']
+                self.binding_record.with_context(connector_no_export=True).write(
+                    {
+                        'record_id': result['id']
+                    }
+                )
+                return _('Record successfully exported in DNSPod.')
             else:
-                return result
+                return _('Record export failed with status code: %s' % (
+                    result['status']['code']))
         elif method == 'write':
             result = self._update(record)
             if int(result['status']['code']) == 1:
                 self.external_id = result['id']
+                self.binding_record.with_context(connector_no_export=True).write(
+                    {
+                        'record_id': result['id']
+                    }
+                )
+                return _('Record successfully exported in DNSPod.')
             else:
-                return result
-        return _('Record successfully exported in DNSPod.')
+                return _('Record export failed with status code: %s' % (
+                    result['status']['code']))
 
     def _create(self, data):
         """ Create the DNS record """

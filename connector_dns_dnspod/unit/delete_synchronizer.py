@@ -26,7 +26,9 @@ class DNSDeleter(Deleter):
             )
             dns_record.unlink()
         else:
-            return result
+            return _('Record %s delete failed with status code: %s' % (
+                binding_id,
+                result['status']['code']))
         return _('Record %s deleted on Dnspod') % binding_id
 
 
