@@ -39,6 +39,7 @@ def write_export_all_bindings(session, model_name, record_id, fields=None):
     record = model.browse(
         session.cr,
         session.uid,
+        record_id,
         context=session.context
     )
 
