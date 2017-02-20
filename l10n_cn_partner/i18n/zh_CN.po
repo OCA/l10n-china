@@ -1,0 +1,39 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* l10n_cn_partner
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 9.0c\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-03-21 07:45+0000\n"
+"PO-Revision-Date: 2016-03-21 16:00+0800\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: \n"
+"X-Generator: Poedit 1.5.4\n"
+
+#. module: l10n_cn_partner
+#: model:ir.model,name:l10n_cn_partner.model_res_partner
+msgid "Partner"
+msgstr "业务伙伴"
+
+#. module: l10n_cn_partner
+#: code:addons/l10n_cn_partner/models/partner.py:15
+#, python-format
+msgid "Permanent Address"
+msgstr "户籍地址"
+
+#. module: l10n_cn_partner
+#: code:addons/l10n_cn_partner/models/partner.py:14
+#, python-format
+msgid "Residence Address"
+msgstr "居住地址"
+
+#. module: l10n_cn_partner
+#: model:ir.ui.view,arch_db:l10n_cn_partner.partner_view_buttons
+msgid "Type:"
+msgstr "类型："
