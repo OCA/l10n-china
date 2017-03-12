@@ -6,7 +6,7 @@
     "summary": "l10n_hr",
     "version": "9.0.1.0.2",
     "category": "hr",
-    "website": "www.elico-corp.com",
+    "website": "https://www.elico-corp.com/",
     "author": "Elico corp",
     "license": "AGPL-3",
     "application": False,
