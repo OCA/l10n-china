@@ -6,56 +6,43 @@
 Chinese Fapiao Management
 =========================
 
-"Fapiao" is an official invoice in China, printed in a separate official
+"Fapiao" is an official invoice in China, printed with a separate official
 software. This module allows the users to manage all emitted and received
-"fapiao" as object in OpenERP. It has no impact on accounting books and doesn't
-(yet) integrate with external official software. It adds new submenu called
-Fapiao under the menu Accounting.
+"fapiao" as object in Odoo. A new submenu called Fapiao is added under the
+menu Accounting.
 
 Usage
 =====
 
 The procedure to follow for the fapiao management is as below:
 
-* Step 1: A fapiao is received or emitted.
-* Step 2: The document can be scanned as image.
-* Step 3: A new fapiao is created in OpenERP.
-* Step 4: The scanned document is uploaded to the newly created object as
-  attachment.
-* Step 5: Fapiao allocation to invoice: Fapiao and OpenERP invoices can be
+#. A fapiao is received or emitted.
+#. The document can be scanned as image.
+#. A new fapiao is created in OpenERP.
+#. The scanned document is uploaded to the newly created object as attachment.
+#. Fapiao allocation to invoice: Fapiao and OpenERP invoices can be
   linked to each other.
-
-To use this module, you need to:
-
-#. Go to ...
 
 .. image:: https://odoo-community.org/website/image/ir.attachment/5784_f2813bd/datas
    :alt: Try me on Runbot
    :target: https://runbot.odoo-community.org/runbot/l10n-china/8.0
 
-.. repo_id is available in https://github.com/OCA/maintainer-tools/blob/master/tools/repos_with_ids.txt
-.. branch is "8.0" for example
-
 Known issues / Roadmap
 ======================
 
-* ...
+* Fapiao management has no impact on accounting books and
+* It doesn't (yet) integrate with external official software. 
 
 Bug Tracker
 ===========
 
 Bugs are tracked on `GitHub Issues
-<https://github.com/OCA/{project_repo}/issues>`_. In case of trouble, please
+<https://github.com/OCA/l10n-china/issues>`_. In case of trouble, please
 check there if your issue has already been reported. If you spotted it first,
 help us smash it by providing detailed and welcomed feedback.
 
 Credits
 =======
-
-Images
-------
-
-* Odoo Community Association: `Icon <https://github.com/OCA/maintainer-tools/blob/master/template/module/static/description/icon.svg>`_.
 
 Contributors
 ------------
