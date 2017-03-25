@@ -10,6 +10,7 @@ This l10n-china repository is hosted in Github and might contain any module rela
 * Other specific modules (Link to courrier companies, etc.)
 
 [//]: # (addons)
+
 Available addons
 ----------------
 addon | version | summary
