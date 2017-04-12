@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_payment_method_user,payment_method_user,model_payment_method,base.group_user,1,0,0,0
+access_payment_method_portal,payment_method_portal,model_payment_method,base.group_portal,1,0,0,0
+access_payment_method_public,payment_method_public,model_payment_method,base.group_public,1,0,0,0
+access_account_account_portal,account_account_portal,account.model_account_account,base.group_portal,1,0,0,0
+access_account_account_public,account_account_public,account.model_account_account,base.group_public,1,0,0,0
+access_account_account_user,account_account_user,account.model_account_account,base.group_user,1,0,0,0
