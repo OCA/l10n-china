@@ -13,4 +13,12 @@ This l10n-china repository is hosted in Github and might contain any module rela
 * Other specific modules (Link to courrier companies, etc.)
 
 [//]: # (addons)
+
+Available addons
+----------------
+addon | version | summary
+--- | --- | ---
+[payment_alipay](payment_alipay/) | 8.0.2.0.2 | Payment Acquirer: Alipay Implementation
+[payment_wcpay](payment_wcpay/) | 8.0.2.0.0 | Payment Acquirer: Wechat Implementation
+
 [//]: # (end addons)
