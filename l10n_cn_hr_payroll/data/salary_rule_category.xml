@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <!-- 规则分类 -->
+        <record id="BT" model="hr.salary.rule.category">
+            <field name="name">Pre tax income</field>
+            <field name="code">PTI</field>
+            <field name="parent_id" ref="hr_payroll.GROSS"/>
+        </record>
+
+        <record id="TCC" model="hr.salary.rule.category">
+            <field name="name">Total Company Contribution</field>
+            <field name="code">TCC</field>
+        </record>
+
+        <record id="ADJ" model="hr.salary.rule.category">
+            <field name="name">Adjustment</field>
+            <field name="code">ADJ</field>
+        </record>
+
+        <record id="DED2" model="hr.salary.rule.category">
+            <field name="name">Deduction After Tax</field>
+            <field name="code">DED2</field>
+        </record>
+
+    </data>
+</openerp>

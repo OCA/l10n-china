@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+    
+        <record id="hr_contract_form_l10n_cn_inherit" model="ir.ui.view">
+            <field name="name">hr.contract.form.inherit</field>
+            <field name="model">hr.contract</field>
+            <field name="type">form</field>
+            <field name="priority">20</field>
+            <field name="inherit_id" ref="hr_contract.hr_contract_view_form"/>
+            <field name="arch" type="xml">
+            <data>
+                 <xpath expr="//field[@name='struct_id']" position="after">
+                    <field name="social_insurance_amount"/>
+                    <field name="housing_fund_base_amount"/>
+                    <field name="pit_exemption_amount"/>
+                    <field name="pit_base_amount"/>
+                 </xpath>
+            </data>
+            </field>
+        </record>
+
+        <record id="view_employee_form_inherit" model="ir.ui.view">
+            <field name="name">hr.employee.form.inherit</field>
+            <field name="model">hr.employee</field>
+            <field name="type">form</field>
+            <field name="priority">20</field>
+            <field name="inherit_id" ref="hr.view_employee_form"/>
+            <field name="arch" type="xml">
+            <data>
+                 <xpath expr="//group[@name='active_group']" position="inside">
+                    <field name="entry_date"/>
+                    <field name="worked_years"/>
+                 </xpath>
+            </data>
+            </field>
+        </record>
+        
+    </data>
+</openerp>
