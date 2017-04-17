@@ -1,25 +1,101 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
     <data>
+        <record id="hr_rule_basic_pit_base" model="hr.salary.rule">
+            <field name="category_id" ref="hr_payroll.BASIC"/>
+            <field name="name">Basic</field>
+            <field name="code">PITBASE</field>
+            <field name="appears_on_payslip" eval="False"/>
+            <field name="sequence">1</field>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = contract.pit_base_amount</field>
+        </record>
+
+        <!-- Other -->
+        <record id="hr_rule_other" model="hr.salary.rule">
+            <field name="category_id" ref="hr_payroll.DED"/>
+            <field name="name">Others</field>
+            <field name="code">OTHER</field>
+            <field name="appears_on_payslip" eval="True"/>
+            <field name="sequence">130</field>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = inputs.OTHER and inputs.OTHER.amount</field>
+        </record>
+
+        <record id="hr_rule_input_other" model="hr.rule.input">
+            <field name="code">OTHER</field>
+            <field name="name">Others</field>
+            <field name="input_id" ref="hr_rule_other"/>
+        </record>
+
+        <!-- Reimbursement -->
+        <record id="hr_rule_rmb" model="hr.salary.rule">
+            <field name="category_id" ref="hr_payroll.ALW"/>
+            <field name="name">Reimbursement</field>
+            <field name="code">RMB</field>
+            <field name="appears_on_payslip" eval="True"/>
+            <field name="sequence">705</field>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = inputs.RMB and inputs.RMB.amount</field>
+        </record>
+
+        <record id="hr_rule_input_rmb" model="hr.rule.input">
+            <field name="code">RMB</field>
+            <field name="name">Reimbursement</field>
+            <field name="input_id" ref="hr_rule_rmb"/>
+        </record>
+
+        <!-- Rental Subsidy -->
+        <record id="hr_rule_rentss" model="hr.salary.rule">
+            <field name="category_id" ref="hr_payroll.ALW"/>
+            <field name="name">Rental Subsidy</field>
+            <field name="code">RENTSS</field>
+            <field name="appears_on_payslip" eval="True"/>
+            <field name="sequence">715</field>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = contract.wage - contract.pit_base_amount</field>
+        </record>
+
+        <!-- Rental Tax -->
+        <record id="hr_rule_rentax" model="hr.salary.rule">
+            <field name="category_id" ref="DED2"/>
+            <field name="name">Rental Tax</field>
+            <field name="code">RENTAX</field>
+            <field name="appears_on_payslip" eval="True"/>
+            <field name="sequence">716</field>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = inputs.RENTAX and inputs.RENTAX.amount</field>
+        </record>
+
+        <record id="hr_rule_input_rentax" model="hr.rule.input">
+            <field name="code">RENTAX</field>
+            <field name="name">Rental Tax</field>
+            <field name="input_id" ref="hr_rule_rentax"/>
+        </record>
 
         <!-- 短期病假母规则 -->
         <record id="hr_rule_sl" model="hr.salary.rule">
-            <field name="category_id" ref="DED2"/>
+            <field name="category_id" ref="hr_payroll.DED"/>
             <field name="name">Sick Leave</field>
             <field name="code">SSL</field>
             <field name="appears_on_payslip" eval="False"/>
-            <field name="sequence">707</field>
+            <field name="sequence">150</field>
             <field name="condition_select">none</field>
             <field name="amount_select">fix</field>
         </record>
 
         <record id="hr_rule_ssl1" model="hr.salary.rule">
-            <field name="category_id" ref="DED2"/>
+            <field name="category_id" ref="hr_payroll.DED"/>
             <field name="parent_rule_id" ref="hr_rule_sl"/>
             <field name="name">Sick Leave</field>
             <field name="code">SSL</field>
             <field name="appears_on_payslip" eval="True"/>
-            <field name="sequence">707</field>
+            <field name="sequence">150</field>
             <field name="condition_select">python</field>
             <field name="condition_python"><![CDATA[result = True if employee.worked_years<2 else False]]></field>
             <field name="quantity">worked_days.SickLeave.number_of_days</field>
@@ -29,12 +105,12 @@
         </record>
 
         <record id="hr_rule_ssl2" model="hr.salary.rule">
-            <field name="category_id" ref="DED2"/>
+            <field name="category_id" ref="hr_payroll.DED"/>
             <field name="parent_rule_id" ref="hr_rule_sl"/>
             <field name="name">Sick Leave</field>
             <field name="code">SSL</field>
             <field name="appears_on_payslip" eval="True"/>
-            <field name="sequence">707</field>
+            <field name="sequence">150</field>
             <field name="condition_select">python</field>
             <field name="condition_python"><![CDATA[result = True if employee.worked_years>=2 and employee.worked_years<4 else False]]></field>
             <field name="quantity">worked_days.SickLeave.number_of_days</field>
@@ -44,12 +120,12 @@
         </record>
 
         <record id="hr_rule_ssl3" model="hr.salary.rule">
-            <field name="category_id" ref="DED2"/>
+            <field name="category_id" ref="hr_payroll.DED"/>
             <field name="parent_rule_id" ref="hr_rule_sl"/>
             <field name="name">Sick Leave</field>
             <field name="code">SSL</field>
             <field name="appears_on_payslip" eval="True"/>
-            <field name="sequence">707</field>
+            <field name="sequence">150</field>
             <field name="condition_select">python</field>
             <field name="condition_python"><![CDATA[result = True if employee.worked_years>=4 and employee.worked_years<6 else False]]></field>
             <field name="quantity">worked_days.SickLeave.number_of_days</field>
@@ -59,12 +135,12 @@
         </record>
 
         <record id="hr_rule_ssl4" model="hr.salary.rule">
-            <field name="category_id" ref="DED2"/>
+            <field name="category_id" ref="hr_payroll.DED"/>
             <field name="parent_rule_id" ref="hr_rule_sl"/>
             <field name="name">Sick Leave</field>
             <field name="code">SSL</field>
             <field name="appears_on_payslip" eval="True"/>
-            <field name="sequence">707</field>
+            <field name="sequence">150</field>
             <field name="condition_select">python</field>
             <field name="condition_python"><![CDATA[result = True if employee.worked_years>=6 and employee.worked_years<8 else False]]></field>
             <field name="quantity">worked_days.SickLeave.number_of_days</field>
@@ -74,12 +150,12 @@
         </record>
 
         <record id="hr_rule_ssl5" model="hr.salary.rule">
-            <field name="category_id" ref="DED2"/>
+            <field name="category_id" ref="hr_payroll.DED"/>
             <field name="parent_rule_id" ref="hr_rule_sl"/>
             <field name="name">Sick Leave</field>
             <field name="code">SSL</field>
             <field name="appears_on_payslip" eval="True"/>
-            <field name="sequence">707</field>
+            <field name="sequence">150</field>
             <field name="condition_select">python</field>
             <field name="condition_python"><![CDATA[result = True if employee.worked_years>=8 else False]]></field>
             <field name="quantity">worked_days.SickLeave.number_of_days</field>
@@ -90,22 +166,22 @@
 
         <!-- 长期病假母规则 -->
         <record id="hr_rule_lsl" model="hr.salary.rule">
-            <field name="category_id" ref="DED2"/>
+            <field name="category_id" ref="hr_payroll.DED"/>
             <field name="name">Long Sick Leave</field>
             <field name="code">LSL</field>
             <field name="appears_on_payslip" eval="False"/>
-            <field name="sequence">708</field>
+            <field name="sequence">151</field>
             <field name="condition_select">none</field>
             <field name="amount_select">fix</field>
         </record>
 
         <record id="hr_rule_lsl1" model="hr.salary.rule">
-            <field name="category_id" ref="DED2"/>
+            <field name="category_id" ref="hr_payroll.DED"/>
             <field name="parent_rule_id" ref="hr_rule_lsl"/>
             <field name="name">Long Sick Leave</field>
             <field name="code">LSL</field>
             <field name="appears_on_payslip" eval="True"/>
-            <field name="sequence">708</field>
+            <field name="sequence">151</field>
             <field name="condition_select">python</field>
             <field name="condition_python"><![CDATA[result = True if employee.worked_years<1 else False]]></field>
             <field name="quantity">worked_days.LongSickLeave.number_of_days</field>
@@ -115,12 +191,12 @@
         </record>
 
         <record id="hr_rule_lsl2" model="hr.salary.rule">
-            <field name="category_id" ref="DED2"/>
+            <field name="category_id" ref="hr_payroll.DED"/>
             <field name="parent_rule_id" ref="hr_rule_lsl"/>
             <field name="name">Long Sick Leave</field>
             <field name="code">LSL</field>
             <field name="appears_on_payslip" eval="True"/>
-            <field name="sequence">708</field>
+            <field name="sequence">151</field>
             <field name="condition_select">python</field>
             <field name="condition_python"><![CDATA[result = True if employee.worked_years>=1 and employee.worked_years<3 else False]]></field>
             <field name="quantity">worked_days.LongSickLeave.number_of_days</field>
@@ -130,12 +206,12 @@
         </record>
 
         <record id="hr_rule_lsl3" model="hr.salary.rule">
-            <field name="category_id" ref="DED2"/>
+            <field name="category_id" ref="hr_payroll.DED"/>
             <field name="parent_rule_id" ref="hr_rule_lsl"/>
             <field name="name">Long Sick Leave</field>
             <field name="code">LSL</field>
             <field name="appears_on_payslip" eval="True"/>
-            <field name="sequence">708</field>
+            <field name="sequence">151</field>
             <field name="condition_select">python</field>
             <field name="condition_python"><![CDATA[result = True if employee.worked_years>=3 else False]]></field>
             <field name="quantity">worked_days.LongSickLeave.number_of_days</field>
@@ -145,11 +221,11 @@
         </record>
 
         <record id="hr_rule_upl" model="hr.salary.rule">
-            <field name="category_id" ref="DED2"/>
+            <field name="category_id" ref="hr_payroll.DED"/>
             <field name="name">Unpaid Leave</field>
             <field name="code">UPL</field>
             <field name="appears_on_payslip" eval="True"/>
-            <field name="sequence">709</field>
+            <field name="sequence">152</field>
             <field name="quantity">worked_days.Unpaid.number_of_days</field>
             <field name="condition_select">none</field>
             <field name="amount_select">percentage</field>
@@ -162,10 +238,21 @@
             <field name="name">Bonus</field>
             <field name="code">BONUS</field>
             <field name="appears_on_payslip" eval="True"/>
-            <field name="sequence">130</field>
+            <field name="sequence">703</field>
             <field name="condition_select">none</field>
             <field name="amount_select">code</field>
             <field name="amount_python_compute">result = inputs.BONUS and inputs.BONUS.amount</field>
+        </record>
+
+        <record id="hr_rule_bonus_sale" model="hr.salary.rule">
+            <field name="category_id" ref="hr_payroll.ALW"/>
+            <field name="name">Bonus for Sales</field>
+            <field name="code">BONUSS</field>
+            <field name="appears_on_payslip" eval="True"/>
+            <field name="sequence">704</field>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = inputs.BONUSS and inputs.BONUSS.amount</field>
         </record>
 
         <record id="hr_rule_adj" model="hr.salary.rule">
@@ -186,7 +273,7 @@
             <field name="category_id" ref="hr_payroll.NET"/>
             <field name="condition_select">none</field>
             <field name="amount_select">code</field>
-            <field name="amount_python_compute">result = categories.NET + categories.ADJ - categories.DED2</field>
+            <field name="amount_python_compute">result = categories.NET + categories.ADJ + categories.ALW - categories.DED2</field>
         </record>
 
         <!-- Rule Inputs -->
@@ -194,6 +281,12 @@
             <field name="code">BONUS</field>
             <field name="name">Bonus</field>
             <field name="input_id" ref="hr_rule_bonuse"/>
+        </record>
+
+        <record id="hr_rule_input_bonus_sale" model="hr.rule.input">
+            <field name="code">BONUSS</field>
+            <field name="name">Bonus for Sales</field>
+            <field name="input_id" ref="hr_rule_bonus_sale"/>
         </record>
 
         <record id="hr_rule_input_adj" model="hr.rule.input">
@@ -210,7 +303,7 @@
             <field name="sequence">500</field>
             <field name="condition_select">none</field>
             <field name="amount_select">percentage</field>
-            <field name="amount_percentage_base">categories.BASIC + categories.ALW - categories.DED</field>
+            <field name="amount_percentage_base">categories.BASIC - categories.DED</field>
             <field name="amount_percentage">100.0</field>
         </record>
 
@@ -221,7 +314,7 @@
             <field name="category_id" ref="hr_payroll.NET"/>
             <field name="condition_select">none</field>
             <field name="amount_select">percentage</field>
-            <field name="amount_percentage_base">categories.BASIC + categories.ALW - categories.DED</field>
+            <field name="amount_percentage_base">categories.BASIC - categories.DED</field>
             <field name="amount_percentage">100.0</field>
             <field name="register_id" ref="hr_payroll.contrib_register_employees"/>
         </record>
