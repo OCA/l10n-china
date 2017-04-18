@@ -5,7 +5,7 @@
     'name': 'Chinese - Payroll',
     'category': 'Localization',
     'version': '9.0.2.0.0',
-    'website': 'www.elico-corp.com',
+    'website': 'https://www.elico-corp.com',
     'author': "Elico Corp, Odoo Community Association (OCA)",
     'depends': ['hr_payroll'],
     'demo': [
