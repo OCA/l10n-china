@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
 # © 2016 Elico corp (www.elico-corp.com)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
-from openerp import fields, models, api, _
-import openerp.addons.decimal_precision as dp
-from openerp.exceptions import ValidationError
 import datetime
+import time
+
+import openerp.addons.decimal_precision as dp
+from openerp import fields, models, api, _
+from openerp.exceptions import ValidationError
 
 
 class HrContractCn(models.Model):
@@ -94,6 +96,10 @@ class HrPayslipLine(models.Model):
 
 class HrEmployee(models.Model):
     _inherit = "hr.employee"
+
+    _defaults = {
+        'entry_date': time.strftime('%Y-%m-%d')
+    }
 
     entry_date = fields.Date(string="Entry Date", required=True)
     worked_years = fields.Integer(
