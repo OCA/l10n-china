@@ -1,4 +1,4 @@
-[![Runbot Status](https://runbot.odoo-community.org/runbot/badge/flat/198/8.0.svg)](https://runbot.odoo-community.org/runbot/repo/github-com-oca-l10n-china-222)
+[![Runbot Status](https://runbot.odoo-community.org/runbot/badge/flat/198/8.0.svg)](https://runbot.odoo-community.org/runbot/repo/github-com-oca-l10n-china-198)
 [![Build Status](https://travis-ci.org/OCA/l10n-china.svg?branch=8.0)](https://travis-ci.org/OCA/l10n-china)
 [![codecov](https://codecov.io/gh/OCA/l10n-china/branch/8.0/graph/badge.svg)](https://codecov.io/gh/OCA/l10n-china)
 
