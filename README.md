@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.org/OCA/l10n-china.svg?branch=9.0)](https://travis-ci.org/OCA/l10n-china)
+[![Coverage Status](https://coveralls.io/repos/OCA/l10n-china/badge.svg?branch=9.0&service=github)](https://coveralls.io/github/OCA/l10n-china?branch=9.0)
+
 # l10n-china
 This repository has been created to gather the modules related to the localization of Popular Republic of China, including Hong Kong and Macau. To be noted that a specific repository has been created for Taiwan.
 
