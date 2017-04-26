@@ -35,4 +35,4 @@ class fapiao_tag(models.Model):
 class account_invoice(models.Model):
     _inherit = 'account.invoice'
 
-    fapiao_ids = fields.One2many('fapiao', 'invoice_ids', 'Fapiao')
+    fapiao_ids = fields.Many2many('fapiao', string='Fapiao')

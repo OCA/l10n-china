@@ -5,7 +5,6 @@ from openerp.tests import common
 
 
 class TestFapiao(common.TransactionCase):
-
     def setUp(self):
         super(TestFapiao, self).setUp()
         self.fapiao_tag_1 = self.env['fapiao_tag'].create({
@@ -54,7 +53,6 @@ class TestFapiao(common.TransactionCase):
             'notes': 'SX-19-08',
         }
         self.fapiao_2 = self.env['fapiao'].create(fp2)
-
 
     def test_company_info(self):
         self.assertTrue(
