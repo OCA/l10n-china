@@ -12,10 +12,10 @@
     'website': 'https://www.elico-corp.com',
     'depends': ['account'],
     'data': [
-        'fapiao_view.xml',
+        'views/fapiao_view.xml',
     ],
     'demo': [
-        'fapiao_demo.xml',
+        'demo/fapiao_demo.xml',
     ],
     'installable': True,
     'auto_install': False,
