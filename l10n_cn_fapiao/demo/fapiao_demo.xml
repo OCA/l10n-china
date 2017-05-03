@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
     <data>
-        <record id="demo_fapiao_tag_1" model="fapiao_tag">
+        <record id="demo_fapiao_tag_1" model="fapiao.tag">
             <field name="name">SH</field>
         </record>
-        <record id="demo_fapiao_tag_2" model="fapiao_tag">
+        <record id="demo_fapiao_tag_2" model="fapiao.tag">
             <field name="name">EXPORT</field>
         </record>
         <!-- A fapiao statement -->

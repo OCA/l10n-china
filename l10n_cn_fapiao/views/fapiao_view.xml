@@ -27,6 +27,7 @@
                             <group>
                                 <field name="fapiao_date"/>
                                 <field name="amount_with_taxes"/>
+                                <field name="tax_type"/>
                             </group>
                         </group>
                         <field name="invoice_ids"/>

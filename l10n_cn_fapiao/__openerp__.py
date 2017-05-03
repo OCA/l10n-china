@@ -13,6 +13,7 @@
     'depends': ['account'],
     'data': [
         'views/fapiao_view.xml',
+        'data/fapiao.xml',
     ],
     'demo': [
         'demo/fapiao_demo.xml',
