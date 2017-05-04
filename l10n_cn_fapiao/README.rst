@@ -18,9 +18,9 @@ The procedure to follow for the fapiao management is as below:
 
 #. A fapiao is received or emitted.
 #. The document can be scanned as image.
-#. A new fapiao is created in OpenERP.
+#. A new fapiao is created in Odoo.
 #. The scanned document is uploaded to the newly created object as attachment.
-#. Fapiao allocation to invoice: Fapiao and OpenERP invoices can be
+#. Fapiao allocation to invoice: Fapiao and Odoo invoices can be
   linked to each other.
 
 .. image:: https://odoo-community.org/website/image/ir.attachment/5784_f2813bd/datas
@@ -49,6 +49,7 @@ Contributors
 
 * Eric Caudal <eric.caudal@elico-corp.com>
 * Frank Song <frank.song@elico-corp.com>
+* Xudong Yang (Wizr) <fanderous@gmail.com>
 
 Maintainer
 ----------

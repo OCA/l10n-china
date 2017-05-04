@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# © 2017 Elico Corp (www.elico-corp.com).
+# © 2015 Elico Corp (www.elico-corp.com).
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 from openerp import models, fields
 
@@ -13,10 +13,14 @@ class fapiao(models.Model):
         return self.env['fapiao.tax.type'].search([('name', '=', 'normal')])
 
     fapiao_type = fields.Selection(
-        [('customer', 'Customer'), ('supplier', 'Supplier'),
+        [('customer', 'Customer'),
+         ('supplier', 'Supplier'),
          ('customer_credit_note', 'Customer Credit note')],
-        'Fapiao Type', required=True, default='customer')
-    tax_type = fields.Many2one('fapiao.tax.type', string='Tax Type',
+        'Fapiao Type',
+        required=True,
+        default='customer')
+    tax_type = fields.Many2one('fapiao.tax.type',
+                               string='Tax Type',
                                required=True,
                                default=_default_tax_type)
     fapiao_number = fields.Integer(string='Fapiao Number', required=True)
