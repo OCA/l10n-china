@@ -8,7 +8,8 @@ class FapiaoTaxType(models.Model):
     _name = 'fapiao.tax.type'
     _order = 'name'
 
-    name = fields.Char("name")
+    name = fields.Char('Name')
+    active = fields.Boolean(default=True)
 
     _sql_constraints = [
         ('name_uniq', 'unique(name)', 'Tax type must be unique.')

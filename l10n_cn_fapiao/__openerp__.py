@@ -13,7 +13,7 @@
     'depends': ['account'],
     'data': [
         'views/fapiao_view.xml',
-        'data/fapiao.xml',
+        'data/fapiao_tax_type.xml',
     ],
     'demo': [
         'demo/fapiao_demo.xml',

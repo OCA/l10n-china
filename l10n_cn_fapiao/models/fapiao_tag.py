@@ -8,7 +8,7 @@ class FapiaoTag(models.Model):
     _name = 'fapiao.tag'
     _order = 'name'
 
-    name = fields.Char("Name")
+    name = fields.Char('Name')
 
     _sql_constraints = [
         ('name_uniq', 'unique(name)', 'Tag must be unique.')
