@@ -27,5 +27,10 @@
             <field name="name">Deduction For Attendance</field>
             <field name="code">ATTEND</field>
         </record>
+
+        <record id="BASICNET" model="hr.salary.rule.category">
+            <field name="name">Basic Net</field>
+            <field name="code">BASICNET</field>
+        </record>
     </data>
 </openerp>
