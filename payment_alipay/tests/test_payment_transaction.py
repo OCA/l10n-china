@@ -20,9 +20,7 @@ class TestPaymentTransaction(common.TransactionCase):
         ids = []
         for index in range(0, 10):
             name = "testing_product_" + str(index)
-            ids.append(self.env['product.product'].create(
-                {'name': name}).id
-            )
+            ids.append(self.env['product.product'].create({'name': name}).id)
         # create an payment acquirer for testing
         self.payment_acquirer = self.env['payment.acquirer'].create(
             {
@@ -34,7 +32,7 @@ class TestPaymentTransaction(common.TransactionCase):
                 'view_template_id': 1,
                 'alipay_key': 1,
                 'service': 'create_direct_pay_by_user'
-             }
+            }
         )
         # create an empty sale order for testing
         self.sale_order = self.env['sale.order'].create(
@@ -64,7 +62,7 @@ class TestPaymentTransaction(common.TransactionCase):
         )
         self.product_ids = self.env['product.product'].search(
             [('id', 'in', ids)])
-    
+
     def test_alipay_form_get_tx_from_data(self):
         """
         Checks if the _alipay_form_get_tx_from_data works properly

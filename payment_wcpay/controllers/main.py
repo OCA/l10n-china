@@ -70,7 +70,7 @@ class website_sale(http.Controller):
     @http.route(['/shop/payment/transaction_so/<int:acquirer_id>'],
                 type='json', auth="public", website=True)
     def payment_transaction_for_so(self, acquirer_id, sale_order_id=None):
-        cr, uid, context = request.cr, request.uid, request.context
+        cr, _, context = request.cr, request.uid, request.context
         transaction_obj = request.registry.get('payment.transaction')
         if sale_order_id is not None:
             request.session['sale_order_id'] = sale_order_id
@@ -131,7 +131,7 @@ class website_sale(http.Controller):
     @http.route(['/shop/payment/transaction_ai/<int:acquirer_id>'],
                 type='json', auth="public", website=True)
     def payment_transaction_for_ai(self, acquirer_id, account_invoice_id=None):
-        cr, uid, context = request.cr, request.uid, request.context
+        cr, _, context = request.cr, request.uid, request.context
         transaction_obj = request.registry.get('payment.transaction')
         if account_invoice_id is not None:
             request.session['account_invoice_id'] = account_invoice_id
@@ -305,10 +305,10 @@ class WcpayController(ReportController):
                 if account_invoice_ids:
                     account_invoice_id = account_invoice_ids[0]
 
-        if sale_order_id is None and \
-                        account_invoice_id is None and \
-                request.session.uid and \
-                request.session.get('sale_last_order_id'):
+        if (sale_order_id is None and
+                    account_invoice_id is None and
+                request.session.uid and
+                request.session.get('sale_last_order_id')):
             sale_order_id = request.session.get('sale_last_order_id')
 
         acquirer = request.registry['payment.acquirer'].search(
@@ -333,10 +333,12 @@ class WcpayController(ReportController):
         else:
             return request.redirect('/shop')
 
-    @http.route('/shop/payment/get_status_so/<int:sale_order_id>', type='json',
-                auth="public", website=True)
+    @http.route('/shop/payment/get_status_so/<int:sale_order_id>',
+                type='json',
+                auth="public",
+                website=True)
     def payment_get_status_so(self, sale_order_id, **post):
-        cr, uid, context = request.cr, request.uid, request.context
+        cr, _, context = request.cr, request.uid, request.context
         order = request.registry['sale.order'].browse(cr, SUPERUSER_ID,
                                                       sale_order_id,
                                                       context=context)
@@ -350,9 +352,10 @@ class WcpayController(ReportController):
             }
         else:
             tx_ids = request.registry['payment.transaction'].search(
-                cr, SUPERUSER_ID, [
+                cr, SUPERUSER_ID,
+                [
                     '|', ('sale_order_id', '=', order.id),
-                    ('reference', '=', order.name)
+                    ('reference', '=', order.name),
                 ], context=context)
 
         flag = False
@@ -395,7 +398,7 @@ class WcpayController(ReportController):
     @http.route('/shop/payment/get_status_ai/<int:account_invoice_id>',
                 type='json', auth="public", website=True)
     def payment_get_status_ai(self, account_invoice_id, **post):
-        cr, uid, context = request.cr, request.uid, request.context
+        cr, _, context = request.cr, request.uid, request.context
         invoice = request.registry['account.invoice'].browse(
             cr, SUPERUSER_ID, account_invoice_id, context=context)
         assert invoice.id == account_invoice_id

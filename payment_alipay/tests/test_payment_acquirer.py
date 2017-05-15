@@ -43,13 +43,13 @@ class TestPaymentAcquirer(common.TransactionCase):
         """
             test url
         """
-        url = self.payment_acquirer.alipay_get_form_action_url()
+        self.payment_acquirer.alipay_get_form_action_url()
 
     def get_empty_list_help(self, help):
         """
             test url
         """
-        url = self.payment_acquirer._get_alipay_urls()
+        self.payment_acquirer._get_alipay_urls()
 
     def test_get_alipay_urls(self):
         """ Checks if the _get_alipay_urls works properly
