@@ -92,14 +92,13 @@ class Singleton(object):
     def __new__(cls, *args, **kwargs):
         if not hasattr(cls, "_instance"):
             with cls._instance_lock:
-                if not hasattr(cls, "_instance"):
-                    impl = cls.configure() if hasattr(cls, "configure") else cls
-                    instance = super(Singleton, cls).__new__(impl,
-                                                             *args,
-                                                             **kwargs)
-                    if not isinstance(instance, cls):
-                        instance.__init__(*args, **kwargs)
-                    cls._instance = instance
+                impl = cls.configure() if hasattr(cls, "configure") else cls
+                instance = super(Singleton, cls).__new__(impl,
+                                                         *args,
+                                                         **kwargs)
+                if not isinstance(instance, cls):
+                    instance.__init__(*args, **kwargs)
+                cls._instance = instance
         return cls._instance
 
 
@@ -130,7 +129,10 @@ class CurlClient(object):
         self.curl.setopt(pycurl.HEADER, False)
 
     def get(self, url, second=30):
-        return self.postXmlSSL(None, url, second=second, cert=False, post=False)
+        return self.postXmlSSL(None, url,
+                               second=second,
+                               cert=False,
+                               post=False)
 
     def postXml(self, xml, url, second=30):
         """不使用证书"""
@@ -255,7 +257,9 @@ class JsApi_pub(Common_util_pub):
         urlObj["scope"] = "snsapi_base"
         urlObj["state"] = "STATE#wechat_redirect"
         bizString = self.formatBizQueryParaMap(urlObj, False)
-        return "https://open.weixin.qq.com/connect/oauth2/authorize?" + bizString
+        uri = "https://open.weixin.qq.com/connect/oauth2/authorize?"
+        uri += bizString
+        return uri
 
     def createOauthUrlForOpenid(self):
         """生成可以获得openid的url"""

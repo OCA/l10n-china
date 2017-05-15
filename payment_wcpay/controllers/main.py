@@ -317,14 +317,16 @@ class WcpayController(ReportController):
         if sale_order_id:
             order = request.registry['sale.order'].browse(
                 cr, SUPERUSER_ID, sale_order_id, context=context)
-            website_sale.payment_transaction_for_so(website_sale(), acquirer[0],
+            website_sale.payment_transaction_for_so(website_sale(),
+                                                    acquirer[0],
                                                     order.id)
             return request.website.render("website_sale.confirmation",
                                           {'order': order})
         elif account_invoice_id:
             invoice = request.registry['account.invoice'].browse(
                 cr, SUPERUSER_ID, account_invoice_id, context=context)
-            website_sale.payment_transaction_for_ai(website_sale(), acquirer[0],
+            website_sale.payment_transaction_for_ai(website_sale(),
+                                                    acquirer[0],
                                                     invoice.id)
             return request.website.render("payment_wcpay.wcpay_confirmation",
                                           {'invoice': invoice})
@@ -364,10 +366,8 @@ class WcpayController(ReportController):
                 message = '<p>%s</p>' % _(
                     'There seems to be an error with your request.')
         else:
-            tx = request.registry['payment.transaction'].browse(cr,
-                                                                SUPERUSER_ID,
-                                                                tx_ids[0],
-                                                                context=context)
+            pt = request.registry['payment.transaction']
+            tx = pt.browse(cr, SUPERUSER_ID, tx_ids[0], context=context)
             state = tx.state
             flag = state == 'pending'
             if state == 'done':
@@ -424,10 +424,8 @@ class WcpayController(ReportController):
                 message = '<p>%s</p>' % _(
                     'There seems to be an error with your request.')
         else:
-            tx = request.registry['payment.transaction'].browse(cr,
-                                                                SUPERUSER_ID,
-                                                                tx_ids[0],
-                                                                context=context)
+            pt = request.registry['payment.transaction']
+            tx = pt.browse(cr, SUPERUSER_ID, tx_ids[0], context=context)
             state = tx.state
             flag = state == 'pending'
             if state == 'done':
