@@ -360,8 +360,8 @@ class UnifiedOrder_pub(Wxpay_client_pub):
                 "out_trade_no", "body", "total_fee", "notify_url",
                 "trade_type")):
             raise ValueError("missing parameter")
-        if self.parameters["trade_type"] == "JSAPI" and self.parameters[
-            "openid"] is None:
+        if (self.parameters["trade_type"] == "JSAPI" and
+                self.parameters["openid"] is None):
             raise ValueError("JSAPI need openid parameters")
 
         self.parameters["appid"] = WxPayConf_pub.APPID  # 公众账号ID

@@ -14,7 +14,6 @@ from openerp import http, SUPERUSER_ID
 from openerp.addons.payment_wcpay.models import weixinsdk
 from openerp.addons.payment_wcpay.models.weixinsdk import Wxpay_server_pub
 from openerp.http import request
-from openerp.tools.translate import _
 
 _logger = logging.getLogger(__name__)
 
@@ -70,7 +69,7 @@ class website_sale(http.Controller):
     @http.route(['/shop/payment/transaction_so/<int:acquirer_id>'],
                 type='json', auth="public", website=True)
     def payment_transaction_for_so(self, acquirer_id, sale_order_id=None):
-        cr, _, context = request.cr, request.uid, request.context
+        cr, context = request.cr, request.context
         transaction_obj = request.registry.get('payment.transaction')
         if sale_order_id is not None:
             request.session['sale_order_id'] = sale_order_id
@@ -131,7 +130,7 @@ class website_sale(http.Controller):
     @http.route(['/shop/payment/transaction_ai/<int:acquirer_id>'],
                 type='json', auth="public", website=True)
     def payment_transaction_for_ai(self, acquirer_id, account_invoice_id=None):
-        cr, _, context = request.cr, request.uid, request.context
+        cr, context = request.cr, request.context
         transaction_obj = request.registry.get('payment.transaction')
         if account_invoice_id is not None:
             request.session['account_invoice_id'] = account_invoice_id
@@ -306,7 +305,7 @@ class WcpayController(ReportController):
                     account_invoice_id = account_invoice_ids[0]
 
         if (sale_order_id is None and
-                    account_invoice_id is None and
+                account_invoice_id is None and
                 request.session.uid and
                 request.session.get('sale_last_order_id')):
             sale_order_id = request.session.get('sale_last_order_id')
