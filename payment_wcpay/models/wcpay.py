@@ -185,7 +185,8 @@ class TxWcPay(models.Model):
         diff = data.get('out_trade_no') != tx.acquirer_reference
         if tx.acquirer_reference and diff:
             invalid_parameters.append(
-                ('Transaction Id', data.get('out_trade_no'), tx.acquirer_reference)
+                ('Transaction Id', data.get('out_trade_no'),
+                 tx.acquirer_reference)
             )
 
         total_fee = float(data.get('total_fee', '0.0'))

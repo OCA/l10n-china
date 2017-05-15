@@ -1,4 +1,4 @@
-#coding:utf-8
+# coding:utf-8
 """
 Created on 2014-11-24
 
@@ -94,7 +94,9 @@ class Singleton(object):
             with cls._instance_lock:
                 if not hasattr(cls, "_instance"):
                     impl = cls.configure() if hasattr(cls, "configure") else cls
-                    instance = super(Singleton, cls).__new__(impl, *args, **kwargs)
+                    instance = super(Singleton, cls).__new__(impl,
+                                                             *args,
+                                                             **kwargs)
                     if not isinstance(instance, cls):
                         instance.__init__(*args, **kwargs)
                     cls._instance = instance
@@ -119,6 +121,7 @@ class UrllibClient(object):
 
 class CurlClient(object):
     """使用Curl发送请求"""
+
     def __init__(self):
         self.curl = pycurl.Curl()
         self.curl.setopt(pycurl.SSL_VERIFYHOST, False)
@@ -234,7 +237,7 @@ class Common_util_pub(object):
 
 class JsApi_pub(Common_util_pub):
     """JSAPI支付——H5网页端调起支付接口"""
-    code = None    # code码，用以获取openid
+    code = None  # code码，用以获取openid
     openid = None  # 用户的openid
     parameters = None  # jsapi参数，格式为json
     prepay_id = None  # 使用统一支付接口得到的预支付id
@@ -302,18 +305,19 @@ class Wxpay_client_pub(Common_util_pub):
 
     def __init__(self):
         self.parameters = {}  # 请求参数，类型为关联数组
-        self.result = {}     # 返回参数，类型为关联数组
+        self.result = {}  # 返回参数，类型为关联数组
 
     def setParameter(self, parameter, parameterValue):
         """设置请求参数"""
-        self.parameters[self.trimString(parameter)] = self.trimString(parameterValue)
+        self.parameters[self.trimString(parameter)] = self.trimString(
+            parameterValue)
 
     def createXml(self):
         """设置标配的请求参数，生成签名，生成接口参数xml"""
-        self.parameters["appid"] = WxPayConf_pub.APPID   # 公众账号ID
-        self.parameters["mch_id"] = WxPayConf_pub.MCHID   # 商户号
-        self.parameters["nonce_str"] = self.createNoncestr()   # 随机字符串
-        self.parameters["sign"] = self.getSign(self.parameters)   # 签名
+        self.parameters["appid"] = WxPayConf_pub.APPID  # 公众账号ID
+        self.parameters["mch_id"] = WxPayConf_pub.MCHID  # 商户号
+        self.parameters["nonce_str"] = self.createNoncestr()  # 随机字符串
+        self.parameters["sign"] = self.getSign(self.parameters)  # 签名
         return self.arrayToXml(self.parameters)
 
     def postXml(self):
@@ -348,14 +352,18 @@ class UnifiedOrder_pub(Wxpay_client_pub):
     def createXml(self):
         """生成接口参数xml"""
         # 检测必填参数
-        if any(self.parameters[key] is None for key in ("out_trade_no", "body", "total_fee", "notify_url", "trade_type")):
+        if any(self.parameters[key] is None for key in (
+                "out_trade_no", "body", "total_fee", "notify_url",
+                "trade_type")):
             raise ValueError("missing parameter")
-        if self.parameters["trade_type"] == "JSAPI" and self.parameters["openid"] is None:
+        if self.parameters["trade_type"] == "JSAPI" and self.parameters[
+            "openid"] is None:
             raise ValueError("JSAPI need openid parameters")
 
         self.parameters["appid"] = WxPayConf_pub.APPID  # 公众账号ID
         self.parameters["mch_id"] = WxPayConf_pub.MCHID  # 商户号
-        self.parameters["spbill_create_ip"] = WxPayConf_pub.SPBILL_CREATE_IP  # 终端ip
+        self.parameters[
+            "spbill_create_ip"] = WxPayConf_pub.SPBILL_CREATE_IP  # 终端ip
         self.parameters["nonce_str"] = self.createNoncestr()  # 随机字符串
         self.parameters["sign"] = self.getSign(self.parameters)  # 签名
         return self.arrayToXml(self.parameters)
@@ -382,7 +390,8 @@ class OrderQuery_pub(Wxpay_client_pub):
         """生成接口参数xml"""
 
         # 检测必填参数
-        if any(self.parameters[key] is None for key in ("out_trade_no", "transaction_id")):
+        if any(self.parameters[key] is None for key in
+               ("out_trade_no", "transaction_id")):
             raise ValueError("missing parameter")
 
         self.parameters["appid"] = WxPayConf_pub.APPID  # 公众账号ID
@@ -404,7 +413,9 @@ class Refund_pub(Wxpay_client_pub):
 
     def createXml(self):
         """生成接口参数xml"""
-        if any(self.parameters[key] is None for key in ("out_trade_no", "out_refund_no", "total_fee", "refund_fee", "op_user_id")):
+        if any(self.parameters[key] is None for key in (
+                "out_trade_no", "out_refund_no", "total_fee", "refund_fee",
+                "op_user_id")):
             raise ValueError("missing parameter")
 
         self.parameters["appid"] = WxPayConf_pub.APPID  # 公众账号ID
@@ -432,7 +443,9 @@ class RefundQuery_pub(Wxpay_client_pub):
 
     def createXml(self):
         """生成接口参数xml"""
-        if any(self.parameters[key] is None for key in ("out_refund_no", "out_trade_no", "transaction_id", "refund_id")):
+        if any(self.parameters[key] is None for key in (
+                "out_refund_no", "out_trade_no", "transaction_id",
+                "refund_id")):
             raise ValueError("missing parameter")
         self.parameters["appid"] = WxPayConf_pub.APPID  # 公众账号ID
         self.parameters["mch_id"] = WxPayConf_pub.MCHID  # 商户号
@@ -459,7 +472,7 @@ class DownloadBill_pub(Wxpay_client_pub):
 
     def createXml(self):
         """生成接口参数xml"""
-        if any(self.parameters[key] is None for key in ("bill_date", )):
+        if any(self.parameters[key] is None for key in ("bill_date",)):
             raise ValueError("missing parameter")
 
         self.parameters["appid"] = WxPayConf_pub.APPID  # 公众账号ID
@@ -487,7 +500,7 @@ class ShortUrl_pub(Wxpay_client_pub):
 
     def createXml(self):
         """生成接口参数xml"""
-        if any(self.parameters[key] is None for key in ("long_url", )):
+        if any(self.parameters[key] is None for key in ("long_url",)):
             raise ValueError("missing parameter")
 
         self.parameters["appid"] = WxPayConf_pub.APPID  # 公众账号ID
@@ -517,7 +530,7 @@ class Wxpay_server_pub(Common_util_pub):
 
     def checkSign(self):
         """校验签名"""
-        tmpData = dict(self.data)   # a copy to save sign
+        tmpData = dict(self.data)  # a copy to save sign
         del tmpData['sign']
         sign = self.getSign(tmpData)  # 本地签名
         if self.data['sign'] == sign:
@@ -530,7 +543,8 @@ class Wxpay_server_pub(Common_util_pub):
 
     def setReturnParameter(self, parameter, parameterValue):
         """设置返回微信的xml数据"""
-        self.returnParameters[self.trimString(parameter)] = self.trimString(parameterValue)
+        self.returnParameters[self.trimString(parameter)] = self.trimString(
+            parameterValue)
 
     def createXml(self):
         """生成接口参数xml"""
@@ -555,7 +569,8 @@ class NativeCall_pub(Wxpay_server_pub):
             self.returnParameters["appid"] = WxPayConf_pub.APPID  # 公众账号ID
             self.returnParameters["mch_id"] = WxPayConf_pub.MCHID  # 商户号
             self.returnParameters["nonce_str"] = self.createNoncestr()  # 随机字符串
-            self.returnParameters["sign"] = self.getSign(self.returnParameters) # 签名
+            self.returnParameters["sign"] = self.getSign(
+                self.returnParameters)  # 签名
 
         return self.arrayToXml(self.returnParameters)
 
@@ -575,13 +590,14 @@ class NativeLink_pub(Common_util_pub):
 
     def setParameter(self, parameter, parameterValue):
         """设置参数"""
-        self.parameters[self.trimString(parameter)] = self.trimString(parameterValue)
+        self.parameters[self.trimString(parameter)] = self.trimString(
+            parameterValue)
 
     def createLink(self):
-        if any(self.parameters[key] is None for key in ("product_id", )):
+        if any(self.parameters[key] is None for key in ("product_id",)):
             raise ValueError("missing parameter")
 
-        self.parameters["appid"] = WxPayConf_pub.APPID   # 公众账号ID
+        self.parameters["appid"] = WxPayConf_pub.APPID  # 公众账号ID
         self.parameters["mch_id"] = WxPayConf_pub.MCHID  # 商户号
         time_stamp = int(time.time())
         self.parameters["time_stamp"] = "{0}".format(time_stamp)  # 时间戳
