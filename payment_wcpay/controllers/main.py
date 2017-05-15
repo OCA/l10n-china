@@ -11,8 +11,8 @@ from openerp.addons.web.http import route
 from openerp.addons.website_sale.controllers.main import website_sale
 
 from openerp import http, SUPERUSER_ID
-from openerp.addons.payment_wcpay.models import weixinsdk
-from openerp.addons.payment_wcpay.models.weixinsdk import Wxpay_server_pub
+from ..models import weixinsdk
+from ..models.weixinsdk import Wxpay_server_pub
 from openerp.http import request
 
 _logger = logging.getLogger(__name__)

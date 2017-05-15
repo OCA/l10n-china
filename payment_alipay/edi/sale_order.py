@@ -6,7 +6,7 @@ import urlparse
 
 from openerp import models, api, fields
 from openerp.addons.edi import EDIMixin
-from openerp.addons.payment_alipay.controllers.main import AlipayController
+from ..controllers.main import AlipayController
 from werkzeug import url_encode
 
 

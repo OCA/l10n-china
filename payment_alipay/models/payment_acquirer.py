@@ -7,7 +7,7 @@ import urlparse
 from hashlib import md5
 
 from openerp import SUPERUSER_ID
-from openerp.addons.payment_alipay.controllers.main import AlipayController
+from ..controllers.main import AlipayController
 from openerp.exceptions import except_orm
 from openerp.osv import osv, fields
 from openerp.tools.translate import _

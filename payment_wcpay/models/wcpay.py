@@ -9,7 +9,7 @@ from datetime import datetime, timedelta
 from openerp.addons.payment.models.payment_acquirer import ValidationError
 
 from openerp import api, fields, models
-from openerp.addons.payment_wcpay.controllers.main import WcpayController
+from ..controllers.main import WcpayController
 from openerp.tools.float_utils import float_compare
 
 _logger = logging.getLogger(__name__)

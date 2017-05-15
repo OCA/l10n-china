@@ -4,7 +4,7 @@ from openerp.addons.edi import EDIMixin
 from werkzeug import url_encode
 
 from openerp import models, api, fields
-from openerp.addons.payment_alipay.controllers.main import AlipayController
+from ..controllers.main import AlipayController
 
 
 class AccountInvoice(models.Model, EDIMixin):
