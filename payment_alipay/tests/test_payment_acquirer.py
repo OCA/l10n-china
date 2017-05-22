@@ -61,12 +61,6 @@ class TestPaymentAcquirer(common.TransactionCase):
         }
         self.assertEqual(url, alpay_url)
 
-    def test_alipay_get_form_action_url(self):
-        """
-            Alipay URLs
-        """
-        self.payment_acquirer.alipay_get_form_action_url()
-
     def test_check_payment_type(self):
         """ Checks if the _check_payment_type works properly
         """
@@ -124,6 +118,6 @@ class TestPaymentAcquirer(common.TransactionCase):
         """ Checks if the alipay_form_generate_values works properly
         """
         partner_values = {}
-        tx_values = {}
+        tx_values = {'reference': 'SAJ2016080303410037', 'amount': 100}
         self.payment_acquirer.alipay_form_generate_values(
             partner_values, tx_values)

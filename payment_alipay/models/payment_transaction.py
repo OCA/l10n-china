@@ -85,8 +85,8 @@ class TxAlipay(models.Model):
     def _alipay_form_validate(self, tx, data):
         if data.get('trade_status') in ['TRADE_SUCCESS', 'TRADE_FINISHED']:
             date_validate = datetime.strptime(
-                date_string=data.get('notify_time'),
-                format="%Y-%m-%d %H:%M:%S"
+                data.get('notify_time'),
+                "%Y-%m-%d %H:%M:%S"
             )
             date_validate = date_validate - timedelta(hours=8)
 
