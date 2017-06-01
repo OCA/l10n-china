@@ -9,7 +9,7 @@ from datetime import datetime, timedelta
 from openerp.addons.payment.models.payment_acquirer import ValidationError
 
 from openerp import api, fields, models
-from openerp.addons.payment_wcpay.controllers.main import WcpayController
+from ..controllers.main import WcpayController
 from openerp.tools.float_utils import float_compare
 
 _logger = logging.getLogger(__name__)
@@ -185,7 +185,8 @@ class TxWcPay(models.Model):
         diff = data.get('out_trade_no') != tx.acquirer_reference
         if tx.acquirer_reference and diff:
             invalid_parameters.append(
-                ('Transaction Id', data.get('out_trade_no'), tx.acquirer_reference)
+                ('Transaction Id', data.get('out_trade_no'),
+                 tx.acquirer_reference)
             )
 
         total_fee = float(data.get('total_fee', '0.0'))

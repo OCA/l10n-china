@@ -11,10 +11,9 @@ from openerp.addons.web.http import route
 from openerp.addons.website_sale.controllers.main import website_sale
 
 from openerp import http, SUPERUSER_ID
-from openerp.addons.payment_wcpay.models import weixinsdk
-from openerp.addons.payment_wcpay.models.weixinsdk import Wxpay_server_pub
+from ..models import weixinsdk
+from ..models.weixinsdk import Wxpay_server_pub
 from openerp.http import request
-from openerp.tools.translate import _
 
 _logger = logging.getLogger(__name__)
 
@@ -70,7 +69,7 @@ class website_sale(http.Controller):
     @http.route(['/shop/payment/transaction_so/<int:acquirer_id>'],
                 type='json', auth="public", website=True)
     def payment_transaction_for_so(self, acquirer_id, sale_order_id=None):
-        cr, uid, context = request.cr, request.uid, request.context
+        cr, context = request.cr, request.context
         transaction_obj = request.registry.get('payment.transaction')
         if sale_order_id is not None:
             request.session['sale_order_id'] = sale_order_id
@@ -131,7 +130,7 @@ class website_sale(http.Controller):
     @http.route(['/shop/payment/transaction_ai/<int:acquirer_id>'],
                 type='json', auth="public", website=True)
     def payment_transaction_for_ai(self, acquirer_id, account_invoice_id=None):
-        cr, uid, context = request.cr, request.uid, request.context
+        cr, context = request.cr, request.context
         transaction_obj = request.registry.get('payment.transaction')
         if account_invoice_id is not None:
             request.session['account_invoice_id'] = account_invoice_id
@@ -285,7 +284,8 @@ class WcpayController(ReportController):
                  '/shop/confirmation/so/<int:sale_order_id>',
                  '/shop/confirmation/ai/<int:account_invoice_id>'],
                 type='http', auth="public", website=True)
-    def payment_confirmation(self, sale_order_id=None, account_invoice_id=None, **post):
+    def payment_confirmation(self, sale_order_id=None, account_invoice_id=None,
+                             **post):
         cr, uid, context = request.cr, request.uid, request.context
 
         if post.get('subject'):
@@ -297,16 +297,17 @@ class WcpayController(ReportController):
                 sale_order_id = sale_order_ids[0]
 
             if sale_order_id is None:
-                account_invoice_ids = request.registry['account.invoice'].search(
+                account_invoice_ids = request.registry[
+                    'account.invoice'].search(
                     cr, uid, [('number', '=', subject)], context=context
                 )
                 if account_invoice_ids:
                     account_invoice_id = account_invoice_ids[0]
 
-        if sale_order_id is None and \
-                        account_invoice_id is None and \
-                request.session.uid and \
-                request.session.get('sale_last_order_id'):
+        if (sale_order_id is None and
+                account_invoice_id is None and
+                request.session.uid and
+                request.session.get('sale_last_order_id')):
             sale_order_id = request.session.get('sale_last_order_id')
 
         acquirer = request.registry['payment.acquirer'].search(
@@ -315,31 +316,45 @@ class WcpayController(ReportController):
         if sale_order_id:
             order = request.registry['sale.order'].browse(
                 cr, SUPERUSER_ID, sale_order_id, context=context)
-            website_sale.payment_transaction_for_so(website_sale(), acquirer[0], order.id)
-            return request.website.render("website_sale.confirmation", {'order': order})
+            website_sale.payment_transaction_for_so(website_sale(),
+                                                    acquirer[0],
+                                                    order.id)
+            return request.website.render("website_sale.confirmation",
+                                          {'order': order})
         elif account_invoice_id:
             invoice = request.registry['account.invoice'].browse(
                 cr, SUPERUSER_ID, account_invoice_id, context=context)
-            website_sale.payment_transaction_for_ai(website_sale(), acquirer[0], invoice.id)
-            return request.website.render("payment_wcpay.wcpay_confirmation", {'invoice': invoice})
+            website_sale.payment_transaction_for_ai(website_sale(),
+                                                    acquirer[0],
+                                                    invoice.id)
+            return request.website.render("payment_wcpay.wcpay_confirmation",
+                                          {'invoice': invoice})
         else:
             return request.redirect('/shop')
 
-    @http.route('/shop/payment/get_status_so/<int:sale_order_id>', type='json', auth="public", website=True)
+    @http.route('/shop/payment/get_status_so/<int:sale_order_id>',
+                type='json',
+                auth="public",
+                website=True)
     def payment_get_status_so(self, sale_order_id, **post):
-        cr, uid, context = request.cr, request.uid, request.context
-        order = request.registry['sale.order'].browse(cr, SUPERUSER_ID, sale_order_id, context=context)
+        cr, _, context = request.cr, request.uid, request.context
+        order = request.registry['sale.order'].browse(cr, SUPERUSER_ID,
+                                                      sale_order_id,
+                                                      context=context)
         assert order.id == sale_order_id
 
         if not order:
             return {
                 'state': 'error',
-                'message': '<p>%s</p>' % _('There seems to be an error with your request.'),
+                'message': '<p>%s</p>' % _(
+                    'There seems to be an error with your request.'),
             }
         else:
             tx_ids = request.registry['payment.transaction'].search(
-                cr, SUPERUSER_ID, [
-                    '|', ('sale_order_id', '=', order.id), ('reference', '=', order.name)
+                cr, SUPERUSER_ID,
+                [
+                    '|', ('sale_order_id', '=', order.id),
+                    ('reference', '=', order.name),
                 ], context=context)
 
         flag = False
@@ -350,21 +365,26 @@ class WcpayController(ReportController):
         if not tx_ids:
             if order.amount_total:
                 state = 'error'
-                message = '<p>%s</p>' % _('There seems to be an error with your request.')
+                message = '<p>%s</p>' % _(
+                    'There seems to be an error with your request.')
         else:
-            tx = request.registry['payment.transaction'].browse(cr, SUPERUSER_ID, tx_ids[0], context=context)
+            pt = request.registry['payment.transaction']
+            tx = pt.browse(cr, SUPERUSER_ID, tx_ids[0], context=context)
             state = tx.state
             flag = state == 'pending'
             if state == 'done':
                 message = '<p>%s</p>' % _('Your payment has been received.')
             elif state == 'cancel':
-                message = '<p>%s</p>' % _('The payment seems to have been canceled.')
+                message = '<p>%s</p>' % _(
+                    'The payment seems to have been canceled.')
             elif state == 'pending' and tx.acquirer_id.validation == 'manual':
-                message = '<p>%s</p>' % _('Your transaction is waiting confirmation.')
+                message = '<p>%s</p>' % _(
+                    'Your transaction is waiting confirmation.')
                 if tx.acquirer_id.post_msg:
                     message += tx.acquirer_id.post_msg
             elif state == 'error':
-                message = '<p>%s</p>' % _('An error occurred during the transaction.')
+                message = '<p>%s</p>' % _(
+                    'An error occurred during the transaction.')
             validation = tx.acquirer_id.validation
 
         return {
@@ -374,9 +394,10 @@ class WcpayController(ReportController):
             'validation': validation
         }
 
-    @http.route('/shop/payment/get_status_ai/<int:account_invoice_id>', type='json', auth="public", website=True)
+    @http.route('/shop/payment/get_status_ai/<int:account_invoice_id>',
+                type='json', auth="public", website=True)
     def payment_get_status_ai(self, account_invoice_id, **post):
-        cr, uid, context = request.cr, request.uid, request.context
+        cr, _, context = request.cr, request.uid, request.context
         invoice = request.registry['account.invoice'].browse(
             cr, SUPERUSER_ID, account_invoice_id, context=context)
         assert invoice.id == account_invoice_id
@@ -384,12 +405,14 @@ class WcpayController(ReportController):
         if not invoice:
             return {
                 'state': 'error',
-                'message': '<p>%s</p>' % _('There seems to be an error with your request.'),
+                'message': '<p>%s</p>' % _(
+                    'There seems to be an error with your request.'),
             }
         else:
             tx_ids = request.registry['payment.transaction'].search(
                 cr, SUPERUSER_ID, [
-                    '|', ('account_invoice_id', '=', invoice.id), ('reference', '=', invoice.number)
+                    '|', ('account_invoice_id', '=', invoice.id),
+                    ('reference', '=', invoice.number)
                 ], context=context)
 
         flag = False
@@ -400,21 +423,26 @@ class WcpayController(ReportController):
         if not tx_ids:
             if invoice and invoice.residual:
                 state = 'error'
-                message = '<p>%s</p>' % _('There seems to be an error with your request.')
+                message = '<p>%s</p>' % _(
+                    'There seems to be an error with your request.')
         else:
-            tx = request.registry['payment.transaction'].browse(cr, SUPERUSER_ID, tx_ids[0], context=context)
+            pt = request.registry['payment.transaction']
+            tx = pt.browse(cr, SUPERUSER_ID, tx_ids[0], context=context)
             state = tx.state
             flag = state == 'pending'
             if state == 'done':
                 message = '<p>%s</p>' % _('Your payment has been received.')
             elif state == 'cancel':
-                message = '<p>%s</p>' % _('The payment seems to have been canceled.')
+                message = '<p>%s</p>' % _(
+                    'The payment seems to have been canceled.')
             elif state == 'pending' and tx.acquirer_id.validation == 'manual':
-                message = '<p>%s</p>' % _('Your transaction is waiting confirmation.')
+                message = '<p>%s</p>' % _(
+                    'Your transaction is waiting confirmation.')
                 if tx.acquirer_id.post_msg:
                     message += tx.acquirer_id.post_msg
             elif state == 'error':
-                message = '<p>%s</p>' % _('An error occurred during the transaction.')
+                message = '<p>%s</p>' % _(
+                    'An error occurred during the transaction.')
             validation = tx.acquirer_id.validation
 
         return {

@@ -4,7 +4,7 @@ from openerp.addons.edi import EDIMixin
 from werkzeug import url_encode
 
 from openerp import models, api, fields
-from openerp.addons.payment_alipay.controllers.main import AlipayController
+from ..controllers.main import AlipayController
 
 
 class AccountInvoice(models.Model, EDIMixin):
@@ -47,12 +47,16 @@ class AccountInvoice(models.Model, EDIMixin):
         compute='_edi_alipay_url_direct_pay', string='Alipay Url Direct Pay')
 
     def action_invoice_sent(self, cr, uid, ids, context=None):
-        '''  Override to use a modified template that includes a portal signup link '''
-        action_dict = super(AccountInvoice, self).action_invoice_sent(cr, uid, ids, context=context)
+        """Override to use a modified template that includes a portal signup
+        link """
+        action_dict = super(AccountInvoice, self) \
+            .action_invoice_sent(cr, uid, ids, context=context)
         try:
-            template_id = \
-                self.pool.get('ir.model.data').get_object_reference(cr, uid, 'payment_alipay',
-                                                                    'email_template_edi_invoice')[1]
+            template_id = self.pool.get('ir.model.data') \
+                .get_object_reference(cr,
+                                      uid,
+                                      'payment_alipay',
+                                      'email_template_edi_invoice')[1]
             # assume context is still a dict, as prepared by super
             ctx = action_dict['context']
             ctx['default_template_id'] = template_id

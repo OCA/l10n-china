@@ -3,8 +3,6 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
 import logging
-import urllib
-import urllib2
 
 import openerp
 from openerp.tests import common
@@ -22,31 +20,30 @@ class TestPaymentAcquirer(common.TransactionCase):
         ids = []
         for index in range(0, 10):
             name = "testing_product_" + str(index)
-            ids.append(self.env['product.product'].create(
-                {'name': name}).id
-            )
+            ids.append(self.env['product.product'].create({'name': name}).id)
         # create an empty sale order for testing
         self.sale_order = self.env['sale.order'].create(
-            {'partner_id': 1, 'payment_method_id': 1}
-        )
+            {'partner_id': 1,
+             'payment_method_id': 1})
 
         # create an payment acquirer for testing
         self.payment_acquirer = self.env['payment.acquirer'].create(
-            {'name': 'alipay', 'provider': 'alipay',
-                'website_published': True,
-                'alipay_pid': 000000,
-                'alipay_seller_email': 'luke.zheng@elico-corp.com',
-                'view_template_id': 1,
-                'alipay_key': 1,
-                'service': 'create_direct_pay_by_user'})
+            {'name': 'alipay',
+             'provider': 'alipay',
+             'website_published': True,
+             'alipay_pid': 000000,
+             'alipay_seller_email': 'luke.zheng@elico-corp.com',
+             'view_template_id': 1,
+             'alipay_key': 1,
+             'service': 'create_direct_pay_by_user'})
 
         self.payment_transaction = self.env['payment.transaction'].create(
             {'reference': 'SO-2015-18-0050',
-                'acquirer_id': self.payment_acquirer.id,
-                'sale_order_id': self.sale_order.id,
-                'amount': 0,
-                'currency_id': 1,
-                'partner_country_id': 1})
+             'acquirer_id': self.payment_acquirer.id,
+             'sale_order_id': self.sale_order.id,
+             'amount': 0,
+             'currency_id': 1,
+             'partner_country_id': 1})
 
         self.product_ids = self.env['product.product'].search(
             [('id', 'in', ids)])
@@ -63,13 +60,16 @@ class TestPaymentAcquirer(common.TransactionCase):
             'sign': u'31ec60b33f2dd89fff2557bfd06cad6f',
             'exterface': u'create_direct_pay_by_user',
             'out_trade_no': u'SO-2015-24059',
-            'payment_type': u'1', 'total_fee': u'0.01',
+            'payment_type': u'1',
+            'total_fee': u'0.01',
             'sign_type': u'MD5',
             'notify_time': u'2015-09-24 10:55:01',
             'trade_status': u'TRADE_SUCCESS',
-            'notify_id': u'RqPnCoPT3K9%2Fvwbh3InVbTzrlGy8Nc02ac3vWSajRn%2BhdZXlGj0vsq%2FpszXQ5%2B7FyuNo',
+            'notify_id': u'RqPnCoPT3K9%2Fvwbh3InVbTzrlGy8Nc02ac3vWSajR'
+                         u'n%2BhdZXlGj0vsq%2FpszXQ5%2B7FyuNo',
             'notify_type': u'trade_status_sync',
-            'is_success': u'T', 'buyer_id': u'2088002451351968'}
+            'is_success': u'T',
+            'buyer_id': u'2088002451351968'}
         self.payment_transaction = self.env['payment.transaction'].create({
             'reference': u'SO-2015-24059',
             'write_uid': 1,
@@ -84,4 +84,5 @@ class TestPaymentAcquirer(common.TransactionCase):
             'partner_country_id': 6,
             'sale_order_id': self.sale_order.id,
             'currency_id': 8,
-            'amount': 0.01, 'website_message_ids': []})
+            'amount': 0.01,
+            'website_message_ids': []})

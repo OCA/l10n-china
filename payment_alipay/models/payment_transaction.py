@@ -69,7 +69,8 @@ class TxAlipay(models.Model):
         diff = data.get('out_trade_no') != tx.acquirer_reference
         if tx.acquirer_reference and diff:
             invalid_parameters.append(
-                ('Transaction Id', data.get('out_trade_no'), tx.acquirer_reference)
+                ('Transaction Id', data.get('out_trade_no'),
+                 tx.acquirer_reference)
             )
 
         total_fee = float(data.get('total_fee', '0.0'))
@@ -84,8 +85,8 @@ class TxAlipay(models.Model):
     def _alipay_form_validate(self, tx, data):
         if data.get('trade_status') in ['TRADE_SUCCESS', 'TRADE_FINISHED']:
             date_validate = datetime.strptime(
-                date_string=data.get('notify_time'),
-                format="%Y-%m-%d %H:%M:%S"
+                data.get('notify_time'),
+                "%Y-%m-%d %H:%M:%S"
             )
             date_validate = date_validate - timedelta(hours=8)
 

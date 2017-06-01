@@ -4,7 +4,6 @@
 
 import logging
 
-import openerp
 from openerp.tests import common
 
 _logger = logging.getLogger(__name__)
@@ -20,22 +19,19 @@ class TestSaleOrder(common.TransactionCase):
         ids = []
         for index in range(0, 10):
             name = "testing_product_" + str(index)
-            ids.append(self.env['product.product'].create(
-                {'name': name}).id
-            )
+            ids.append(self.env['product.product'].create({'name': name}).id)
         # # create an empty sale order for testing
-        self.sale_order = self.env['sale.order'].create(
-            {'partner_id': 1}
-        )
+        self.sale_order = self.env['sale.order'].create({'partner_id': 1})
         # # create an payment acquirer for testing
         self.payment_acquirer = self.env['payment.acquirer'].create(
-            {'name': 'alipay', 'provider': 'alipay',
-                'website_published': True,
-                'alipay_pid': 000000,
-                'alipay_seller_email': 'dummy',
-                'view_template_id': 1,
-                'alipay_key': 1,
-                'service': 'create_direct_pay_by_user'})
+            {'name': 'alipay',
+             'provider': 'alipay',
+             'website_published': True,
+             'alipay_pid': 000000,
+             'alipay_seller_email': 'dummy',
+             'view_template_id': 1,
+             'alipay_key': 1,
+             'service': 'create_direct_pay_by_user'})
         self.product_ids = self.env['product.product'].search(
             [('id', 'in', ids)])
 
@@ -51,7 +47,8 @@ class TestSaleOrder(common.TransactionCase):
         _logger.info('00----88' + str(self.sale_order.alipay_url_direct_pay))
         self.sale_order.state = 'sent'
         self.sale_order._edi_alipay_url_direct_pay()
-        _logger.info('00--confirmed--88' + str(self.sale_order.alipay_url_direct_pay))
+        _logger.info(
+            '00--confirmed--88' + str(self.sale_order.alipay_url_direct_pay))
 
     def test_edi_alipay_url_acquirer(self):
         """
@@ -83,23 +80,26 @@ class TestSaleOrder(common.TransactionCase):
 
         # create multi payment acquirer for testing
         self.payment_acquirer = self.env['payment.acquirer'].create(
-            {'name': 'alipay', 'provider': 'alipay',
-                'website_published': True,
-                'alipay_pid': 000000,
-                'alipay_seller_email': 'dummy',
-                'view_template_id': 1,
-                'alipay_key': 1,
-                'service': 'create_direct_pay_by_user'})
+            {'name': 'alipay',
+             'provider': 'alipay',
+             'website_published': True,
+             'alipay_pid': 000000,
+             'alipay_seller_email': 'dummy',
+             'view_template_id': 1,
+             'alipay_key': 1,
+             'service': 'create_direct_pay_by_user'})
         _logger.info('00--2--88' + str(self.sale_order.alipay_url_direct_pay))
         self.sale_order._edi_alipay_url_direct_pay()
-        _logger.info('00--confirmed--88' + str(self.sale_order.alipay_url_direct_pay))
+        _logger.info(
+            '00--confirmed--88' + str(self.sale_order.alipay_url_direct_pay))
 
         # # null payment acquirer for testing
         self.env['payment.acquirer'].unlink()
         _logger.info('00--2--88' + str(self.sale_order.alipay_url_direct_pay))
         self.sale_order._edi_alipay_url_direct_pay()
 
-        _logger.info('00--confirmed--88' + str(self.sale_order.alipay_url_direct_pay))
+        _logger.info(
+            '00--confirmed--88' + str(self.sale_order.alipay_url_direct_pay))
         # state = sent
         self.sale_order.write({'state': 'sent'})
         self.sale_order._edi_alipay_url_direct_pay()

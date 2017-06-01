@@ -7,7 +7,7 @@ import urlparse
 from hashlib import md5
 
 from openerp import SUPERUSER_ID
-from openerp.addons.payment_alipay.controllers.main import AlipayController
+from ..controllers.main import AlipayController
 from openerp.exceptions import except_orm
 from openerp.osv import osv, fields
 from openerp.tools.translate import _
@@ -90,45 +90,31 @@ class AcquirerAlipay(osv.Model):
                 % acquirer), _(e))
         alipay_key = acquirer.alipay_key
 
+        # TODO: raise error or use empty string?
+        src = ''
+        filter_keys = ['sign', 'sign_type']
         if inout == 'out':
             if not values.get('is_success', ''):
-                keys = ['buyer_email', 'buyer_id', 'discount',
-                        'gmt_create', 'gmt_payment', 'is_total_fee_adjust',
-                        'notify_id', 'notify_time', 'notify_type',
-                        'out_trade_no',
-                        'payment_type', 'price', 'quantity', 'seller_email',
-                        'seller_id', 'subject',
-                        'total_fee', 'trade_no', 'trade_status', 'use_coupon']
                 src = '&'.join(
-                    ['%s=%s' % (key, value) for key, value in sorted(
-                        values.items()) if key in keys]) + alipay_key
+                    ['%s=%s' % (key, value)
+                        for key, value in sorted(values.items())
+                        if key not in filter_keys]) + alipay_key
             else:
-                keys = ['buyer_email', 'buyer_id', 'exterface', 'is_success',
-                        'notify_id', 'notify_time', 'notify_type',
-                        'out_trade_no',
-                        'payment_type', 'seller_email', 'seller_id', 'subject',
-                        'total_fee', 'trade_no', 'trade_status']
                 src = '&'.join(
-                    ['%s=%s' % (key, value) for key, value in sorted(
-                        values.items()) if key in keys]) + alipay_key
+                    ['%s=%s' % (key, value)
+                        for key, value in sorted(values.items())
+                        if key not in filter_keys]) + alipay_key
         else:
             if values.get('service', '') == 'create_direct_pay_by_user':
-                keys = ['return_url', 'notify_url', '_input_charset',
-                        'is_success',
-                        'partner', 'payment_type', 'seller_email',
-                        'service', 'out_trade_no', 'subject', 'total_fee']
                 src = '&'.join(
-                    ['%s=%s' % (key, value) for key, value in sorted(
-                        values.items()) if key in keys]) + alipay_key
+                    ['%s=%s' % (key, value)
+                        for key, value in sorted(values.items())
+                        if key not in filter_keys]) + alipay_key
             elif values.get('service', '') == 'create_partner_trade_by_buyer':
-                keys = ['return_url', 'notify_url', 'logistics_type',
-                        'logistics_fee', 'logistics_payment', 'price',
-                        'quantity', '_input_charset', 'partner',
-                        'payment_type', 'seller_email', 'service',
-                        'out_trade_no', 'subject']
                 src = '&'.join(
-                    ['%s=%s' % (key, value) for key, value in sorted(
-                        values.items()) if key in keys]) + alipay_key
+                    ['%s=%s' % (key, value)
+                        for key, value in sorted(values.items())
+                        if key not in filter_keys]) + alipay_key
         return md5(src.encode('utf-8')).hexdigest()
 
     def alipay_form_generate_values(

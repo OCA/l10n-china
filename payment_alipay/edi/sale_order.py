@@ -6,7 +6,7 @@ import urlparse
 
 from openerp import models, api, fields
 from openerp.addons.edi import EDIMixin
-from openerp.addons.payment_alipay.controllers.main import AlipayController
+from ..controllers.main import AlipayController
 from werkzeug import url_encode
 
 
@@ -60,11 +60,15 @@ class SaleOrder(models.Model, EDIMixin):
         :param context:
         :return:
         """
-        action_dict = super(SaleOrder, self).action_quotation_send(cr, uid, ids, context=context)
+        action_dict = super(SaleOrder, self) \
+            .action_quotation_send(cr, uid, ids,
+                                   context=context)
         try:
             template_id = \
-                self.pool.get('ir.model.data').get_object_reference(cr, uid, 'payment_alipay',
-                                                                    'email_template_edi_sale')[1]
+                self.pool.get('ir.model.data') \
+                    .get_object_reference(cr, uid,
+                                          'payment_alipay',
+                                          'email_template_edi_sale')[1]
             # assume context is still a dict, as prepared by super
             ctx = action_dict['context']
             ctx['default_template_id'] = template_id
