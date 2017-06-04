@@ -177,7 +177,7 @@
             <field name="name">SH (CN Hukou)</field>
             <field name="company_id" ref="base.main_company"/>
             <field eval="[(6, 0, [
-                    ref('hr_payroll.hr_rule_basic'),
+                    ref('hr_rule_basic_pit_base'),
                     ref('hr_payroll.hr_rule_net'),
                     ref('hr_rule_sl'),
                     ref('hr_rule_lsl'),
@@ -199,6 +199,11 @@
                     ref('hr_rule_housing_fund_cp_sh1'),
                     ref('hr_rule_personal_si_cp_sh1'),
                     ref('hr_rule_pit'),
+                    ref('hr_rule_other'),
+                    ref('hr_rule_rmb'),
+                    ref('hr_rule_rentss'),
+                    ref('hr_rule_rentax'),
+                    ref('hr_rule_bonus_sale'),
                     ref('rules_bt'),
                 ])]" name="rule_ids"/>
             <field name="parent_id"></field>
