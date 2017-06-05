@@ -15,7 +15,13 @@ This l10n-china repository is hosted in Github and might contain any module rela
 
 [//]: # (addons)
 
-
+Available addons
+----------------
+addon | version | summary
+--- | --- | ---
+[l10n_cn_hr_payroll](l10n_cn_hr_payroll/) | 9.0.2.0.0 | Chinese - Payroll
+[l10n_cn_partner](l10n_cn_partner/) | 9.0.1.0.2 | l10n_hr
+[website_certificate](website_certificate/) | 9.0.1.0.1 | Website Certificate
 
 [//]: # (end addons)
 
