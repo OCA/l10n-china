@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_fapiao_tag,access_fapiao_tag,model_fapiao_tag,,1,0,0,0
+access_fapiao_tax_type,access_fapiao_tax_type,model_fapiao_tax_type,,1,0,0,0
