@@ -129,3 +129,12 @@ class TestFapiao(common.TransactionCase):
             self.fapiao_tax_type_model.create({
                 'name': 'Fapiao Tax Type'
             })
+
+    def test_03_fapiao_default_value(self):
+        self.env['fapiao'].create({
+            'fapiao_number': 1028787,
+            'fapiao_date': '2017-02-13',
+            'reception_date': '2017-2-14',
+            'amount_with_taxes': 10.0,
+            'notes': 'SX-19-08',
+        })
