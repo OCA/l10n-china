@@ -14,6 +14,7 @@
     'data': [
         'views/fapiao_view.xml',
         'data/fapiao_tax_type.xml',
+        'security/ir.model.access.csv',
     ],
     'demo': [
         'demo/fapiao_demo.xml',
