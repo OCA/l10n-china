@@ -9,7 +9,7 @@
             <field name="company_id" ref="base.main_company"/>
             <field eval="[(6, 0, [
                     ref('hr_payroll.hr_rule_basic'),
-                    ref('hr_payroll.hr_rule_net'),
+                    ref('hr_rule_basic_net'),
                     ref('hr_rule_sl'),
                     ref('hr_rule_lsl'),
                     ref('hr_rule_upl'),

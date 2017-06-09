@@ -307,7 +307,7 @@
             <field name="amount_percentage">100.0</field>
         </record>
 
-        <record id="hr_payroll.hr_rule_net" model="hr.salary.rule">
+        <record id="hr_rule_basic_net" model="hr.salary.rule">
             <field name="name">Basic Net</field>
             <field name="sequence" eval="700"/>
             <field name="code">BASICNET</field>

@@ -184,7 +184,7 @@
                     ref('hr_rule_bonuse'),
                     ref('hr_rule_adj'),
                     ref('hr_rule_topay'),
-                    ref('hr_payroll.hr_rule_net'),
+                    ref('hr_rule_basic_net'),
                     ref('hr_rule_pension1_sz4'),
                     ref('hr_rule_medical_sz4'),
                     ref('hr_rule_bearing_sz4'),
