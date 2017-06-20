@@ -19,6 +19,7 @@ Available addons
 ----------------
 addon | version | summary
 --- | --- | ---
+[l10n_cn_fapiao](l10n_cn_fapiao/) | 8.0.1.0.0 | Chinese Fapiao Management and link with Odoo Invoice
 [payment_alipay](payment_alipay/) | 8.0.2.0.2 | Payment Acquirer: Alipay Implementation
 [payment_wcpay](payment_wcpay/) | 8.0.2.0.0 | Payment Acquirer: Wechat Implementation
 
