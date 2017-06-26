@@ -2,13 +2,14 @@
 <openerp>
     <data>
 
+
         <!-- 薪酬结构 -->
         <record id="hr_payroll_salary_structure_sh4" model="hr.payroll.structure">
             <field name="code">SHFNS</field>
             <field name="name">SH (Foreigner W/O SI)</field>
             <field name="company_id" ref="base.main_company"/>
             <field eval="[(6, 0, [
-                    ref('hr_payroll.hr_rule_basic'),
+                    ref('hr_rule_basic_pit_base'),
                     ref('hr_rule_basic_net'),
                     ref('hr_rule_sl'),
                     ref('hr_rule_lsl'),
@@ -17,6 +18,11 @@
                     ref('hr_rule_adj'),
                     ref('hr_rule_topay'),
                     ref('hr_rule_pit'),
+                    ref('hr_rule_other'),
+                    ref('hr_rule_rmb'),
+                    ref('hr_rule_rentss'),
+                    ref('hr_rule_rentax'),
+                    ref('hr_rule_bonus_sale'),
                     ref('rules_bt')
                 ])]" name="rule_ids"/>
             <field name="parent_id"></field>
