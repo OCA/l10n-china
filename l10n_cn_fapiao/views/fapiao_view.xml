@@ -112,7 +112,8 @@
             <field name="model">account.invoice</field>
             <field name="inherit_id" ref="account.invoice_form"/>
             <field name="arch" type="xml">
-                <xpath expr="//notebook/page[@string='Payments']" position="after">
+                <!-- <xpath expr="//notebook/page[@string='Payments']" position="after">-->
+                <notebook position="inside">
                     <page string="Fapiao Info">
                         <field name="fapiao_ids">
                             <tree string="Fapiao" editable="bottom">
@@ -122,7 +123,8 @@
                             </tree>
                         </field>
                     </page>
-                </xpath>
+                </notebook>
+                <!-- </xpath>-->
             </field>
         </record>
     </data>
