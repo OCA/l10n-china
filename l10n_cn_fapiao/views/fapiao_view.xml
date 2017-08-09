@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <!-- fapiao -->
+        <record id="view_fapiao_tree" model="ir.ui.view">
+            <field name="name">fapiao.tree</field>
+            <field name="model">fapiao</field>
+            <field name="arch" type="xml">
+                <tree string="Fapiao Line">
+                    <field name="fapiao_date"/>
+                    <field name="fapiao_number"/>
+                    <field name="amount_with_taxes"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_fapiao_form" model="ir.ui.view">
+            <field name="name">fapiao.line.form</field>
+            <field name="model">fapiao</field>
+            <field name="arch" type="xml">
+                <form string="Fapiao Line" version="7.0">
+                    <sheet string="Fapiao">
+                        <group>
+                            <group>
+                                <field name="fapiao_number"/>
+                                <field name="tag_ids" widget="many2many_tags" placeholder="Tags..."/>
+                                <field name="fapiao_type"/>
+                            </group>
+                            <group>
+                                <field name="fapiao_date"/>
+                                <field name="amount_with_taxes"/>
+                                <field name="tax_type" domain="[('active', '=', True)]"/>
+                            </group>
+                        </group>
+                        <field name="invoice_ids"/>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_fapiao_filter" model="ir.ui.view">
+            <field name="name">fapiao.select</field>
+            <field name="model">fapiao</field>
+            <field name="arch" type="xml">
+                <search string="Search Fapiao">
+                    <field name="fapiao_number"/>
+                    <field name="fapiao_date"/>
+                    <field name="tag_ids"/>
+                    <separator/>
+                    <group expand="0" string="Group By...">
+                        <filter string="Fapiao Date" icon="terp-go-month" domain="[]" context="{'group_by':'fapiao_date'}"/>
+                        <filter string="Fapiao Number" icon="" domain="[]" context="{'group_by':'fapiao_number'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_fapiao_tree" model="ir.actions.act_window">
+            <field name="name">Customer Fapiao</field>
+            <field name="res_model">fapiao</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="view_fapiao_filter"/>
+        </record>
+        <menuitem id="menu_fapiao" name="Fapiao" parent="account.menu_finance" sequence="3"/>
+        <menuitem id="fapiao_tree_lines" action="action_fapiao_tree" parent="menu_fapiao"/>
+
+
+        <!-- fapiao tax type -->
+        <record id="view_fapiao_tax_type_tree" model="ir.ui.view">
+            <field name="name">fapiao.tax.type.tree</field>
+            <field name="model">fapiao.tax.type</field>
+            <field name="arch" type="xml">
+                <tree string="Fapiao Tax Type">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_fapiao_tax_type_form" model="ir.ui.view">
+            <field name="name">fapiao.tax.type.form</field>
+            <field name="model">fapiao.tax.type</field>
+            <field name="arch" type="xml">
+                <form string="Fapiao Tax Type" version="7.0">
+                    <sheet string="Fapiao Tax Type">
+                        <group>
+                            <group>
+                                <field name="name"/>
+                                <field name="active"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_fapiao_tax_type" model="ir.actions.act_window">
+            <field name="name">Tax Type</field>
+            <field name="res_model">fapiao.tax.type</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <menuitem id="menu_fapiao_tax_type" action="action_fapiao_tax_type" parent="menu_fapiao"/>
+
+        <!-- account.invoice -->
+        <record id="invoice_form" model="ir.ui.view">
+            <field name="name">account.invoice.form</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//notebook/page[@string='Payments']" position="after">
+                    <page string="Fapiao Info">
+                        <field name="fapiao_ids">
+                            <tree string="Fapiao" editable="bottom">
+                                <field name="fapiao_number"/>
+                                <field name="fapiao_date"/>
+                                <field name="amount_with_taxes"/>
+                            </tree>
+                        </field>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</openerp>
