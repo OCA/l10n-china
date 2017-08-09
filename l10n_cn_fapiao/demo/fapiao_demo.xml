@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <!-- fapiao tag -->
+        <record id="demo_fapiao_tag_1" model="fapiao.tag">
+            <field name="name">SH</field>
+        </record>
+        <record id="demo_fapiao_tag_2" model="fapiao.tag">
+            <field name="name">EXPORT</field>
+        </record>
+
+        <!-- A fapiao statement -->
+        <record id="demo_fapiao_1" model="fapiao">
+            <field name="fapiao_number" eval="'80'+time.strftime('%S')"/>
+            <field name="fapiao_date" eval="time.strftime('%Y-%m')+'-01'"/>
+            <field name="reception_date" eval="time.strftime('%Y-%m')+'-02'"/>
+            <field name="amount_with_taxes">2</field>
+            <field name="invoice_ids" eval="[(6,0,[ref('account.invoice_1'),ref('account.invoice_2')])]"/>
+            <field name="tag_ids" eval="[(6,0,[ref('demo_fapiao_tag_1'),ref('demo_fapiao_tag_2')])]"/>
+            <field name="tax_type" eval="ref('fapiao_tax_type_6')"/>
+        </record>
+        <record id="demo_fapiao_2" model="fapiao">
+            <field name="fapiao_number" eval="'80'+time.strftime('%S')"/>
+            <field name="fapiao_date" eval="time.strftime('%Y-%m')+'-01'"/>
+            <field name="reception_date" eval="time.strftime('%Y-%m')+'-02'"/>
+            <field name="amount_with_taxes">50</field>
+            <field name="invoice_ids" eval="[(6,0,[ref('account.invoice_2'),ref('account.invoice_3')])]"/>
+            <field name="tag_ids" eval="[(6,0,[ref('demo_fapiao_tag_1'),ref('demo_fapiao_tag_2')])]"/>
+            <field name="tax_type" eval="ref('fapiao_tax_type_normal')"/>
+        </record>
+    </data>
+</openerp>

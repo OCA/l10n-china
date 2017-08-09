@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="1">
+        <record id="fapiao_tax_type_6" model="fapiao.tax.type">
+            <field name="name">6%</field>
+            <field name="active">True</field>
+        </record>
+        <record id="fapiao_tax_type_13" model="fapiao.tax.type">
+            <field name="name">13%</field>
+            <field name="active">True</field>
+        </record>
+        <record id="fapiao_tax_type_17" model="fapiao.tax.type">
+            <field name="name">17%</field>
+            <field name="active">True</field>
+        </record>
+        <record id="fapiao_tax_type_normal" model="fapiao.tax.type">
+            <field name="name">normal</field>
+            <field name="active">True</field>
+        </record>
+        <record id="fapiao_tax_type_no_tax" model="fapiao.tax.type">
+            <field name="name">no tax</field>
+            <field name="active">True</field>
+        </record>
+    </data>
+</openerp>
