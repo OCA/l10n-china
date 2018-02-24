@@ -101,7 +101,7 @@ class HrEmployee(models.Model):
         'entry_date': time.strftime('%Y-%m-%d')
     }
 
-    entry_date = fields.Date(string="Entry Date", required=True)
+    entry_date = fields.Date(string="Entry Date")
     worked_years = fields.Integer(
         string='Worked Years',
         compute='_compute_worked_years'

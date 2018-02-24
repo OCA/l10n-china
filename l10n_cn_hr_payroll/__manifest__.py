@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
-# © 2016 Elico corp (www.elico-corp.com)
+# © 2016-2018 Elico corp (www.elico-corp.com)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 {
     'name': 'Chinese - Payroll',
     'category': 'Localization',
-    'version': '9.0.2.0.0',
+    'version': '10.0.1.0.0',
     'website': 'https://www.elico-corp.com',
     'author': "Elico Corp, Odoo Community Association (OCA)",
     'depends': ['hr_payroll'],
