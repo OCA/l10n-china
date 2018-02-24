@@ -21,10 +21,6 @@ Usage
 Configure the company certificate information in website setting, then you can see the certificate information display at the bottom right of website.
 
 
-For further information, please visit:
-
- * https://www.odoo.com/forum/help-1
-
 Known issues / Roadmap
 ======================
 
@@ -52,4 +48,4 @@ OCA, or the Odoo Community Association, is a nonprofit organization whose
 mission is to support the collaborative development of Odoo features and
 promote its widespread use.
 
-To contribute to this module, please visit https://odoo-community.org. 
+To contribute to this module, please visit https://odoo-community.org.
