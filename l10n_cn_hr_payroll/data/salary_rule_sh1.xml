@@ -198,11 +198,10 @@
                     ref('hr_rule_accident_cp_sh1'),
                     ref('hr_rule_housing_fund_cp_sh1'),
                     ref('hr_rule_personal_si_cp_sh1'),
-                    ref('hr_rule_pit'),
+                    ref('hr_rule_tax'),
                     ref('hr_rule_other'),
                     ref('hr_rule_rmb'),
                     ref('hr_rule_rentss'),
-                    ref('hr_rule_rentax'),
                     ref('hr_rule_bonus_sale'),
                     ref('rules_bt'),
                 ])]" name="rule_ids"/>
