@@ -11,8 +11,9 @@ class DNSPodRecordListener(Component):
 
     @skip_if(lambda self, record, **kwargs: self.no_connector_export(record))
     def on_record_write(self, record, fields=None):
-        record.sync_dns_records(record.backend_id, record.domain_id, 'write',
-                                record.external_id)
+        record.with_delay().sync_dns_records(record.backend_id,
+                                             record.domain_id, 'write',
+                                             record.external_id)
 
     @skip_if(lambda self, record, **kwargs: self.no_connector_export(record))
     def on_record_create(self, record, fields=None):
