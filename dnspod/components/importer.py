@@ -44,7 +44,7 @@ class DNSPodDomainImporter(Component):
         else:
             return None
 
-    def _get_binding(self):
+    def _get_binding(self, signal):
         return self.domain_id
 
     def _update(self, binding, data):
@@ -59,5 +59,23 @@ class DNSPodRecordImporter(Component):
     _apply_on = 'dnspod.record'
 
     def _get_records(self, signal):
+        if signal == 'create':
+            return self.backend_adapter.create(self.domain_id,
+                                               self.external_id)
         return self.backend_adapter.send_request(self.domain_id,
                                                  self.external_id)
+
+    def _get_binding(self, signal):
+        if signal == 'create':
+            return self.model.browse(self.external_id)
+        return super(DNSPodRecordImporter, self)._get_binding(signal)
+
+    def _update_data(self, map_record, **kwargs):
+        res = super(DNSPodRecordImporter, self)._update_data(map_record,
+                                                             **kwargs)
+        return {k: v for k, v in res.items() if v}
+
+    def _update(self, binding, data):
+        res = super(DNSPodRecordImporter, self)._update(binding, data)
+        self.external_id = binding.external_id
+        return res

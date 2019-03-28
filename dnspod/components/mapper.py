@@ -34,9 +34,13 @@ class DNSPodRecordMapper(Component):
 
     @mapping
     def compute_domain(self, record):
-        ext_id = record['domain_id']
-        domain_id = self.env['dns.domain'].search(
-            [('external_id', '=', ext_id)])
+        if record.get('domain_id'):
+            ext_id = record['domain_id']
+            domain_id = self.env['dns.domain'].search(
+                [('external_id', '=', ext_id)])
+            return {
+                'domain_id': domain_id.id,
+            }
         return {
-            'domain_id': domain_id.id,
+            'domain_id': False,
         }
