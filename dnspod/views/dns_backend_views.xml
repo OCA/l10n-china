@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="dns_backend_token_form_view" model="ir.ui.view">
+       <field name="name">dns.backend.token.form</field>
+       <field name="model">dns.backend</field>
+       <field name="inherit_id" ref="dns.view_dns_backend" />
+       <field name="arch" type="xml">
+           <xpath expr="/form/sheet/group[3]" position="inside">
+               <group>
+                   <field name="token_id"/>
+                   <field name="login_token" password="True"/>
+               </group>
+           </xpath>
+       </field>
+    </record>
+
+</odoo>

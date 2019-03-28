@@ -1,0 +1,33 @@
+<odoo>
+
+    <record id="view_dnspod_record_tree" model="ir.ui.view">
+        <field name="name">dnspod.record.tree</field>
+        <field name="model">dnspod.record</field>
+        <field name="arch" type="xml">
+            <tree editable="bottom">
+                <field name="name"/>
+                <field name="domain_id"/>
+                <field name="line"/>
+                <field name="type"/>
+                <field name="external_id" string="Record ID on DNSPod CN"/>
+                <field name="value"/>
+                <field name="mx_priority"/>
+                <field name="ttl"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_dnspod_record" model="ir.actions.act_window">
+        <field name="name">DNSPod Records</field>
+        <field name="res_model">dnspod.record</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="view_dnspod_record_tree"/>
+    </record>
+
+    <menuitem id="menu_dnspod_record"
+              name="DNSPod Records"
+              action="dnspod.action_dnspod_record"
+              parent="dns.menu_dns_backend"
+    />
+</odoo>
