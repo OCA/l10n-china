@@ -285,7 +285,7 @@
             <field name="sequence">501</field>
             <field name="condition_select">none</field>
             <field name="amount_select">code</field>
-            <field name="amount_python_compute">result = inputs.Tax and inputs.Tax.amount</field>
+            <field name="amount_python_compute">result = inputs.TAX and inputs.TAX.amount</field>
         </record>
 
         <record id="hr_rule_input_tax" model="hr.rule.input">
