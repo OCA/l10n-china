@@ -55,82 +55,7 @@ class DNSPodRecordAdapter(Component):
     _inherit = 'dns.abstract.adapter'
     _apply_on = 'dnspod.record'
 
-    _headers = {
-        "Content-type": "application/x-www-form-urlencoded",
-        "Accept": "text/json",
-        "User-Agent": "DNSPod-Odoo/0.01 (webmaster@my-odoo.com)"
-    }
-
-    def create(self, domain_id, external_id):
-        record = self.model.browse(external_id)
-        params = {
-            'format': 'json',
-            'domain_id': domain_id.external_id,
-            'sub_domain': record.name,
-            'record_type': record.type,
-            'record_line_id': record.line,
-            'value': record.value,
-            'mx': record.mx_priority,
-            'ttl': record.ttl
-        }
-        if domain_id.backend_id.token_id and domain_id.backend_id.login_token:
-            login_token = '{},{}'.format(
-                domain_id.backend_id.token_id,
-                domain_id.backend_id.login_token
-            )
-            params.update(login_token=login_token)
-        else:
-            params.update(login_email=domain_id.backend_id.login,
-                          login_password=domain_id.backend_id.password)
-        api_path = self.backend_record.api_path
-        conn = httplib2.HTTPSConnectionWithTimeout(api_path)
-        conn.request('POST', '/Record.Create',
-                     urlencode(params), self._headers)
-        response = conn.getresponse()
-        data = response.read()
-        conn.close()
-        if response.status == 200:
-            res = json.loads(data.decode('utf-8'))
-            if res['status']['code'] == '1':
-                return res['record']
-        return {}
-
-    def write(self, binding):
-        domain_id = binding.domain_id
-        params = {
-            'format': 'json',
-            'domain_id': domain_id.external_id,
-            'record_id': binding.external_id,
-            'sub_domain': binding.name,
-            'record_type': binding.type,
-            'record_line_id': binding.line,
-            'value': binding.value,
-            'mx': binding.mx_priority,
-            'ttl': binding.ttl
-        }
-        if domain_id.backend_id.token_id and domain_id.backend_id.login_token:
-            login_token = '{},{}'.format(
-                domain_id.backend_id.token_id,
-                domain_id.backend_id.login_token
-            )
-            params.update(login_token=login_token)
-        else:
-            params.update(login_email=domain_id.backend_id.login,
-                          login_password=domain_id.backend_id.password)
-        api_path = self.backend_record.api_path
-        conn = httplib2.HTTPSConnectionWithTimeout(api_path)
-        conn.request('POST', '/Record.Modify',
-                     urlencode(params), self._headers)
-        response = conn.getresponse()
-        data = response.read()
-        conn.close()
-        if response.status == 200:
-            res = json.loads(data.decode('utf-8'))
-            if res['status']['code'] == '1':
-                return res['record']
-        return {}
-
-    def search(self, domain_id):
+    def _get_login_params(self, domain_id):
         params = {
             'format': 'json',
             'domain_id': domain_id.external_id
@@ -144,13 +69,64 @@ class DNSPodRecordAdapter(Component):
         else:
             params.update(login_email=domain_id.backend_id.login,
                           login_password=domain_id.backend_id.password)
+        return params
+
+    def _send_request(self, uri, params):
+        headers = {
+            "Content-type": "application/x-www-form-urlencoded",
+            "Accept": "text/json",
+            "User-Agent": "DNSPod-Odoo/0.01 (webmaster@my-odoo.com)"
+        }
         api_path = self.backend_record.api_path
         conn = httplib2.HTTPSConnectionWithTimeout(api_path)
-        conn.request('POST', '/Record.List',
-                     urlencode(params), self._headers)
+        conn.request('POST', uri, urlencode(params), headers)
         response = conn.getresponse()
-        data = response.read()
         conn.close()
+        return response
+
+    def create(self, domain_id, external_id):
+        record = self.model.browse(external_id)
+        params = self._get_login_params(domain_id)
+        params.update({
+            'sub_domain': record.name,
+            'record_type': record.type,
+            'record_line_id': record.line,
+            'value': record.value,
+            'mx': record.mx_priority,
+            'ttl': record.ttl
+        })
+        response = self._send_request('/Record.Create', params)
+        data = response.read()
+        if response.status == 200:
+            res = json.loads(data.decode('utf-8'))
+            if res['status']['code'] == '1':
+                return res['record']
+        return {}
+
+    def write(self, binding):
+        domain_id = binding.domain_id
+        params = self._get_login_params(domain_id)
+        params.update({
+            'record_id': binding.external_id,
+            'sub_domain': binding.name,
+            'record_type': binding.type,
+            'record_line_id': binding.line,
+            'value': binding.value,
+            'mx': binding.mx_priority,
+            'ttl': binding.ttl
+        })
+        response = self._send_request('/Record.Modify', params)
+        data = response.read()
+        if response.status == 200:
+            res = json.loads(data.decode('utf-8'))
+            if res['status']['code'] == '1':
+                return res['record']
+        return {}
+
+    def search(self, domain_id):
+        params = self._get_login_params(domain_id)
+        response = self._send_request('/Record.List', params)
+        data = response.read()
         if response.status == 200:
             res = json.loads(data.decode('utf-8'))
             if res['status']['code'] == '1':
@@ -158,29 +134,12 @@ class DNSPodRecordAdapter(Component):
         return []
 
     def send_request(self, domain_id, external_id):
-        params = {
-            'format': 'json',
-            'domain_id': domain_id.external_id,
-            'record_id': external_id
-        }
-        if domain_id.backend_id.token_id and domain_id.backend_id.login_token:
-            login_token = '{},{}'.format(
-                domain_id.backend_id.token_id,
-                domain_id.backend_id.login_token
-            )
-            params.update(login_token=login_token)
-        else:
-            params.update(login_email=domain_id.backend_id.login,
-                          login_password=domain_id.backend_id.password)
-        api_path = self.backend_record.api_path
-        conn = httplib2.HTTPSConnectionWithTimeout(api_path)
-        conn.request('POST', '/Record.Info',
-                     urlencode(params), self._headers)
-        response = conn.getresponse()
+        params = self._get_login_params(domain_id)
+        params.update(record_id=external_id)
+        response = self._send_request('/Record.Info', params)
         data = response.read()
-        conn.close()
         if response.status == 200:
             res = json.loads(data.decode('utf-8'))
             if res['status']['code'] == '1':
                 return res['record']
-        return None
+        return {}
