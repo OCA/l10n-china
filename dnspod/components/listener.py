@@ -20,3 +20,7 @@ class DNSPodRecordListener(Component):
         record.with_delay().sync_dns_records(record.backend_id,
                                              record.domain_id, 'create',
                                              record.id)
+
+    def on_record_unlink(self, record):
+        record.sync_dns_records(record.backend_id, record.domain_id, 'unlink',
+                                record.external_id)

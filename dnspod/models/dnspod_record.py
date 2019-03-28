@@ -123,6 +123,15 @@ class DNSPodRecordAdapter(Component):
                 return res['record']
         return {}
 
+    def unlink(self, binding):
+        domain_id = binding.domain_id
+        params = self._get_login_params(domain_id)
+        params.update({
+            'record_id': binding.external_id,
+        })
+        self._send_request('/Record.Remove', params)
+        return True
+
     def search(self, domain_id):
         params = self._get_login_params(domain_id)
         response = self._send_request('/Record.List', params)

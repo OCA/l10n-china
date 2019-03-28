@@ -65,6 +65,11 @@ class DNSPodRecordImporter(Component):
         if signal == 'write':
             binding = self._get_binding(signal)
             return self.backend_adapter.write(binding)
+
+        if signal == 'unlink':
+            binding = self._get_binding(signal)
+            return self.backend_adapter.unlink(binding)
+
         return self.backend_adapter.send_request(self.domain_id,
                                                  self.external_id)
 
@@ -82,3 +87,11 @@ class DNSPodRecordImporter(Component):
         res = super(DNSPodRecordImporter, self)._update(binding, data)
         self.external_id = binding.external_id
         return res
+
+    def _run(self, external_id, signal):
+        if signal == 'unlink':
+            self.external_id = external_id
+            binding = self._get_binding(signal)
+            self.backend_adapter.unlink(binding)
+        else:
+            return super(DNSPodRecordImporter, self)._run(external_id, signal)
