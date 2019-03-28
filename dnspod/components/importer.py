@@ -62,6 +62,9 @@ class DNSPodRecordImporter(Component):
         if signal == 'create':
             return self.backend_adapter.create(self.domain_id,
                                                self.external_id)
+        if signal == 'write':
+            binding = self._get_binding(signal)
+            return self.backend_adapter.write(binding)
         return self.backend_adapter.send_request(self.domain_id,
                                                  self.external_id)
 

@@ -41,6 +41,7 @@ class DNSPodRecord(models.Model):
     )
     line = fields.Selection(
         selection=_line_select_version,
+        default='0',
         string='Record Line'
     )
     backend_id = fields.Many2one(
@@ -94,17 +95,18 @@ class DNSPodRecordAdapter(Component):
                 return res['record']
         return {}
 
-    def write(self, domain_id, external_id):
-        record = self.model.browse(external_id)
+    def write(self, binding):
+        domain_id = binding.domain_id
         params = {
             'format': 'json',
             'domain_id': domain_id.external_id,
-            'sub_domain': record.name,
-            'record_type': record.type,
-            'record_line_id': record.line,
-            'value': record.value,
-            'mx': record.mx_priority,
-            'ttl': record.ttl
+            'record_id': binding.external_id,
+            'sub_domain': binding.name,
+            'record_type': binding.type,
+            'record_line_id': binding.line,
+            'value': binding.value,
+            'mx': binding.mx_priority,
+            'ttl': binding.ttl
         }
         if domain_id.backend_id.token_id and domain_id.backend_id.login_token:
             login_token = '{},{}'.format(
@@ -117,7 +119,7 @@ class DNSPodRecordAdapter(Component):
                           login_password=domain_id.backend_id.password)
         api_path = self.backend_record.api_path
         conn = httplib2.HTTPSConnectionWithTimeout(api_path)
-        conn.request('POST', '/Record.Create',
+        conn.request('POST', '/Record.Modify',
                      urlencode(params), self._headers)
         response = conn.getresponse()
         data = response.read()
