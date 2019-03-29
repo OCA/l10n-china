@@ -1,7 +1,5 @@
-# -*- coding: utf-8 -*-
 from odoo.addons.component.core import Component
 from odoo.addons.component_event import skip_if
-import uuid
 
 
 class DNSPodRecordListener(Component):
@@ -11,16 +9,13 @@ class DNSPodRecordListener(Component):
 
     @skip_if(lambda self, record, **kwargs: self.no_connector_export(record))
     def on_record_write(self, record, fields=None):
-        record.with_delay().sync_dns_records(record.backend_id,
-                                             record.domain_id, 'write',
-                                             record.external_id)
+        record.export_dns_records(record.backend_id, record)
+        # record.with_delay().export_dns_records(record.backend_id, record)
 
     @skip_if(lambda self, record, **kwargs: self.no_connector_export(record))
     def on_record_create(self, record, fields=None):
-        record.with_delay().sync_dns_records(record.backend_id,
-                                             record.domain_id, 'create',
-                                             record.id)
+        record.export_dns_records(record.backend_id, record)
+        # record.with_delay().export_dns_records(record.backend_id, record)
 
     def on_record_unlink(self, record):
-        record.sync_dns_records(record.backend_id, record.domain_id, 'unlink',
-                                record.external_id)
+        record.delete_dns_records(record.backend_id, record)
