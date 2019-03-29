@@ -42,6 +42,9 @@
         <field name="arch" type="xml">
             <tree>
                 <field name="name"/>
+                <field name="backend_id"/>
+                <field name="external_id"/>
+                <field name="state"/>
             </tree>
         </field>
     </record>
