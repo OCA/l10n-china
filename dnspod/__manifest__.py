@@ -11,6 +11,8 @@
         'python': ['httplib2'],
     },
     'data': [
+        'security/dnspod_groups.xml',
+        'security/ir.model.access.csv',
         'views/dns_backend_views.xml',
         'views/dnspod_domain_views.xml',
         'views/dnspod_record_views.xml',
