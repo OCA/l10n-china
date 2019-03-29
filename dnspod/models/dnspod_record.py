@@ -30,7 +30,7 @@ class DNSPodRecord(models.Model):
     odoo_id = fields.Many2one(comodel_name='dns.record',
                               string='DNS Record',
                               required=True,
-                              ondelete='restrict')
+                              ondelete='cascade')
     type = fields.Selection(
         selection=_type_select_version,
         string='Record Type'
