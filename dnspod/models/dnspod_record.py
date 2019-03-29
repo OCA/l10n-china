@@ -1,7 +1,5 @@
 # © 2019 Elico Corp (https://www.elico-corp.com).
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
-import json
-
 from odoo import models, fields, api
 from odoo.addons.component.core import Component
 

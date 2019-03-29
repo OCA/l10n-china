@@ -1,3 +1,5 @@
+# © 2019 Elico Corp (https://www.elico-corp.com).
+# License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 import httplib2
 import json
 from urllib.parse import urlencode
