@@ -1,6 +1,7 @@
 # © 2019 Elico Corp (https://www.elico-corp.com).
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
-from odoo import models, fields, api, _
+from odoo import models, fields, api
+from odoo.exceptions import ValidationError
 from odoo.addons.component.core import Component
 
 
@@ -35,7 +36,8 @@ class DNSDomainAdapter(Component):
         data = self._send_request('/Domain.Info', params)
         if data and data['status']['code'] == '1':
             return data
-        return {}
+        else:
+            raise ValidationError(data['status']['message'])
 
     def list_all(self, domain_id):
         return [domain_id.id]

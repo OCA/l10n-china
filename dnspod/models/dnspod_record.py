@@ -1,6 +1,7 @@
 # © 2019 Elico Corp (https://www.elico-corp.com).
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 from odoo import models, fields, api
+from odoo.exceptions import ValidationError
 from odoo.addons.component.core import Component
 
 
@@ -57,14 +58,16 @@ class DNSPodRecordAdapter(Component):
         data = self._send_request('/Record.Info', params)
         if data and data['status']['code'] == '1':
             return data['record']
-        return {}
+        else:
+            raise ValidationError(data['status']['message'])
 
     def list_all(self, domain_id):
         params = self._get_login_params(domain_id)
         data = self._send_request('/Record.List', params)
         if data and data['status']['code'] == '1':
             return [r['id'] for r in data['records']]
-        return []
+        else:
+            raise ValidationError(data['status']['message'])
 
     def create(self, record):
         domain_id = record.domain_id
@@ -80,7 +83,8 @@ class DNSPodRecordAdapter(Component):
         data = self._send_request('/Record.Create', params)
         if data and data['status']['code'] == '1':
             return data['record']
-        return {}
+        else:
+            raise ValidationError(data['status']['message'])
 
     def write(self, binding):
         domain_id = binding.domain_id
@@ -94,7 +98,9 @@ class DNSPodRecordAdapter(Component):
             'mx': binding.mx_priority,
             'ttl': binding.ttl
         })
-        self._send_request('/Record.Modify', params)
+        data = self._send_request('/Record.Modify', params)
+        if not data or data['status']['code'] != '1':
+            raise ValidationError(data['status']['message'])
         return True
 
     def delete(self, binding):
@@ -103,5 +109,7 @@ class DNSPodRecordAdapter(Component):
         params.update({
             'record_id': binding.external_id,
         })
-        self._send_request('/Record.Remove', params)
+        data = self._send_request('/Record.Remove', params)
+        if not data or data['status']['code'] != '1':
+            raise ValidationError(data['status']['message'])
         return True
