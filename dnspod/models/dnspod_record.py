@@ -46,6 +46,11 @@ class DNSPodRecord(models.Model):
         related='domain_id.backend_id'
     )
 
+    _sql_constraints = [
+        ('dnspod_record_uniq', 'unique(backend_id, external_id)',
+         "A binding already exists with the same record."),
+    ]
+
 
 class DNSPodRecordAdapter(Component):
     _name = 'dnspod.record.adapter'

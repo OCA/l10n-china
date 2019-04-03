@@ -11,6 +11,8 @@ class DNSPodAbstractAdapter(AbstractComponent):
     _name = 'dnspod.abstract.adapter'
     _inherit = 'dns.abstract.adapter'
 
+    _api_path = 'dnsapi.cn'
+
     def _get_login_params(self, domain_id):
         params = {
             'format': 'json',
@@ -33,8 +35,7 @@ class DNSPodAbstractAdapter(AbstractComponent):
             "Accept": "text/json",
             "User-Agent": "DNSPod-Odoo/0.01 (webmaster@my-odoo.com)"
         }
-        api_path = self.backend_record.api_path
-        conn = httplib2.HTTPSConnectionWithTimeout(api_path)
+        conn = httplib2.HTTPSConnectionWithTimeout(self._api_path)
         conn.request('POST', uri, urlencode(params), headers)
         response = conn.getresponse()
         data = None
