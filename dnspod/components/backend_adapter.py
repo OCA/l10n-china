@@ -4,6 +4,8 @@ import httplib2
 import json
 from urllib.parse import urlencode
 
+from odoo import _
+from odoo.exceptions import MissingError
 from odoo.addons.component.core import AbstractComponent
 
 
@@ -25,8 +27,7 @@ class DNSPodAbstractAdapter(AbstractComponent):
             )
             params.update(login_token=login_token)
         else:
-            params.update(login_email=domain_id.backend_id.login,
-                          login_password=domain_id.backend_id.password)
+            raise MissingError(_("Please setup login token first"))
         return params
 
     def _send_request(self, uri, params):

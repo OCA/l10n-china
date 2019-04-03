@@ -8,7 +8,7 @@ License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
     <record id="dns_backend_token_form_view" model="ir.ui.view">
        <field name="name">dns.backend.token.form</field>
        <field name="model">dns.backend</field>
-       <field name="inherit_id" ref="dns.view_dns_backend" />
+       <field name="inherit_id" ref="connector_dns.view_dns_backend" />
        <field name="arch" type="xml">
            <xpath expr="//form/sheet/group[1]" position="after">
               <group>

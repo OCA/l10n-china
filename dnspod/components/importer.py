@@ -9,7 +9,7 @@ class DNSPodDomainImporter(Component):
     _apply_on = 'dns.domain'
 
     def _get_records(self):
-        return self.backend_adapter.list(self.domain_id)
+        return self.backend_adapter.search(self.domain_id)
 
     def _get_binding(self):
         return self.domain_id
@@ -26,7 +26,7 @@ class DNSPodRecordImporter(Component):
     _apply_on = 'dnspod.record'
 
     def _get_records(self):
-        return self.backend_adapter.list(self.domain_id, self.external_id)
+        return self.backend_adapter.search(self.domain_id, self.external_id)
 
     def _update_data(self, map_record, **kwargs):
         res = super(DNSPodRecordImporter, self)._update_data(map_record,

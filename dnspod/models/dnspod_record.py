@@ -47,8 +47,8 @@ class DNSPodRecord(models.Model):
     )
 
     _sql_constraints = [
-        ('dnspod_record_uniq', 'unique(backend_id, external_id)',
-         "A binding already exists with the same record."),
+        ('dnspod_record_uniq', 'unique(external_id)',
+         "An external_id already exists with the same record."),
     ]
 
 
@@ -57,7 +57,7 @@ class DNSPodRecordAdapter(Component):
     _inherit = 'dnspod.abstract.adapter'
     _apply_on = 'dnspod.record'
 
-    def list(self, domain_id, external_id):
+    def search(self, domain_id, external_id):
         params = self._get_login_params(domain_id)
         params.update(record_id=external_id)
         data = self._send_request('/Record.Info', params)
@@ -66,7 +66,7 @@ class DNSPodRecordAdapter(Component):
         else:
             raise ValidationError(data['status']['message'])
 
-    def list_all(self, domain_id):
+    def search_all(self, domain_id):
         params = self._get_login_params(domain_id)
         data = self._send_request('/Record.List', params)
         if data and data['status']['code'] == '1':

@@ -5,7 +5,7 @@
     'category': 'connector',
     'version': '12.0.1.0.0',
     'depends': [
-        'dns',
+        'connector_dns',
     ],
     'external_dependencies': {
         'python': ['httplib2'],

@@ -31,7 +31,7 @@ class DNSDomainAdapter(Component):
         params.update(domain=domain_id.name)
         return params
 
-    def list(self, domain_id):
+    def search(self, domain_id):
         params = self._get_login_params(domain_id)
         data = self._send_request('/Domain.Info', params)
         if data and data['status']['code'] == '1':
@@ -39,5 +39,5 @@ class DNSDomainAdapter(Component):
         else:
             raise ValidationError(data['status']['message'])
 
-    def list_all(self, domain_id):
+    def search_all(self, domain_id):
         return [domain_id.id]

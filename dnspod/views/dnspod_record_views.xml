@@ -33,6 +33,6 @@ License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
     <menuitem id="menu_dnspod_record"
               name="DNSPod Records"
               action="dnspod.action_dnspod_record"
-              parent="dns.menu_dns_backend"
+              parent="connector_dns.menu_dns_backend"
     />
 </odoo>
