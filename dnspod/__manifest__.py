@@ -2,8 +2,12 @@
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 {
     'name': 'DNS Pod',
-    'category': 'connector',
+    'category': 'Connector',
     'version': '12.0.1.0.0',
+    'author': 'Elico Corp, Odoo Community Association (OCA)',
+    'support': 'support@elico-corp.com',
+    'license': 'LGPL-3',
+    'development_status': 'Production/Stable',
     'depends': [
         'connector_dns',
     ],
