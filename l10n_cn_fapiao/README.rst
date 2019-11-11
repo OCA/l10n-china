@@ -21,7 +21,7 @@ The procedure to follow for the fapiao management is as below:
 #. A new fapiao is created in Odoo.
 #. The scanned document is uploaded to the newly created object as attachment.
 #. Fapiao allocation to invoice: Fapiao and Odoo invoices can be
-  linked to each other.
+   linked to each other.
 
 .. image:: https://odoo-community.org/website/image/ir.attachment/5784_f2813bd/datas
    :alt: Try me on Runbot
