@@ -8,13 +8,6 @@ Website Certificate
 
 This module extends the functionality of website and allow you to display company multi certificate information at the bottom right of website.
 
-Installation
-============
-
-To install this module, you need to:
-
- * have basic modules installed (website)
-
 Usage
 =====
 
@@ -24,10 +17,6 @@ Configure the company certificate information in website setting, then you can s
 For further information, please visit:
 
  * https://www.odoo.com/forum/help-1
-
-Known issues / Roadmap
-======================
-
 
 Credits
 =======
@@ -43,8 +32,8 @@ Maintainer
 ----------
 
 .. image:: https://odoo-community.org/logo.png
-:alt: Odoo Community Association
-:target: https://odoo-community.org
+   :alt: Odoo Community Association
+   :target: https://odoo-community.org
 
 This module is maintained by the OCA.
 
