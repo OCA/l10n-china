@@ -1,0 +1,47 @@
+# © 2019 Elico Corp (https://www.elico-corp.com).
+# License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
+import httplib2
+import json
+from urllib.parse import urlencode
+
+from odoo import _
+from odoo.exceptions import MissingError
+from odoo.addons.component.core import AbstractComponent
+
+
+class DNSPodAbstractAdapter(AbstractComponent):
+    _name = 'dnspod.abstract.adapter'
+    _inherit = 'dns.abstract.adapter'
+
+    _api_path = 'dnsapi.cn'
+
+    def _get_login_params(self, domain_id):
+        params = {
+            'format': 'json',
+            'domain_id': domain_id.external_id
+        }
+        if domain_id.backend_id.token_id and domain_id.backend_id.login_token:
+            login_token = '{},{}'.format(
+                domain_id.backend_id.token_id,
+                domain_id.backend_id.login_token
+            )
+            params.update(login_token=login_token)
+        else:
+            raise MissingError(_("Please setup login token first"))
+        return params
+
+    def _send_request(self, uri, params):
+        headers = {
+            "Content-type": "application/x-www-form-urlencoded",
+            "Accept": "text/json",
+            "User-Agent": "DNSPod-Odoo/0.01 (webmaster@my-odoo.com)"
+        }
+        conn = httplib2.HTTPSConnectionWithTimeout(self._api_path)
+        conn.request('POST', uri, urlencode(params), headers)
+        response = conn.getresponse()
+        data = None
+        if response.status == 200:
+            data = response.read()
+            data = json.loads(data.decode('utf-8'))
+        conn.close()
+        return data
