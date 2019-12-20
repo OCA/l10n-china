@@ -1,0 +1,114 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* l10n_cn_sequence_voucher
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 9.0c\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-12-01 09:24+0000\n"
+"PO-Revision-Date: 2015-12-01 09:24+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: l10n_cn_sequence_voucher
+#: model:ir.model,name:l10n_cn_sequence_voucher.model_account_move
+msgid "Account Entry"
+msgstr "科目条目"
+
+#. module: l10n_cn_sequence_voucher
+#: model:ir.sequence,name:l10n_cn_sequence_voucher.sequence_journal_seq_bank_in
+msgid "Bank in"
+msgstr "银收"
+
+#. module: l10n_cn_sequence_voucher
+#: model:ir.sequence,name:l10n_cn_sequence_voucher.sequence_journal_seq_bank_out
+msgid "Bank out"
+msgstr "银付"
+
+#. module: l10n_cn_sequence_voucher
+#: model:ir.sequence,name:l10n_cn_sequence_voucher.sequence_journal_seq_cash_in
+msgid "Cash in"
+msgstr "现收"
+
+#. module: l10n_cn_sequence_voucher
+#: model:ir.sequence,name:l10n_cn_sequence_voucher.sequence_journal_seq_cash_out
+msgid "Cash out"
+msgstr "现付"
+
+#. module: l10n_cn_sequence_voucher
+#: model:ir.model.fields,field_description:l10n_cn_sequence_voucher.field_account_move_chinese_sequence_number
+msgid "Chinese Voucher Number"
+msgstr "Chinese Voucher Number"
+
+#. module: l10n_cn_sequence_voucher
+#: model:ir.model.fields,field_description:l10n_cn_sequence_voucher.field_account_journal_internal_sequence_in_id
+msgid "IN Sequence"
+msgstr "IN Sequence"
+
+#. module: l10n_cn_sequence_voucher
+#: model:ir.ui.view,arch_db:l10n_cn_sequence_voucher.view_account_journal_form_inherit_elico
+msgid "In sequence"
+msgstr "In sequence"
+
+#. module: l10n_cn_sequence_voucher
+#: model:ir.model.fields,help:l10n_cn_sequence_voucher.field_account_move_chinese_sequence_number
+msgid "Internal Sequence Number"
+msgstr "Internal Sequence Number"
+
+#. module: l10n_cn_sequence_voucher
+#: model:ir.model.fields,help:l10n_cn_sequence_voucher.field_account_move_chinese_sequence_type
+msgid "Internal Sequence Type"
+msgstr "Internal Sequence Type"
+
+#. module: l10n_cn_sequence_voucher
+#: model:ir.model,name:l10n_cn_sequence_voucher.model_account_journal
+msgid "Journal"
+msgstr "分类账"
+
+#. module: l10n_cn_sequence_voucher
+#: model:ir.model.fields,field_description:l10n_cn_sequence_voucher.field_account_journal_internal_sequence_out_id
+#: model:ir.ui.view,arch_db:l10n_cn_sequence_voucher.view_account_journal_form_inherit_elico
+msgid "Out Sequence"
+msgstr "Out Sequence"
+
+#. module: l10n_cn_sequence_voucher
+#: model:ir.model.fields,help:l10n_cn_sequence_voucher.field_account_journal_internal_sequence_in_id
+#: model:ir.model.fields,help:l10n_cn_sequence_voucher.field_account_journal_internal_sequence_out_id
+msgid "This sequence will be used to maintain the internal number         for the journal entries related to this journal         for cash/bank in or out."
+msgstr "This sequence will be used to maintain the internal number         for the journal entries related to this journal         for cash/bank in or out."
+
+#. module: l10n_cn_sequence_voucher
+#: model:ir.model.fields,help:l10n_cn_sequence_voucher.field_account_journal_internal_sequence_transfer_id
+msgid "This sequence will be used to maintain the internal number         for the journal entries related to this journal for transfer."
+msgstr "This sequence will be used to maintain the internal number         for the journal entries related to this journal for transfer."
+
+#. module: l10n_cn_sequence_voucher
+#: model:ir.sequence,name:l10n_cn_sequence_voucher.sequence_journal_seq_transfer
+msgid "Transfer"
+msgstr "转"
+
+#. module: l10n_cn_sequence_voucher
+#: model:ir.model.fields,field_description:l10n_cn_sequence_voucher.field_account_journal_internal_sequence_transfer_id
+msgid "Transfer Sequence"
+msgstr "Transfer Sequence"
+
+#. module: l10n_cn_sequence_voucher
+#: model:ir.ui.view,arch_db:l10n_cn_sequence_voucher.view_account_journal_form_inherit_elico
+msgid "Transfer sequence"
+msgstr "Transfer sequence"
+
+#. module: l10n_cn_sequence_voucher
+#: model:ir.model.fields,field_description:l10n_cn_sequence_voucher.field_account_move_chinese_sequence_type
+msgid "Voucher Type change to"
+msgstr "Voucher Type change to"
+
+#. module: l10n_cn_sequence_voucher
+#: model:ir.model,name:l10n_cn_sequence_voucher.model_ir_sequence
+msgid "ir.sequence"
+msgstr "ir.sequence"
+

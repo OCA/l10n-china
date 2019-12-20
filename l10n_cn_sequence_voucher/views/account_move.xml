@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+
+        <record id="view_account_move_form_inherit_elico" model="ir.ui.view">
+           <field name="name">account.move.form.inherit.elico</field>
+           <field name="model">account.move</field>
+           <field name="inherit_id" ref="account.view_move_form"/>
+           <field name="arch" type="xml">
+                <field name="partner_id" position="after">
+                    <field name="chinese_sequence_type" attrs="{'readonly':[('state','!=','draft')]}"/>
+                    <field name="chinese_sequence_number"/>
+                </field>
+           </field>
+        </record>
+
+    </data>
+</openerp>

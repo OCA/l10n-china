@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+<data>
+    <template id='report_account_move'>
+        <t t-call='report.html_container' >
+            <t t-set="data_report_margin_top" t-value="12"/>
+            <t t-set="data_report_header_spacing" t-value="9"/>
+            <t t-set="data_report_dpi" t-value="110"/>
+            <t t-set="data-report_format" t-value='A5' />
+            <t t-foreach='docs' t-as='o' >
+                <t t-call="report.internal_layout">
+                    <div class='page'>
+                        <div class='row' >
+                            <div class='oe_structure' />
+                            <div class='row'>
+                                <h2 class='text-center'>
+                                    记账凭证
+                                </h2>
+                                <p class='text-center' t-field='o.date' />
+                            </div>
+                        </div>
+
+                        <div class='row' >
+                            <div class='col-xs-6 pull-left'>
+                                <span>公司名称</span>
+                                <span t-field='o.company_id.name' />
+                            </div>
+                            <div class='col-xs-4 text-right'>
+                                <span>凭证号</span>
+                                <span t-field='o.chinese_sequence_number' />
+                            </div>
+                            <div class='col-xs-2 text-right' >
+                                <span t-esc="o._paginate(o.line_ids, 5) + 1" />
+                                <span>/</span>
+                                <sapn t-esc="o._paginate(o.line_ids, 5)" />
+                            </div>
+                        </div>
+                        <style>
+                                table.col-xs-12 td{border: 1px solid green}
+                        </style>
+                        <table class='col-xs-12'>
+                            <thead>
+                                <tr>
+                                    <td rowspan='2' height='80px' class='col-xs-2 text-center' >摘要</td>
+                                    <td rowspan='2' class='col-xs-2 text-center' >会计科目</td>
+                                    <td height='40px' class='col-xs-1 text-center'>币别</td>
+                                    <td height='40px' class='col-xs-1 text-center'>汇率</td>
+                                    <td height='40px' class='col-xs-2 text-center'>原始金额</td>
+                                    <td colspan='12' class='col-xs-3 text-center'>借方</td>
+                                    <td colspan='12' class='col-xs-3 text-center'>贷方</td>
+                                </tr>
+                                <tr>
+                                    <td  class='text-center'>单位</td>
+                                    <td  class='text-center'>单价</td>
+                                    <td  class='text-center'>数量</td>
+                                    <td  class='text-center'>十</td>
+                                    <td  class='text-center'>亿</td>
+                                    <td  class='text-center'>千</td>
+                                    <td  class='text-center'>佰</td>
+                                    <td  class='text-center'>十</td>
+                                    <td  class='text-center'>万</td>
+                                    <td  class='text-center'>千</td>
+                                    <td  class='text-center'>佰</td>
+                                    <td  class='text-center'>十</td>
+                                    <td  class='text-center'>元</td>
+                                    <td  class='text-center'>角</td>
+                                    <td  class='text-center'>分</td>
+                                    <td  class='text-center'>十</td>
+                                    <td  class='text-center'>亿</td>
+                                    <td  class='text-center'>千</td>
+                                    <td  class='text-center'>佰</td>
+                                    <td  class='text-center'>十</td>
+                                    <td  class='text-center'>万</td>
+                                    <td  class='text-center'>千</td>
+                                    <td  class='text-center'>佰</td>
+                                    <td  class='text-center'>十</td>
+                                    <td  class='text-center'>元</td>
+                                    <td  class='text-center'>角</td>
+                                    <td  class='text-center'>分</td>
+                                </tr>
+                            </thead>
+                            <tbody class='text-center'>
+                                <t t-foreach='o.line_ids' t-as='l'>
+                                    <tr>
+                                        <td rowspan='2' height='80px'>
+                                            <span t-field='l.name' />
+                                        </td>
+                                        <td rowspan='2'>
+                                            <span t-esc='o._get_account_name(l.account_id.id)' />
+                                            <span t-esc="l.product_id.name or (o._get_account_partner(l.account_id.id, l.partner_id.name) or '')" />
+                                        </td>
+                                        <td height='40px'>
+                                            <span t-esc="o._get_exchange_rate(l) and l.currency_id.name or ''" />
+                                        </td>
+                                        <td height='40px'>
+                                            <span t-esc="o._get_exchange_rate(l) or ''" />
+                                        </td>
+                                        <td height='40px'>
+                                            <span t-esc="l.amount_currency or ''" />
+                                        </td>
+                                        <td rowspan='2' >
+                                            <span t-esc="o._rmb_format(l.debit)[0]" />
+                                        </td>
+                                        <td rowspan='2' >
+                                            <span t-esc="o._rmb_format(l.debit)[1]" />
+                                        </td>
+                                        <td rowspan='2' >
+                                            <span t-esc="o._rmb_format(l.debit)[2]" />
+                                        </td>
+                                        <td rowspan='2' >
+                                            <span t-esc="o._rmb_format(l.debit)[3]" />
+                                        </td>
+                                        <td rowspan='2' >
+                                            <span t-esc="o._rmb_format(l.debit)[4]" />
+                                        </td>
+                                        <td rowspan='2' >
+                                            <span t-esc="o._rmb_format(l.debit)[5]" />
+                                        </td>
+                                        <td rowspan='2' >
+                                            <span t-esc="o._rmb_format(l.debit)[6]" />
+                                        </td>
+                                        <td rowspan='2' >
+                                            <span t-esc="o._rmb_format(l.debit)[7]" />
+                                        </td>
+                                        <td rowspan='2' >
+                                            <span t-esc="o._rmb_format(l.debit)[8]" />
+                                        </td>
+                                        <td rowspan='2' >
+                                            <span t-esc="o._rmb_format(l.debit)[9]" />
+                                        </td>
+                                        <td rowspan='2' >
+                                            <span t-esc="o._rmb_format(l.debit)[10]" />
+                                        </td>
+                                        <td rowspan='2' >
+                                            <span t-esc="o._rmb_format(l.debit)[11]" />
+                                        </td>
+                                        <td rowspan='2' >
+                                            <span t-esc="o._rmb_format(l.credit)[0]" />
+                                        </td>
+                                        <td rowspan='2' >
+                                            <span t-esc="o._rmb_format(l.credit)[1]" />
+                                        </td>
+                                        <td rowspan='2' >
+                                            <span t-esc="o._rmb_format(l.credit)[2]" />
+                                        </td>
+                                        <td rowspan='2' >
+                                            <span t-esc="o._rmb_format(l.credit)[3]" />
+                                        </td>
+                                        <td rowspan='2' >
+                                            <span t-esc="o._rmb_format(l.credit)[4]" />
+                                        </td>
+                                        <td rowspan='2' >
+                                            <span t-esc="o._rmb_format(l.credit)[5]" />
+                                        </td>
+                                        <td rowspan='2' >
+                                            <span t-esc="o._rmb_format(l.credit)[6]" />
+                                        </td>
+                                        <td rowspan='2' >
+                                            <span t-esc="o._rmb_format(l.credit)[7]" />
+                                        </td>
+                                        <td rowspan='2' >
+                                            <span t-esc="o._rmb_format(l.credit)[8]" />
+                                        </td>
+                                        <td rowspan='2' >
+                                            <span t-esc="o._rmb_format(l.credit)[9]" />
+                                        </td>
+                                        <td rowspan='2' >
+                                            <span t-esc="o._rmb_format(l.credit)[10]" />
+                                        </td>
+                                        <td rowspan='2' >
+                                            <span t-esc="o._rmb_format(l.credit)[11]" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <span t-esc="l.product_uom_id.name or ''" />
+                                        </td>
+                                        <td>
+                                            <span t-esc="l.product_uom_id and o._get_unit_price(l) or ''" />
+                                        </td>
+                                        <td>
+                                            <span t-esc="l.product_uom_id and l.quantity or ''" />
+                                        </td>
+                                    </tr>
+                                </t>
+                                <tr>
+                                    <td height='40px' >
+                                        <span>附件:</span>
+                                        <span t-esc="o.proof or '0'" />
+                                        <span>张</span>
+                                    </td>
+                                    <td colspan='4'>
+                                        <span>合计:</span>
+                                        <span t-esc='o._rmb_upper(o.amount)' />
+                                    </td>
+                                    <td colspan='12'>
+                                        <span t-field='o.company_id.currency_id.symbol'/>
+                                        <span t-esc="'%0.2f' % o.amount"/>
+                                    </td>
+                                    <td colspan='12'>
+                                        <span t-field='o.company_id.currency_id.symbol'/>
+                                        <span t-esc="'%0.2f' % o.amount"/>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class='row'>
+                            <div class='col-xs-2' >
+                                <span>核准:</span>
+                            </div>
+                            <div class='col-xs-2' >
+                                <span>过账:</span>
+                            </div>
+                            <div class='col-xs-2' >
+                                <span>出纳:</span>
+                            </div>
+                            <div class='col-xs-3' >
+                                <span>制单:</span>
+                                <span t-field='o.create_uid.name' />
+                            </div>
+                            <div class='col-xs-3' >
+                                <span>审核:</span>
+                                <span t-field='o.write_uid.name' />
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+</data>
+</openerp>
