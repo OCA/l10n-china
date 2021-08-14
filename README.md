@@ -17,16 +17,16 @@ This l10n-china repository is hosted in Github and might contain any module rela
 
 Available addons
 ----------------
-addon | version | summary
---- | --- | ---
-[l10n_cn_hr_payroll](l10n_cn_hr_payroll/) | 10.0.1.0.0 | Chinese - Payroll
+addon | version | maintainers | summary
+--- | --- | --- | ---
+[l10n_cn_hr_payroll](l10n_cn_hr_payroll/) | 10.0.1.0.0 |  | Chinese - Payroll
 
 
 Unported addons
 ---------------
-addon | version | summary
---- | --- | ---
-[website_certificate](website_certificate/) | 10.0.1.0.0 (unported) | Website Certificate
+addon | version | maintainers | summary
+--- | --- | --- | ---
+[website_certificate](website_certificate/) | 10.0.1.0.0 (unported) |  | Website Certificate
 
 [//]: # (end addons)
 
