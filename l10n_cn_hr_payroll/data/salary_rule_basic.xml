@@ -256,7 +256,7 @@
         </record>
 
         <record id="hr_rule_adj" model="hr.salary.rule">
-            <field name="category_id" ref="ADJ"/>
+            <field name="category_id" ref="hr_payroll.ALW"/>
             <field name="name">Adjustment</field>
             <field name="code">ADJ</field>
             <field name="appears_on_payslip" eval="True"/>
@@ -274,6 +274,24 @@
             <field name="condition_select">none</field>
             <field name="amount_select">code</field>
             <field name="amount_python_compute">result = categories.BASICNET + categories.ADJ + categories.ALW - categories.DED2</field>
+        </record>
+
+        <!-- 新个税规则 -->
+        <record id="hr_rule_tax" model="hr.salary.rule">
+            <field name="category_id" ref="hr_payroll.DED"/>
+            <field name="name">TAX(-)</field>
+            <field name="code">TAX</field>
+            <field name="appears_on_payslip" eval="True"/>
+            <field name="sequence">501</field>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = inputs.TAX and inputs.TAX.amount</field>
+        </record>
+
+        <record id="hr_rule_input_tax" model="hr.rule.input">
+            <field name="code">TAX</field>
+            <field name="name">TAX(-)</field>
+            <field name="input_id" ref="hr_rule_tax"/>
         </record>
 
         <!-- Rule Inputs -->
