@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <!--Account Journal Internal Number of account move line-->
+	<record id="sequence_journal_seq_cash_in" model="ir.sequence">
+	    <field name="name">Cash in</field>
+	    <field name="code">account.journal</field>
+	    <field name="prefix">现收 </field>
+	</record>
+	
+	<record id="sequence_journal_seq_cash_out" model="ir.sequence">
+	    <field name="name">Cash out</field>
+	    <field name="code">account.journal</field>
+	    <field name="prefix">现付 </field>
+	</record>
+	
+	<record id="sequence_journal_seq_bank_in" model="ir.sequence">
+	    <field name="name">Bank in</field>
+	    <field name="code">account.journal</field>
+	    <field name="prefix">银收 </field>
+	</record>
+	
+	<record id="sequence_journal_seq_bank_out" model="ir.sequence">
+	    <field name="name">Bank out</field>
+	    <field name="code">account.journal</field>
+	    <field name="prefix">银付 </field>
+	</record>
+	
+	<record id="sequence_journal_seq_transfer" model="ir.sequence">
+	    <field name="name">Transfer</field>
+	    <field name="code">account.journal</field>
+	    <field name="prefix">转 </field>
+	</record>
+
+    </data>
+</openerp>
